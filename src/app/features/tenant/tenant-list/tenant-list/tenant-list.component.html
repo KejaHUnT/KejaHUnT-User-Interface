@@ -1,0 +1,48 @@
+<div class="container">
+
+    <h1 class="mt-3">Tenants</h1>
+    
+    <div class="d-flex justify-content-end mt-3">
+        <a class="btn btn-primary" [routerLink]="['/admin/tenant/add']">Add New Tenant</a>
+    </div>
+    
+    <ng-container *ngIf="tenants$ | async as tenants">
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Full name</th>
+                    <th>Phone Number</th>
+                    <th>Id Number</th>
+                    <th>Email</th>
+                    <th>Employer</th>
+                    <th>Units</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let tenant of tenants">
+                    <td>{{tenant.fullName}}</td>
+                    <td>{{tenant.phoneNumber}}</td>
+                    <td>{{tenant.idNo}}</td>
+                    <td>{{tenant.email}}</td>
+                    <td>{{tenant.employer}}</td>
+                    <td>
+                        <ul class="list-group">
+                            <li *ngFor="let unit of tenant.units" class="list-group-item">
+                                 PRICE: {{ unit.price | currency }}| Type: {{unit.type}} | Bathrooms: {{ unit.bathrooms }} | Size: {{ unit.size }} | Units Owned  {{ unit.noOfUnits }} 
+                             </li>
+
+                        </ul>
+                    </td>
+                    <td>
+                        <div class="mt-3 d-flex">
+                            <a class="btn btn-light" [routerLink]="['/admin/tenant', tenant.id]">Edit</a>
+                            <!-- <button type="button" class="btn btn-danger ms-3" (click)="onDelete(property.id.toString())">Delete</button> -->
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </ng-container>
+    
+    </div>

@@ -1,0 +1,44 @@
+<div class="container">
+
+    <h1 class="mt-3">Properties</h1>
+    
+    <div class="d-flex justify-content-end mt-3">
+        <a class="btn btn-primary" [routerLink]="['/admin/property/add']">Add New Property</a>
+    </div>
+    
+    <ng-container *ngIf="properties$ | async as properties">
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Location</th>
+                    <th>Units</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let property of properties">
+                    <td>{{property.name}}</td>
+                    <td>{{property.type}}</td>
+                    <td>{{property.location}}</td>
+                    <td>
+                        <ul class="list-group">
+                            <li *ngFor="let unit of property.units" class="list-group-item">
+                                 PRICE: {{ unit.price | currency }}| Type: {{unit.type}} | Bathrooms: {{ unit.bathrooms }} | Size: {{ unit.size }} | AvailableUnits  {{ unit.noOfUnits }} 
+                             </li>
+
+                        </ul>
+                    </td>
+                    <td>
+                        <div class="mt-3 d-flex">
+                        <a class="btn btn-light" [routerLink]="['/admin/property', property.id]">Edit</a>
+                        <button type="button" class="btn btn-danger ms-3" (click)="onDelete(property.id.toString())">Delete</button>
+                    </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </ng-container>
+    
+    </div>
