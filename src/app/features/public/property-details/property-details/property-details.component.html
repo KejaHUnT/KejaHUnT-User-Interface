@@ -1,0 +1,43 @@
+<div class="property-container" *ngIf="model">
+    <!-- Header -->
+    <div class="property-header">
+      <h1 class="property-title">{{ model.name }}</h1>
+      <span class="property-category">{{ model.type }}</span>
+    </div>
+  
+    <!-- Location and Description -->
+    <div class="property-info">
+      <div class="info-block">
+        <h2>Location</h2>
+        <p>{{ model.location }}</p>
+      </div>
+    </div>
+  
+    <!-- Units List -->
+    <div class="units-section">
+      <h2>Units</h2>
+      <div *ngIf="model.units.length > 0; else noUnits" class="units-grid">
+        <div *ngFor="let unit of model.units" class="unit-card">
+          <h3>Available Units: {{ unit.noOfUnits }}</h3>
+          <p><strong>Type:</strong> {{ unit.type }}</p>
+          <p><strong>Rent:</strong> Ksh {{ unit.price | number:'1.0-0' }}</p>
+          <p><strong>Bathrooms:</strong> {{ unit.bathrooms }}</p>
+          <button class="apply-button" (click)="onBookNow(unit)">
+            Book Now
+          </button>
+        </div>
+      </div>
+  
+      <ng-template #noUnits>
+        <p class="no-units">No units available in this property.</p>
+      </ng-template>
+    </div>
+  
+    <!-- Back Button -->
+    <div class="back-button-container">
+      <button [routerLink]="['']" class="back-button">
+        ← Back to Properties
+      </button>
+    </div>
+  </div>
+  

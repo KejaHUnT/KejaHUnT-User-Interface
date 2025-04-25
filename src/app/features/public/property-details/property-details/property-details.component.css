@@ -1,0 +1,153 @@
+.property-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .property-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .property-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .property-category {
+    background-color: #e0e7ff;
+    color: #1e3a8a;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .property-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  
+  .info-block h2 {
+    font-size: 18px;
+    color: #444;
+    margin-bottom: 8px;
+  }
+  
+  .info-block p {
+    color: #666;
+  }
+  
+  .property-stats {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 24px;
+  }
+  
+  .stat-item span {
+    display: block;
+    font-size: 13px;
+    color: #888;
+  }
+  
+  .stat-item p {
+    font-size: 20px;
+    font-weight: 500;
+    color: #222;
+  }
+  
+  .units-section h2 {
+    font-size: 22px;
+    margin-bottom: 16px;
+    color: #222;
+  }
+  
+  .units-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  
+  .unit-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 16px;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .unit-card:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+  }
+  
+  .unit-card h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+  .unit-card p {
+    margin: 4px 0;
+    color: #555;
+  }
+  
+  .status-available {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .status-occupied {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .no-units {
+    font-style: italic;
+    color: #777;
+  }
+  
+  .back-button-container {
+    margin-top: 32px;
+    text-align: center;
+  }
+  
+  .back-button {
+    background-color: #2563eb;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .back-button:hover {
+    background-color: #1e40af;
+  }
+
+  .apply-button {
+    margin-top: 12px;
+    padding: 8px 16px;
+    background-color: #16a34a; /* green */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .apply-button:hover {
+    background-color: #15803d;
+  }
+  
+  

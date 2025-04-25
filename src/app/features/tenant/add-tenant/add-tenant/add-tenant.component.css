@@ -1,0 +1,179 @@
+.tenant-form {
+    max-width: 800px;
+    margin: auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .page-title {
+    text-align: center;
+    color: #2c3e50;
+  }
+  
+  .form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .units-section {
+    margin-top: 2rem;
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .section-title {
+    margin-bottom: 1rem;
+    color: #34495e;
+  }
+  
+  .unit-card {
+    background: #ffffff;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+  }
+  
+  .unit-detail {
+    margin-bottom: 0.5rem;
+  }
+  
+  .form-actions {
+    text-align: right;
+  }
+  .unit-detail.editable-units {
+    margin-top: 1rem;
+  }
+  
+  .unit-editable {
+    max-width: 120px;
+    display: inline-block;
+    margin-top: 0.3rem;
+  }
+  .unit-selector-section {
+    background-color: #f9f9f9;
+    border: 1px dashed #ccc;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    border-radius: 8px;
+  }
+  .section-title {
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  /* === General Form Styling === */
+.tenant-form {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  }
+  
+  .tenant-form-inner .form-label {
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+  }
+  
+  .tenant-form-inner .form-control {
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+  }
+  
+  .page-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+  
+  /* === Units Section (Selected Units) === */
+  .units-section .unit-card {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    margin-bottom: 1rem;
+  }
+  
+  .unit-detail {
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .unit-editable {
+    width: 100%;
+    max-width: 150px;
+    border-radius: 6px;
+    padding: 0.3rem 0.6rem;
+  }
+  
+  .editable-units label {
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  
+  /* === Buttons === */
+  button.btn {
+    border-radius: 30px;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  
+  button.btn-sm {
+    font-size: 0.8rem;
+    padding: 0.35rem 0.75rem;
+  }
+  
+  /* === Property Cards (Unit Selector) === */
+  .unit-selector-section .card {
+    border-radius: 16px;
+  }
+  
+  .unit-selector-section .card-body {
+    padding: 1.25rem;
+  }
+  
+  .unit-selector-section .badge {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+  }
+  
+  /* === Unit Grid Inside Property Card === */
+  .unit-selector-section .d-flex.flex-wrap.gap-2 {
+    gap: 0.5rem;
+  }
+  
+  .unit-selector-section .border.rounded {
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  
+  .unit-selector-section .border.rounded:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+  
+  .unit-selector-section .border.rounded button {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.7rem;
+  }
+  
+  /* === Media Query for Responsive Behavior === */
+  @media (max-width: 768px) {
+    .unit-selector-section .d-flex.flex-wrap.gap-2 > div {
+      flex-basis: 100% !important;
+    }
+  }
+  
+  
+  
+  
