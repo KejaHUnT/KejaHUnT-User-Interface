@@ -1,5 +1,4 @@
 export interface Unit {
-    id: number;
     price: number;
     type: string;
     bathrooms: number;

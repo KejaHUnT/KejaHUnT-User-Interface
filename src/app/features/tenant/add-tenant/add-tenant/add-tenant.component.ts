@@ -28,6 +28,7 @@ export class AddTenantComponent implements AfterViewInit {
     private propertyService: PropertyService,
       private router: Router,
       private route: ActivatedRoute
+
     ) {
       this.model = {
             fullName: '',
@@ -121,7 +122,4 @@ export class AddTenantComponent implements AfterViewInit {
       });
     }
 
-    
-    
-    
 }

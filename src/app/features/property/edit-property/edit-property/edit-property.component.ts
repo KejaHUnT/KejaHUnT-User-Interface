@@ -53,7 +53,6 @@ export class EditPropertyComponent implements OnInit, OnDestroy{
         location: this.model.location,
         type: this.model.type,
         units: this.model.units.map(unit => ({
-          id: unit.id,
           price: unit.price,
           type: unit.type,
           bathrooms: unit.bathrooms,
@@ -75,7 +74,6 @@ export class EditPropertyComponent implements OnInit, OnDestroy{
     addUnit(): void {
       if (this.model) {
         this.model.units.push({
-          id: 0,
           price: 0,
           type: '',
           bathrooms: 0,

@@ -28,7 +28,8 @@ import { EditTenentComponent } from './features/tenant/edit-tenant/edit-tenent/e
     TenantListComponent,
     AddTenantComponent,
     PropertyDetailsComponent,
-    EditTenentComponent
+    EditTenentComponent,
+    PropertyDetailsComponent
   ],
   imports: [
     BrowserModule,
