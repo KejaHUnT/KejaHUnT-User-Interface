@@ -10,7 +10,7 @@ import { CreateUnitRequest } from '../../models/create-unit-request.model';
   styleUrls: ['./add-property.component.css']
 })
 export class AddPropertyComponent {
-  
+  selectedImageFile: File | null = null;
   model: AddPropertyRequest;
 
   constructor (private propertyService: PropertyService,
@@ -26,14 +26,34 @@ export class AddPropertyComponent {
 
   }
 
-  onFormSubmit(): void {
-    console.log(this.model);
-    this.propertyService.createProperty(this.model)
-    .subscribe({
-      next: (response) => {
-        this.router.navigateByUrl('admin/property');
-      }
-    })
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedImageFile = input.files[0];
+    }
   }
+
+  onFormSubmit(): void {
+    const formData = new FormData();
+    
+    formData.append('name', this.model.name);
+    formData.append('location', this.model.location);
+    formData.append('type', this.model.type);
+  
+    if (this.selectedImageFile) {
+      formData.append('imageFile', this.selectedImageFile, this.selectedImageFile.name);
+    }
+  
+    formData.append('units', JSON.stringify(this.model.units));
+  
+    this.propertyService.createProperty(formData)
+      .subscribe({
+        next: (response) => {
+          this.router.navigateByUrl('admin/property');
+        }
+      });
+      console.log(this.model);
+  }
+  
  
 }

@@ -12,10 +12,9 @@ import { UpdatePropertyRequest } from '../models/update-property-request.model';
 export class PropertyService {
 
   constructor(private http: HttpClient) { }
-
-  createProperty(data: AddPropertyRequest) : Observable<Property> {
-    return this.http.post<Property>(`${environment.apiBaseUrl}/api/property`, data);
-}
+  createProperty(formData: FormData): Observable<Property> {
+    return this.http.post<Property>(`${environment.apiBaseUrl}/api/property`, formData);
+  }
 
 getAllProperties() : Observable<Property[]> {
   return this.http.get<Property[]>(`${environment.apiBaseUrl}/api/property`);
@@ -25,8 +24,8 @@ getPopertyById(id: string) : Observable<Property> {
   return this.http.get<Property>(`${environment.apiBaseUrl}/api/property/${id}`);
 }
 
-updateProperty(id: string, data: UpdatePropertyRequest): Observable<Property> {
-  return this.http.put<Property>(`${environment.apiBaseUrl}/api/property/${id}`, data);
+updateProperty(id: string, formData: FormData): Observable<Property> {
+  return this.http.put<Property>(`${environment.apiBaseUrl}/api/property/${id}`, formData);
 }
 
 deleteProperty(id: string): Observable<Property> {

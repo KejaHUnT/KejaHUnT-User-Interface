@@ -5,5 +5,6 @@ export interface Property {
     name: string;
     location: string;
     type: string;
+    documentId: string;
     units: Unit[];
 }

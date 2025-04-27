@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Property } from 'src/app/features/property/models/property.model';
 import { PropertyService } from 'src/app/features/property/services/property.service';
+import { FileResponse } from 'src/app/features/shared/images/models/file-response.model';
+import { ImageService } from 'src/app/features/shared/images/service/image.service';
 
 @Component({
   selector: 'app-property-details',
@@ -12,34 +14,52 @@ import { PropertyService } from 'src/app/features/property/services/property.ser
 export class PropertyDetailsComponent implements OnInit {
   id: string | null = null;
   model?: Property;
-
+  imageUrl: string = ''; // Property to hold image URL
   routeSubscription?: Subscription;
   getPropertyByIdSubscription?: Subscription;
+  getFileByDocumentIdSubscription?: Subscription;
   
     constructor(private route: ActivatedRoute,
       private propertyService: PropertyService,
+      private imageService: ImageService, // Inject the FileHandlerService
       private router: Router
     ) { }
       
     ngOnInit(): void {
-      this.route.paramMap.subscribe({
+      this.routeSubscription = this.route.paramMap.subscribe({
         next: (params) => {
           this.id = params.get('id');
     
-          // Get property from api
-          if(this.id) {
+          if (this.id) {
             this.getPropertyByIdSubscription = this.propertyService.getPopertyById(this.id).subscribe({
               next: (response) => {
                 this.model = response;
+  
                 if (!this.model.units) {
                   this.model.units = [];
                 }
+  
+                // 🆕 If the property has a documentId, fetch the image
+                if (this.model.documentId) {
+                  this.getFileByDocumentIdSubscription = this.imageService.getFileByDocumentId(this.model.documentId).subscribe({
+                    next: (fileResponse: FileResponse) => {
+                      // Build image URL from base64
+                      this.imageUrl = `data:image/${fileResponse.extension.replace('.', '')};base64,${fileResponse.base64}`;
+                      console.log('Image URL:', this.imageUrl);
+                    },
+                    error: (err) => {
+                      console.error('Error fetching image from FileHandler API', err);
+                    }
+                  });
+                }
+              },
+              error: (err) => {
+                console.error('Error fetching property', err);
               }
             });
           }
         }
-      });    
-      
+      });
     }
 
     onBookNow(unit: any): void {
@@ -60,6 +80,10 @@ export class PropertyDetailsComponent implements OnInit {
         });
       }
     }
-    
 
+    ngOnDestroy(): void {
+      this.routeSubscription?.unsubscribe();
+      this.getPropertyByIdSubscription?.unsubscribe();
+      this.getFileByDocumentIdSubscription?.unsubscribe();
+    }
 }

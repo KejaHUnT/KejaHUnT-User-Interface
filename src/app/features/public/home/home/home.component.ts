@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Property } from 'src/app/features/property/models/property.model';
 import { PropertyService } from 'src/app/features/property/services/property.service';
+import { FileResponse } from 'src/app/features/shared/images/models/file-response.model';
+import { ImageService } from 'src/app/features/shared/images/service/image.service';
 
 @Component({
   selector: 'app-home',
@@ -11,12 +13,41 @@ import { PropertyService } from 'src/app/features/property/services/property.ser
 export class HomeComponent implements OnInit {
 
   Property$?: Observable<Property[]>;
+  imageUrls: { [propertyId: string]: string } = {}; // Object to hold image URLs for each property
+  getFileByDocumentIdSubscription?: Subscription;
 
-  constructor(private propertyService: PropertyService) {
+  constructor(private propertyService: PropertyService,
+              private imageService: ImageService, // Inject the FileHandlerService
+  ) {}
 
-  }
-  ngOnInit(): void {
-    this.Property$ = this.propertyService.getAllProperties();
-  }
+    ngOnInit(): void {
+      // Fetch all properties
+      this.Property$ = this.propertyService.getAllProperties();
+  
+      // Subscribe to the property observable and fetch images for each property
+      this.Property$.subscribe({
+        next: (properties) => {
+          properties.forEach(property => {
+            if (property.documentId) {
+              // Fetch image for property if documentId exists
+              this.getFileByDocumentIdSubscription = this.imageService.getFileByDocumentId(property.documentId).subscribe({
+                next: (fileResponse: FileResponse) => {
+                  if (fileResponse.base64) {
+                    // Build image URL from base64 response
+                    this.imageUrls[property.id] = `data:image/${fileResponse.extension.replace('.', '')};base64,${fileResponse.base64}`;
+                  }
+                },
+                error: (err) => {
+                  console.error('Error fetching image from FileHandler API', err);
+                }
+              });
+            }
+          });
+        },
+        error: (err) => {
+          console.error('Error fetching properties', err);
+        }
+      });
+    }
 
 }

@@ -12,6 +12,7 @@ import { UpdatePropertyRequest } from '../../models/update-property-request.mode
 })
 export class EditPropertyComponent implements OnInit, OnDestroy{
   id: string | null = null;
+  selectedImageFile: File | null = null;  // Track selected image file
   model?: Property;
 
   routeSubscription?: Subscription;
@@ -23,6 +24,14 @@ export class EditPropertyComponent implements OnInit, OnDestroy{
     private propertyService: PropertyService,
     private router: Router
   ) { }
+
+   // Handle image file selection
+   onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedImageFile = input.files[0];
+    }
+  }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe({
@@ -45,30 +54,34 @@ export class EditPropertyComponent implements OnInit, OnDestroy{
     
   }
 
+  // Handle form submission
   onFormSubmit(): void {
-    //convert model to a request method
+    // Create FormData to send to the backend
+    const formData = new FormData();
+    
+    // Append properties to FormData
     if (this.model && this.id) {
-      var updateProperty: UpdatePropertyRequest = {
-        name: this.model.name,
-        location: this.model.location,
-        type: this.model.type,
-        units: this.model.units.map(unit => ({
-          price: unit.price,
-          type: unit.type,
-          bathrooms: unit.bathrooms,
-          size: unit.size,
-          noOfUnits: unit.noOfUnits
-        }))
-      };
+      formData.append('name', this.model.name);
+      formData.append('location', this.model.location);
+      formData.append('type', this.model.type);
 
-      this.updatePropertySubscription = this.propertyService.updateProperty(this.id, updateProperty).subscribe({
+      // Append selected image file if exists
+      if (this.selectedImageFile) {
+        formData.append('imageFile', this.selectedImageFile, this.selectedImageFile.name);
+      }
+
+      // Serialize units and append as JSON string
+      formData.append('units', JSON.stringify(this.model.units));
+
+      // Send update request to backend
+      this.updatePropertySubscription = this.propertyService.updateProperty(this.id, formData).subscribe({
         next: (response) => {
           this.router.navigateByUrl('admin/property');
         }
       });
-
     }
   }
+
 
     // Add a new empty unit to the form
     addUnit(): void {
