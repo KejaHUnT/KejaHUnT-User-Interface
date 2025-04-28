@@ -25,8 +25,13 @@
   <div class="units-section">
     <h2>Available Units</h2>
     <div *ngIf="model.units.length > 0; else noUnits" class="units-grid">
-      <div *ngFor="let unit of model.units" class="unit-card">
+      <div *ngFor="let unit of model.units; let i = index" class="unit-card">
         <div class="unit-details">
+          <!-- Unit Image -->
+          <div class="mb-3 text-center" *ngIf="unitImageUrls[i]">
+            <img [src]="unitImageUrls[i]" alt="{{ unit.type }}" class="property-image-img" />
+          </div>
+          
           <h3>{{ unit.type }} - {{ unit.noOfUnits }} Units Available</h3>
           <p><strong>Rent:</strong> Ksh {{ unit.price | number:'1.0-0' }}</p>
           <p><strong>Bathrooms:</strong> {{ unit.bathrooms }}</p>

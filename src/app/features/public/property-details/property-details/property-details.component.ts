@@ -15,6 +15,7 @@ export class PropertyDetailsComponent implements OnInit {
   id: string | null = null;
   model?: Property;
   imageUrl: string = ''; // Property to hold image URL
+  unitImageUrls: { [index: number]: string } = {}; // Key: Unit index, Value: Image URL
   routeSubscription?: Subscription;
   getPropertyByIdSubscription?: Subscription;
   getFileByDocumentIdSubscription?: Subscription;
@@ -34,24 +35,37 @@ export class PropertyDetailsComponent implements OnInit {
             this.getPropertyByIdSubscription = this.propertyService.getPopertyById(this.id).subscribe({
               next: (response) => {
                 this.model = response;
-  
+    
                 if (!this.model.units) {
                   this.model.units = [];
                 }
-  
-                // 🆕 If the property has a documentId, fetch the image
+    
+                // Fetch property image
                 if (this.model.documentId) {
                   this.getFileByDocumentIdSubscription = this.imageService.getFileByDocumentId(this.model.documentId).subscribe({
                     next: (fileResponse: FileResponse) => {
-                      // Build image URL from base64
                       this.imageUrl = `data:image/${fileResponse.extension.replace('.', '')};base64,${fileResponse.base64}`;
-                      console.log('Image URL:', this.imageUrl);
                     },
                     error: (err) => {
-                      console.error('Error fetching image from FileHandler API', err);
+                      console.error('Error fetching property image', err);
                     }
                   });
                 }
+    
+                // 🆕 Fetch unit images
+                this.model.units.forEach((unit, index) => {
+                  if (unit.documentId) {
+                    this.imageService.getFileByDocumentId(unit.documentId).subscribe({
+                      next: (fileResponse: FileResponse) => {
+                        this.unitImageUrls[index] = `data:image/${fileResponse.extension.replace('.', '')};base64,${fileResponse.base64}`;
+                      },
+                      error: (err) => {
+                        console.error(`Error fetching image for unit ${index}`, err);
+                      }
+                    });
+                  }
+                });
+    
               },
               error: (err) => {
                 console.error('Error fetching property', err);
@@ -61,6 +75,7 @@ export class PropertyDetailsComponent implements OnInit {
         }
       });
     }
+    
 
     onBookNow(unit: any): void {
       if (this.model) {

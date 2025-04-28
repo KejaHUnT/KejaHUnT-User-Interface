@@ -59,7 +59,8 @@ export class EditTenentComponent implements OnInit, OnDestroy{
             type: unit.type,
             bathrooms: unit.bathrooms,
             size: unit.size,
-            noOfUnits: unit.noOfUnits
+            noOfUnits: unit.noOfUnits,
+            documentId: unit.documentId,
           })),
           updatedAt: new Date(),
           updatedBy: 'admin'

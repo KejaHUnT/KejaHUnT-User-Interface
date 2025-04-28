@@ -58,6 +58,22 @@
               <input type="number" name="noOfUnits{{ i }}" class="form-control" [(ngModel)]="unit.noOfUnits" required />
             </div>
 
+            <div class="col-md-6 mb-2">
+              <label class="form-label visually-hidden">Number of Units</label>
+              <input type="text" name="documentId{{ i }}" class="form-control" [(ngModel)]="unit.documentId" required />
+            </div>
+
+            <!-- 🆕 Unit Image Upload Section -->
+            <div class="col-12 mt-2">
+              <label for="unitImage{{ i }}" class="form-label">Upload Unit Image</label>
+              <input 
+                type="file" 
+                id="unitImage{{ i }}" 
+                name="unitImage{{ i }}" 
+                class="form-control" 
+                (change)="onUnitFileSelected($event, i)">
+            </div>
+
             <div class="d-flex justify-content-end">
               <button type="button" class="btn btn-danger btn-sm mt-2" (click)="model.units.splice(i, 1)">
                 Remove Unit
@@ -67,8 +83,9 @@
         </div>
 
         <!-- Add Unit Button -->
-        <button type="button" class="btn btn-outline-primary mb-3" (click)="model.units.push({ price: 0, type: '', bathrooms: 0, size: 0, noOfUnits: 1 })">
-          + Add Unit
+        <button type="button" class="btn btn-outline-primary mb-4" 
+          (click)="model.units.push({ price: 0, type: '', bathrooms: 0, size: 0, noOfUnits: 1, documentId: null })">
+           + Add Unit
         </button>
 
         <!-- Save and Delete Buttons -->
