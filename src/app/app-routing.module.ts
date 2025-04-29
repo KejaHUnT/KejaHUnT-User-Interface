@@ -8,6 +8,7 @@ import { TenantListComponent } from './features/tenant/tenant-list/tenant-list/t
 import { AddTenantComponent } from './features/tenant/add-tenant/add-tenant/add-tenant.component';
 import { PropertyDetailsComponent } from './features/public/property-details/property-details/property-details.component';
 import { EditTenentComponent } from './features/tenant/edit-tenant/edit-tenent/edit-tenent.component';
+import { ManagerPortalComponent } from './features/public/manager-portal/manager-portal/manager-portal.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,10 @@ const routes: Routes = [
   {
     path: 'admin/tenant/:id',
     component: EditTenentComponent
+  },
+  {
+    path: 'portal/manage',
+    component: ManagerPortalComponent
   }
 ];
 

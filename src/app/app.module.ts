@@ -14,6 +14,8 @@ import { TenantListComponent } from './features/tenant/tenant-list/tenant-list/t
 import { AddTenantComponent } from './features/tenant/add-tenant/add-tenant/add-tenant.component';
 import { PropertyDetailsComponent } from './features/public/property-details/property-details/property-details.component';
 import { EditTenentComponent } from './features/tenant/edit-tenant/edit-tenent/edit-tenent.component';
+import { SidebarComponent } from './core/features/sidebar/sidebar/sidebar.component';
+import { ManagerPortalComponent } from './features/public/manager-portal/manager-portal/manager-portal.component';
 
 
 
@@ -29,7 +31,9 @@ import { EditTenentComponent } from './features/tenant/edit-tenant/edit-tenent/e
     AddTenantComponent,
     PropertyDetailsComponent,
     EditTenentComponent,
-    PropertyDetailsComponent
+    PropertyDetailsComponent,
+    SidebarComponent,
+    ManagerPortalComponent
   ],
   imports: [
     BrowserModule,

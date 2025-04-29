@@ -84,6 +84,7 @@ export class EditPropertyComponent implements OnInit, OnDestroy{
       // Prepare units without the image files
       const unitsData = this.model.units.map((unit, index) => {
         return {
+          id: unit.id, // optional if exists
           price: unit.price,
           type: unit.type,
           bathrooms: unit.bathrooms,
@@ -115,6 +116,7 @@ export class EditPropertyComponent implements OnInit, OnDestroy{
     addUnit(): void {
       if (this.model) {
         this.model.units.push({
+          id: 0, // optional if exists
           price: 0,
           type: '',
           bathrooms: 0,

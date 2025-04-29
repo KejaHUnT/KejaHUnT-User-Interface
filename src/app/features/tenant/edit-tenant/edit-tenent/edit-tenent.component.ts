@@ -55,6 +55,7 @@ export class EditTenentComponent implements OnInit, OnDestroy{
           idNo: this.model.idNo,
           employer: this.model.employer,
           units: this.model.units.map(unit => ({
+            id: unit.id,
             price: unit.price,
             type: unit.type,
             bathrooms: unit.bathrooms,

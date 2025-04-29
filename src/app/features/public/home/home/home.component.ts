@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Property } from 'src/app/features/property/models/property.model';
 import { PropertyService } from 'src/app/features/property/services/property.service';
@@ -10,7 +10,7 @@ import { ImageService } from 'src/app/features/shared/images/service/image.servi
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   Property$?: Observable<Property[]>;
   imageUrls: { [propertyId: string]: string } = {}; // Object to hold image URLs for each property
@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit {
   constructor(private propertyService: PropertyService,
               private imageService: ImageService, // Inject the FileHandlerService
   ) {}
+  
 
     ngOnInit(): void {
       // Fetch all properties
@@ -48,6 +49,11 @@ export class HomeComponent implements OnInit {
           console.error('Error fetching properties', err);
         }
       });
+    }
+
+    ngOnDestroy(): void {
+      this.getFileByDocumentIdSubscription?.unsubscribe();
+      this.Property$?.subscribe().unsubscribe();
     }
 
 }

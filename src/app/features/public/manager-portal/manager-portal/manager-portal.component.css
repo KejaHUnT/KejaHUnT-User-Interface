@@ -1,0 +1,213 @@
+/* app.component.css or a global style, or in manager-portal.component.css */
+.content-container {
+    margin-left: 270px; /* Width of your sidebar */
+    padding: 30px;
+    background-color: #f2f6fa;
+    min-height: 100vh;
+}
+
+/* Section for units */
+.units-section {
+    margin-top: 20px;
+}
+
+/* Outer wrapper card */
+.units-wrapper {
+    max-height: 50vh; /* Limit the height */
+    overflow-y: auto; /* Scroll vertically if needed */
+    background-color: hsl(227, 24%, 93%);
+}
+
+/* Scrollbar styling (optional, more modern look) */
+.scrollable-content {
+    max-height: 65vh;
+    overflow-y: auto;
+}
+
+/* Grid for unit cards */
+.units-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+/* Each unit card */
+.unit-card {
+    background: #eeeff1;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Card content */
+.unit-details {
+    padding: 20px;
+    background-color: hsl(200, 16%, 93%);
+}
+
+/* Hover animation */
+.clickable-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+}
+
+/* Headings inside card */
+.unit-details h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+/* Paragraphs inside card */
+.unit-details p {
+    margin: 5px 0;
+    font-size: 15px;
+    color: #555;
+}
+
+/* Strong text emphasis */
+.unit-details p strong {
+    color: #111;
+}
+
+/* Optional: nice smooth scrollbar for modern feel */
+.scrollable-content::-webkit-scrollbar {
+    width: 6px;
+}
+.scrollable-content::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 3px;
+}
+.scrollable-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Container for square cards */
+.square-cards-container {
+    display: flex;
+    flex-direction: column; /* Arrange cards vertically */
+    gap: 20px; /* Space between cards */
+}
+
+/* Each square card */
+.square-card {
+    background-color: #ffffff; /* Card background */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+    overflow: hidden; /* Ensure content stays within card */
+    height: 200px; /* Set a fixed height for the card to maintain square shape */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center the content inside the card */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition on hover */
+}
+
+/* Hover effect for cards */
+.square-card:hover {
+    transform: translateY(-6px); /* Lift the card slightly */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); /* Darker shadow on hover */
+    cursor: pointer;
+}
+
+/* Card content */
+.card-content {
+    text-align: center; /* Center the text inside the card */
+    max-height: 140px; /* Ensure the content is constrained to the set height */
+    overflow-y: auto; /* Allow scrolling if content exceeds the max height */
+    padding: 10px;
+}
+
+/* Card title styling */
+.card-content h5 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #2c3e50; /* Dark color for text */
+}
+
+/* Card paragraph styling */
+.card-content p {
+    font-size: 14px;
+    color: #555; /* Slightly lighter text color */
+}
+
+/* Optional: nice smooth scrollbar for modern feel inside cards */
+.card-content::-webkit-scrollbar {
+    width: 6px;
+}
+.card-content::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 3px;
+}
+.card-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+/* Container for the income summary */
+.income-summary-container {
+    background-color: #f2f3f7;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Title for the summary */
+.income-summary-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #2c3e50;
+    text-align: center;
+}
+
+/* List for income summary */
+.income-summary-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+}
+
+/* Each item in the list */
+.income-summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
+    font-weight: 500;
+}
+
+/* The income amount for each property */
+.income-amount {
+    color: #27ae60; /* Green for positive income */
+    font-weight: 700;
+}
+
+/* Expected income section */
+.expected-income {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Title for the expected income */
+.expected-income-title {
+    font-size: 18px;
+    color: #2980b9; /* Blue color for expected income */
+}
+
+/* The expected income amount */
+.expected-income-amount {
+    font-size: 24px;
+    color: #e74c3c; /* Red color for emphasis */
+    font-weight: 700;
+    margin-top: 10px;
+}

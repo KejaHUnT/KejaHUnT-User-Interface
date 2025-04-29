@@ -1,0 +1,61 @@
+<app-sidebar></app-sidebar>
+
+<div class="content-container mt-2 rounded-4">
+    <div class="row">
+        <div class="col-8">
+            <div class="units-wrapper card shadow-sm border-0 rounded-4 p-4 mb-4 ">
+                <p>
+                    Welcome back, <br>
+                    We're delighted to have you. Need help on system walk through? Navigate to virtual assistant on the
+                    side
+                    menu
+                </p>
+            </div>
+            <h1 class="text-primary mb-3">Registered Properties</h1>
+            <div class="units-section">
+                <div class="units-wrapper card shadow-sm border-0 rounded-4 p-4">
+                    <div *ngIf="Property$ | async as properties" class="units-grid">
+                        <div *ngFor="let property of properties" class="unit-card">
+                            <div class="unit-details card h-100 shadow-sm border-0 rounded-4 clickable-card">
+                                <h3>{{ property.name }}</h3>
+                                <p><strong>Location:</strong> {{ property.location }}</p>
+                                <p><strong>Type:</strong> {{ property.type }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- close col-8 -->
+
+        <div class="col-4 d-flex flex-column">
+            <!-- Square Cards Container -->
+            <div class="square-cards-container">
+                <!-- First Square Card -->
+                <div class="square-card">
+                    <div class="card-content">
+                        <div class="income-summary-container">
+                            <div class="expected-income">
+                                <h5 class="expected-income-title">Expected Monthly Income</h5>
+                                <p class="expected-income-amount">{{ totalExpectedIncome | number:'1.0-0' }}</p>
+                            </div>
+                            <h5 class="income-summary-title">Property Income Summary</h5>
+                            <ul class="income-summary-list">
+                                <li *ngFor="let property of Property$ | async" class="income-summary-item">
+                                    <strong>{{ property.name }}:</strong>
+                                    <span class="income-amount">{{ propertiesIncome[property.name] | number:'1.0-0' }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Second Square Card -->
+                <div class="square-card">
+                    <div class="card-content">
+                        <h5>Pending Bills</h5>
+                        <p>Calculate the remaining unpaid rents</p>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- close col-4 -->
+    </div> <!-- close row -->
+</div> <!-- close content-container -->
