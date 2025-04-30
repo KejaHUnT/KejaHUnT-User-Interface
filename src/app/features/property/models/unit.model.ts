@@ -4,6 +4,8 @@ export interface Unit {
     type: string;
     bathrooms: number;
     size: number;
-    noOfUnits: number;
+    floor: number;
+    doorNumber: string;
+    status: string;
     documentId: string | null; // optional if exists
 }

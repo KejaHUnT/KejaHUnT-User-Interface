@@ -13,24 +13,24 @@ export class TenantService {
 
   constructor(private http: HttpClient) { }
 
-    createTenant(data: AddTenantRequest) : Observable<Tenant> {
-      return this.http.post<Tenant>(`${environment.tenantApiBaseUrl}/api/tenant`, data);
+  createTenant(data: AddTenantRequest): Observable<Tenant> {
+    return this.http.post<Tenant>(`${environment.tenantApiBaseUrl}/api/tenant`, data);
   }
-  
-  getAllTenants() : Observable<Tenant[]> {
+
+  getAllTenants(): Observable<Tenant[]> {
     return this.http.get<Tenant[]>(`${environment.tenantApiBaseUrl}/api/tenant`);
   }
-  
-  getTenantById(id: string) : Observable<Tenant> {
+
+  getTenantById(id: string): Observable<Tenant> {
     return this.http.get<Tenant>(`${environment.tenantApiBaseUrl}/api/tenant/${id}`);
   }
-  
+
   updateTenant(id: string, data: UpdateTenantRequest): Observable<Tenant> {
     return this.http.put<Tenant>(`${environment.tenantApiBaseUrl}/api/tenant/${id}`, data);
   }
-  
+
   deleteTenant(id: string): Observable<Tenant> {
     return this.http.delete<Tenant>(`${environment.tenantApiBaseUrl}/api/tenant/${id}`);
   }
-  
+
 }

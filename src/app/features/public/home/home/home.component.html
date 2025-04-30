@@ -43,7 +43,8 @@
                   <div class="unit-item" *ngFor="let unit of property.units">
                     <p class="unit-price"><strong>Price:</strong> {{ unit.price | currency }}</p>
                     <p class="unit-type"><strong>Type:</strong> {{ unit.type }}</p>
-                    <p class="unit-available"><strong>Available:</strong> {{ unit.noOfUnits }}</p>
+                    <p class="unit-type"><strong>Floor:</strong> {{ unit.floor }}</p>
+                    <p class="unit-available"><strong>Occupancy:</strong> {{ unit.status }}</p>
                   </div>
                 </div>
               </div>

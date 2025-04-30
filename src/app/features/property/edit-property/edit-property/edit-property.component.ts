@@ -89,13 +89,15 @@ export class EditPropertyComponent implements OnInit, OnDestroy{
           type: unit.type,
           bathrooms: unit.bathrooms,
           size: unit.size,
-          noOfUnits: unit.noOfUnits,
+          floor: unit.floor,
+          doorNumber: unit.doorNumber,
+          status: unit.status,
           documentId: unit.documentId || null // optional if exists
         };
       });
 
       // Append serialized units
-      formData.append('units', JSON.stringify(unitsData));
+      //formData.append('units', JSON.stringify(unitsData));
 
       // Attach unit images separately
       for (const [index, file] of Object.entries(this.unitImageFiles)) {
@@ -121,7 +123,9 @@ export class EditPropertyComponent implements OnInit, OnDestroy{
           type: '',
           bathrooms: 0,
           size: 0,
-          noOfUnits: 1,
+          floor: 1,
+          doorNumber: '',
+          status: 'Available',
           documentId: null // optional if exists
         });
       }

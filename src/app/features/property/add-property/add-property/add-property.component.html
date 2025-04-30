@@ -98,14 +98,40 @@
       />
     </div>
 
-    <!-- Number of Units -->
+    <!-- Floor of Unit -->
     <div class="mb-2">
-      <label class="form-label">Number of Units</label>
+      <label class="form-label">Floor </label>
       <input
         type="number"
         class="form-control"
-        name="unitNoOfUnits{{i}}"
-        [(ngModel)]="unit.noOfUnits"
+        name="unitFloor{{i}}"
+        [(ngModel)]="unit.floor"
+        required
+        min="1"
+      />
+    </div>
+
+    <!-- Door Number of Unit -->
+    <div class="mb-2">
+      <label class="form-label">Door Number </label>
+      <input
+        type="number"
+        class="form-control"
+        name="unitDoorNumber{{i}}"
+        [(ngModel)]="unit.doorNumber"
+        required
+        min="1"
+      />
+    </div>
+
+    <!-- Unit Status -->
+    <div class="mb-2">
+      <label class="form-label">Occupancy </label>
+      <input
+        type="number"
+        class="form-control"
+        name="unitStatus{{i}}"
+        [(ngModel)]="unit.status"
         required
         min="1"
       />
@@ -125,7 +151,7 @@
   <button
     type="button"
     class="btn btn-outline-primary"
-    (click)="model.units.push({ price: 0, type: '', bathrooms: 0, size: 0, noOfUnits: 1 })"
+    (click)="model.units.push({ price: 0, type: '', bathrooms: 0, size: 0, floor: 1 , doorNumber: '', status: '' })"
   >
     Add Unit
   </button>

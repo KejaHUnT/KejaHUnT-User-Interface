@@ -35,7 +35,7 @@ export class ManagerPortalComponent {
       let propertyIncome = 0;
 
       property.units.forEach(unit => {
-        propertyIncome += unit.price * unit.noOfUnits; // Calculate income for each unit
+        propertyIncome += unit.price; // Calculate income for each unit
       });
 
       // Store income for each property by property name or ID

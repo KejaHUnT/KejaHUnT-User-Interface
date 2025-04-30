@@ -54,13 +54,18 @@
             </div>
 
             <div class="col-md-6 mb-2">
-              <label class="form-label">Number of Units</label>
-              <input type="number" name="noOfUnits{{ i }}" class="form-control" [(ngModel)]="unit.noOfUnits" required />
+              <label class="form-label">Floor</label>
+              <input type="number" name="floor{{ i }}" class="form-control" [(ngModel)]="unit.floor" required />
             </div>
 
             <div class="col-md-6 mb-2">
-              <label class="form-label visually-hidden">Number of Units</label>
-              <input type="text" name="documentId{{ i }}" class="form-control" [(ngModel)]="unit.documentId" required />
+              <label class="form-label">DoorNumber</label>
+              <input type="text" name="doorNumber{{ i }}" class="form-control" [(ngModel)]="unit.doorNumber" required />
+            </div>
+
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Status</label>
+              <input type="text" name="status{{ i }}" class="form-control" [(ngModel)]="unit.status" required />
             </div>
 
             <!-- 🆕 Unit Image Upload Section -->
@@ -84,7 +89,7 @@
 
         <!-- Add Unit Button -->
         <button type="button" class="btn btn-outline-primary mb-4" 
-          (click)="model.units.push({ id: 0, price: 0, type: '', bathrooms: 0, size: 0, noOfUnits: 1, documentId: null })">
+          (click)="model.units.push({ id: 0, price: 0, type: '', bathrooms: 0, size: 0, floor: 1, doorNumber: '', status: '', documentId: null })">
            + Add Unit
         </button>
 

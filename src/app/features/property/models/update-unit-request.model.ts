@@ -3,6 +3,8 @@ export interface UpdateUnitRequest {
     type: string;
     bathrooms: string;
     size: number;
-    noOfUnits: number;
+    floor: number;
+    doorNumber: number;
+    status: number;
 
 }

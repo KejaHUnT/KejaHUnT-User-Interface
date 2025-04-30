@@ -32,7 +32,7 @@
             <img [src]="unitImageUrls[i]" alt="{{ unit.type }}" class="property-image-img" />
           </div>
           
-          <h3>{{ unit.type }} - {{ unit.noOfUnits }} Units Available</h3>
+          <h3>{{ unit.type }} - Floor:{{ unit.floor }} </h3>
           <p><strong>Rent:</strong> Ksh {{ unit.price | number:'1.0-0' }}</p>
           <p><strong>Bathrooms:</strong> {{ unit.bathrooms }}</p>
         </div>

@@ -16,21 +16,21 @@ export class PropertyService {
     return this.http.post<Property>(`${environment.apiBaseUrl}/api/property`, formData);
   }
 
-getAllProperties() : Observable<Property[]> {
-  return this.http.get<Property[]>(`${environment.apiBaseUrl}/api/property`);
-}
+  getAllProperties(): Observable<Property[]> {
+    return this.http.get<Property[]>(`${environment.apiBaseUrl}/api/property`);
+  }
 
-getPopertyById(id: string) : Observable<Property> {
-  return this.http.get<Property>(`${environment.apiBaseUrl}/api/property/${id}`);
-}
+  getPopertyById(id: string): Observable<Property> {
+    return this.http.get<Property>(`${environment.apiBaseUrl}/api/property/${id}`);
+  }
 
-updateProperty(id: string, formData: FormData): Observable<Property> {
-  return this.http.put<Property>(`${environment.apiBaseUrl}/api/property/${id}`, formData);
-}
+  updateProperty(id: string, formData: FormData): Observable<Property> {
+    return this.http.put<Property>(`${environment.apiBaseUrl}/api/property/${id}`, formData);
+  }
 
-deleteProperty(id: string): Observable<Property> {
-  return this.http.delete<Property>(`${environment.apiBaseUrl}/api/property/${id}`);
-}
+  deleteProperty(id: string): Observable<Property> {
+    return this.http.delete<Property>(`${environment.apiBaseUrl}/api/property/${id}`);
+  }
 
 
 }

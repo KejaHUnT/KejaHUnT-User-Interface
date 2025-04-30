@@ -3,6 +3,7 @@ export interface CreateUnitRequest {
     type: string;
     bathrooms: number;
     size: number;
-    noOfUnits: number;
-
+    floor: number;
+    doorNumber: string;
+    status: string;
 }
