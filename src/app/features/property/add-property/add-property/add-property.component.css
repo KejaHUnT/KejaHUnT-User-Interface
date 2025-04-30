@@ -1,0 +1,77 @@
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding-bottom: 50px;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  
+  .card {
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    background-color: #f8f9fa;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .card:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+  
+  label.form-label {
+    font-weight: 500;
+    color: #495057;
+  }
+  
+  input.form-control {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    padding: 10px;
+  }
+  
+  input.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.15rem rgba(0, 123, 255, 0.25);
+  }
+  
+  button.btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+  }
+  
+  button.btn-outline-primary {
+    font-size: 0.95rem;
+  }
+  
+  button.btn-danger.btn-sm {
+    margin-top: 10px;
+    font-size: 0.85rem;
+  }
+  
+  button[type="submit"] {
+    min-width: 120px;
+  }
+  
+  .mt-2, .mt-3 {
+    margin-top: 1rem !important;
+  }
+  
+  .mb-2, .mb-3, .mb-4, .mb-5 {
+    margin-bottom: 1rem !important;
+  }
+  
+  .shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+  
+  @media screen and (max-width: 576px) {
+    .row > .col-md-4, .row > .col-md-6 {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+  

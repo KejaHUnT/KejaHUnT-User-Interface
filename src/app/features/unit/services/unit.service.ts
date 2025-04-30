@@ -24,11 +24,11 @@ export class UnitService {
     return this.http.get<Unit>(`${environment.apiBaseUrl}/api/Unit/${id}`);
   }
 
-  updateProperty(id: string, formData: FormData): Observable<Unit> {
+  updateUnit(id: string, formData: FormData): Observable<Unit> {
     return this.http.put<Unit>(`${environment.apiBaseUrl}/api/Unit/${id}`, formData);
   }
 
-  deleteProperty(id: string): Observable<Unit> {
+  deleteUnit(id: string): Observable<Unit> {
     return this.http.delete<Unit>(`${environment.apiBaseUrl}/api/Unit/${id}`);
   }
 }

@@ -7,5 +7,6 @@ export interface Unit {
     floor: number;
     doorNumber: string;
     status: string;
+    propertyId: number; // optional if exists
     documentId: string | null; // optional if exists
 }

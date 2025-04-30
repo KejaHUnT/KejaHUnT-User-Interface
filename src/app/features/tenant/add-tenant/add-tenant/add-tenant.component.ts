@@ -63,7 +63,8 @@ export class AddTenantComponent implements AfterViewInit {
           floor: 1,
           doorNumber: '',
           status: '',
-          bathrooms: params['unitBathrooms']
+          bathrooms: params['unitBathrooms'],
+          propertyId: params['propertyId'],
         });
       }
     });
@@ -80,7 +81,7 @@ export class AddTenantComponent implements AfterViewInit {
   }
 
   addNewUnit(): void {
-    this.model.units.push({ price: 0, type: '', bathrooms: 0, size: 0, floor: 1 , doorNumber: '', status: '' });
+    this.model.units.push({ propertyId: 0, price: 0, type: '', bathrooms: 0, size: 0, floor: 1 , doorNumber: '', status: '' });
   }
 
   removeUnit(index: number): void {

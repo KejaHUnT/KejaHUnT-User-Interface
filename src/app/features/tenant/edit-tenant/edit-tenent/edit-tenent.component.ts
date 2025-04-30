@@ -63,6 +63,7 @@ export class EditTenentComponent implements OnInit, OnDestroy{
             floor: unit.floor,
             doorNumber: unit.doorNumber,
             status: unit.status,
+            propertyId: unit.propertyId,
             documentId: unit.documentId,
           })),
           updatedAt: new Date(),
