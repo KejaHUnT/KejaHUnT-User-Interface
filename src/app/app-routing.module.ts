@@ -9,6 +9,11 @@ import { AddTenantComponent } from './features/tenant/add-tenant/add-tenant/add-
 import { PropertyDetailsComponent } from './features/public/property-details/property-details/property-details.component';
 import { EditTenentComponent } from './features/tenant/edit-tenant/edit-tenent/edit-tenent.component';
 import { ManagerPortalComponent } from './features/public/manager-portal/manager-portal/manager-portal.component';
+import { CreateBookingRequestComponent } from './features/unit/booking-preview/create-booking-request/create-booking-request/create-booking-request.component';
+import { BookingSummaryComponent } from './features/unit/booking-preview/booking-summary/booking-summary/booking-summary.component';
+import { EditUnitComponent } from './features/unit/edit-unit/edit-unit/edit-unit.component';
+import { PaymentListComponent } from './features/unit/payments/payment-list/payment-list/payment-list.component';
+import { UnitPaymentListComponent } from './features/unit/payments/unit-payment-list/unit-payment-list/unit-payment-list.component';
 
 const routes: Routes = [
   {
@@ -44,9 +49,30 @@ const routes: Routes = [
     component: EditTenentComponent
   },
   {
+    path: 'unit/:id',
+    component: EditUnitComponent
+  },
+  {
     path: 'portal/manage',
     component: ManagerPortalComponent
+  },
+  {
+    path: 'preview-booking/:unitId',
+    component: CreateBookingRequestComponent
+  },
+  {
+    path: 'booking/summary',
+    component: BookingSummaryComponent
+  },
+  {
+    path: 'payment/:id',
+    component: PaymentListComponent
+  },
+  {
+    path: 'unit/payment/:id',
+    component: UnitPaymentListComponent
   }
+
 ];
 
 @NgModule({

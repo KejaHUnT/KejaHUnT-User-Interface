@@ -49,4 +49,8 @@ export class ManagerPortalComponent {
     this.totalExpectedIncome = totalIncome;
   }
 
+  goToEditUnit(propId: number): void {
+    this.router.navigate(['payment/', propId]);
+  }
+
 }

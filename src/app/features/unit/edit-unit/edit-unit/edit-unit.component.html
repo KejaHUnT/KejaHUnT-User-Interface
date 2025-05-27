@@ -1,0 +1,73 @@
+<div class="edit-unit-container">
+    <div class="edit-unit-card">
+      <h2>Edit Unit</h2>
+  
+      <form (ngSubmit)="onFormSubmit()" enctype="multipart/form-data" class="edit-unit-form">
+  
+        <!-- LEFT SIDE: Form Fields -->
+        <div class="form-fields">
+          <div class="form-group">
+            <label for="type">Unit Type</label>
+            <input type="text" id="type" name="type" [(ngModel)]="model!.type" required />
+          </div>
+  
+          <div class="form-group">
+            <label for="price">Price (KES)</label>
+            <input type="number" id="price" name="price" [(ngModel)]="model!.price" required />
+          </div>
+  
+          <div class="form-group">
+            <label for="size">Size (sqft)</label>
+            <input type="number" id="size" name="size" [(ngModel)]="model!.size" required />
+          </div>
+  
+          <div class="form-group">
+            <label for="bathrooms">Bathrooms</label>
+            <input type="number" id="bathrooms" name="bathrooms" [(ngModel)]="model!.bathrooms" required />
+          </div>
+  
+          <div class="form-group">
+            <label for="floor">Floor</label>
+            <input type="number" id="floor" name="floor" [(ngModel)]="model!.floor" required />
+          </div>
+  
+          <div class="form-group">
+            <label for="doorNumber">Door Number</label>
+            <input type="text" id="doorNumber" name="doorNumber" [(ngModel)]="model!.doorNumber" required />
+          </div>
+  
+          <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" name="status" [(ngModel)]="model!.status" class="form-control" required>
+              <option value="Available">Available</option>
+              <option value="Booked">Booked</option>
+              <option value="Reserved">Reserved</option>
+            </select>
+          </div>
+  
+          <div class="form-group">
+            <label for="propertyId">Property ID</label>
+            <input type="number" id="propertyId" name="propertyId" [(ngModel)]="model!.propertyId" required />
+          </div>
+  
+          <div class="action-buttons mt-4">
+            <button class="btn btn-primary" (click)="onFormSubmit()">Update Unit</button>
+            <button class="btn btn-danger" (click)="onDelete()">Delete Unit</button>
+          </div>
+          
+        </div>
+  
+        <!-- RIGHT SIDE: Image Upload & Preview -->
+        <div class="image-section">
+          <label for="image">Upload Image</label>
+          <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*" />
+  
+          <div *ngIf="propertyImageUrl" class="image-preview">
+            <img [src]="propertyImageUrl" alt="Unit Image" />
+          </div>
+        </div>
+  
+      </form>
+    </div>
+  </div>
+  

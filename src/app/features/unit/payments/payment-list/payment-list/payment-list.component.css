@@ -1,0 +1,117 @@
+.payment-dashboard {
+    padding: 2rem;
+    background: #f9fafb;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .dashboard-header h2 {
+    margin-bottom: 1rem;
+  }
+  
+  .summary-cards {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .summary-cards .card {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    flex: 1;
+    text-align: center;
+  }
+  
+  .summary-cards .card p {
+    margin: 0;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .summary-cards .card h3 {
+    margin-top: 0.5rem;
+    color: #333;
+  }
+  
+  /* Unit Summary Grid */
+  .unit-payments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .unit-summary-card {
+    background: #f1f5f9;
+    padding: 1rem;
+    border-radius: 10px;
+    color: #333;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  }
+  
+  /* Status Colors for Grid Cards */
+  .status-paid {
+    background-color: #e6f9e8 !important;
+    border-left: 5px solid #34d399;
+  }
+  
+  .status-pending {
+    background-color: #fef9c3 !important;
+    border-left: 5px solid #facc15;
+  }
+  
+  .status-cancelled {
+    background-color: #fee2e2 !important;
+    border-left: 5px solid #ef4444;
+  }
+  
+  /* Payment Table Styling */
+  .payment-table-section {
+    margin-top: 2rem;
+    overflow-x: auto;
+  }
+  
+  .payment-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .payment-table th, .payment-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+  }
+  
+  .payment-table th {
+    background-color: #f3f4f6;
+    color: #333;
+  }
+  
+  /* Row Status Coloring */
+  .payment-table tr.status-paid {
+    background-color: #e6f9e8;
+  }
+  
+  .payment-table tr.status-pending {
+    background-color: #fef9c3;
+  }
+  
+  .payment-table tr.status-cancelled {
+    background-color: #fee2e2;
+  }
+  
+  .no-payments {
+    font-style: italic;
+    color: #888;
+  }
+  
+  .no-units {
+    margin-top: 2rem;
+    text-align: center;
+    color: #777;
+  }
+  

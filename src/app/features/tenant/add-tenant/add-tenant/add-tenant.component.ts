@@ -8,6 +8,7 @@ import { PropertyService } from 'src/app/features/property/services/property.ser
 import { Property } from 'src/app/features/property/models/property.model';
 import { Observable } from 'rxjs';
 import * as bootstrap from 'bootstrap';
+import { UnitService } from 'src/app/features/unit/services/unit.service';
 
 @Component({
   selector: 'app-add-tenant',
@@ -19,13 +20,14 @@ export class AddTenantComponent implements AfterViewInit {
   property?: Property;
 
   selectedProperty?: Property;
-  filteredUnits: CreateUnitRequest[] = [];
+  selectedUnit?: CreateUnitRequest; // store fetched unit details
 
   model: AddTenantRequest;
   Property$?: Observable<Property[]>;
 
   constructor(private tenantService: TenantService,
     private propertyService: PropertyService,
+    private unitService: UnitService,
     private router: Router,
     private route: ActivatedRoute
 
@@ -36,8 +38,7 @@ export class AddTenantComponent implements AfterViewInit {
       idNo: 0,
       email: '',
       employer: '',
-      units: [] as CreateUnitRequest[],
-      propertyId: 0,
+      unitId: 0,
       createdBy: '',
     }
   }
@@ -46,25 +47,22 @@ export class AddTenantComponent implements AfterViewInit {
   }
 
   ngOnInit(): void {
-
     this.Property$ = this.propertyService.getAllProperties();
 
-
-    // Retrieve propertyId and unit details from the query params
+    // Read query params
     this.route.queryParams.subscribe((params) => {
-      if (params['propertyId']) {
-        this.model.propertyId = params['propertyId'];
-      }
-      if (params['unitSize'] && params['unitType']) {
-        this.model.units.push({
-          size: +params['unitSize'],
-          type: params['unitType'],
-          price: +params['unitRent'],
-          floor: 1,
-          doorNumber: '',
-          status: '',
-          bathrooms: params['unitBathrooms'],
-          propertyId: params['propertyId'],
+      const unitId = params['unitId'];
+
+      if (unitId) {
+        // Save to model
+        this.model.unitId = +unitId;
+
+        // Fetch unit details using service
+        this.unitService.getUnitById(unitId).subscribe(unit => {
+          this.selectedUnit = unit;
+
+          // Optionally use unit details to display info or validate against selected property
+          console.log('Fetched Unit:', unit);
         });
       }
     });
@@ -72,54 +70,21 @@ export class AddTenantComponent implements AfterViewInit {
 
   onFormSubmit(): void {
     console.log(this.model);
-    this.tenantService.createTenant(this.model)
-      .subscribe({
-        next: (response) => {
-          this.router.navigateByUrl('admin/tenant');
-        }
-      })
-  }
-
-  addNewUnit(): void {
-    this.model.units.push({ propertyId: 0, price: 0, type: '', bathrooms: 0, size: 0, floor: 1 , doorNumber: '', status: '' });
-  }
-
-  removeUnit(index: number): void {
-    this.model.units.splice(index, 1);
-  }
-
-  onBookNow(unit: any, propertyId: number): void {
-    this.router.navigate(['/admin/tenant/add'], {
-      queryParams: {
-        propertyId: propertyId,
-        unitType: unit.type,
-        unitSize: unit.size,
-        unitNo: unit.noOfUnits,
-        unitRent: unit.price,
-        unitBathrooms: unit.bathrooms
+    this.tenantService.createTenant(this.model).subscribe({
+      next: () => {
+        this.router.navigateByUrl('admin/tenant');
       }
     });
   }
 
-  addUnitToTenant(unit: CreateUnitRequest): void {
-    this.model.units.push({ ...unit});
-
-    // Close modal
-    const modal = bootstrap.Modal.getInstance(document.getElementById('unitModal')!);
-    modal?.hide();
-  }
-
   openUnitModal(): void {
-    this.propertyService.getPopertyById(this.model.propertyId.toString()).subscribe((property) => {
+    // Optional: Only allow adding unit if property is selected
+    if (!this.model.unitId) return;
+
+    this.propertyService.getPopertyById(this.model.unitId.toString()).subscribe((property) => {
       this.selectedProperty = property;
 
-      // Filter out units already selected
-      const selectedTypes = this.model.units.map(u => u.type + u.size);
-      this.filteredUnits = property.units.filter(unit =>
-        !selectedTypes.includes(unit.type + unit.size)
-      );
-
-      // Open modal (using Bootstrap JS API)
+      // Open Bootstrap modal
       const modal = new bootstrap.Modal(document.getElementById('unitModal')!);
       modal.show();
     });

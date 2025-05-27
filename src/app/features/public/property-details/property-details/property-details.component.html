@@ -22,30 +22,49 @@
   </div>
 
   <!-- Units Section -->
-  <div class="units-section">
-    <h2>Available Units</h2>
-    <div *ngIf="model.units.length > 0; else noUnits" class="units-grid">
-      <div *ngFor="let unit of model.units; let i = index" class="unit-card">
-        <div class="unit-details">
-          <!-- Unit Image -->
-          <div class="mb-3 text-center" *ngIf="unitImageUrls[i]">
-            <img [src]="unitImageUrls[i]" alt="{{ unit.type }}" class="property-image-img" />
-          </div>
-          
-          <h3>{{ unit.type }} - Floor:{{ unit.floor }} </h3>
-          <p><strong>Rent:</strong> Ksh {{ unit.price | number:'1.0-0' }}</p>
-          <p><strong>Bathrooms:</strong> {{ unit.bathrooms }}</p>
+<div class="units-section">
+  <h2 class="section-heading">Available Units</h2>
+
+  <div *ngIf="model.units.length > 0; else noUnits" class="units-grid">
+    <div *ngFor="let unit of model.units; let i = index" class="unit-card-modern">
+      
+      <!-- Unit Image -->
+      <div class="unit-image-wrapper" *ngIf="unitImageUrls[i]">
+        <img [src]="unitImageUrls[i]" alt="{{ unit.type }}" class="unit-image" />
+      </div>
+
+      <!-- Unit Content -->
+      <div class="unit-content">
+        <div class="unit-header-row">
+          <span class="unit-type">{{ unit.type }}</span>
+          <span class="unit-price">Ksh {{ unit.price | number:'1.0-0' }}</span>
         </div>
+
+        <div class="unit-details-row">
+          <span class="unit-feature">
+            <i class="bi bi-aspect-ratio me-1"></i> {{ unit.size }} m²
+          </span>
+          <span class="unit-feature">
+            <i class="bi bi-layers me-1"></i> Floor {{ unit.floor }}
+          </span>
+          <span class="unit-feature">
+            <i class="bi bi-droplet-half me-1"></i> {{ unit.bathrooms }} Bathrooms
+          </span>
+        </div>
+
         <div class="unit-actions">
           <button class="apply-button" (click)="onBookNow(unit)">Book Now</button>
         </div>
       </div>
-    </div>
 
-    <ng-template #noUnits>
-      <p class="no-units">No units available for this property.</p>
-    </ng-template>
+    </div>
   </div>
+
+  <ng-template #noUnits>
+    <p class="no-units">No units available for this property.</p>
+  </ng-template>
+</div>
+
 
   <!-- Back Button -->
   <div class="back-button-container">

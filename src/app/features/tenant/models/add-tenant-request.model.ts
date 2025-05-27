@@ -6,7 +6,6 @@ export interface AddTenantRequest {
     idNo: number;
     email: string;
     employer: string;
-    units: CreateUnitRequest[];
-    propertyId: number;
+    unitId: number;
     createdBy: string;
 }

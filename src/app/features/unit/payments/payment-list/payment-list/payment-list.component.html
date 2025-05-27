@@ -1,0 +1,86 @@
+<div class="payment-dashboard mt-3">
+
+    <!-- Header Summary Section -->
+    <div class="dashboard-header">
+      <h2>{{property?.name}} Rent Collection💰</h2>
+      <div class="summary-cards">
+        <div class="card">
+          <p>Total Rent Collected</p>
+          <h3></h3>
+        </div>
+        <div class="card">
+          <p>Pending Payments</p>
+          <h3></h3>
+        </div>
+        <div class="card">
+          <p>Units Paid</p>
+          <h3></h3>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Payment Summary Grid Per Unit (Simplified, Color-coded) -->
+    <div *ngIf="units.length > 0" class="unit-payments-grid">
+      <div
+        class="unit-summary-card"
+        *ngFor="let unit of units"
+        (click)="goToUnitPayments(unit.id)"
+        [ngClass]="{
+          'status-paid': getLastPaymentStatus(unit.id) === 'Success',
+          'status-pending': getLastPaymentStatus(unit.id) === 'Pending',
+          'status-cancelled': getLastPaymentStatus(unit.id) === 'Canceled'
+        }"
+      >
+        <h3>Unit {{ unit.doorNumber || unit.id }}</h3>
+        <p><strong>Unit ID:</strong> {{ unit.id }}</p>
+        <p><strong>Price:</strong>KSH {{ unit.price | number:'1.0-0' }}</p>
+        <p><strong>Last Status:</strong> {{ getLastPaymentStatus(unit.id) || 'N/A' }}</p>
+      </div>
+    </div>
+  
+    <!-- Payment Table Below -->
+    <div class="payment-table-section" *ngIf="units.length > 0">
+      <table class="payment-table">
+        <thead>
+          <tr>
+            <th>Unit</th>
+            <th>Door No</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Date Paid</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let unit of units">
+            <ng-container *ngIf="paymentsByUnit[unit.id].length > 0; else noPaymentRow">
+              <tr *ngFor="let payment of paymentsByUnit[unit.id]" [ngClass]="{
+                'status-paid': payment.status === 'Success',
+                'status-pending': payment.status === 'Pending',
+                'status-cancelled': payment.status === 'Canceled'
+              }">
+                <td>{{ unit.id }}</td>
+                <td>{{ unit.doorNumber || 'N/A' }}</td>
+                <td>KSH {{ payment.amount | number:'1.0-0' }}</td>
+                <td>{{ payment.status }}</td>
+                <td>{{ payment.createdAt | date: 'shortDate' }}</td>
+              </tr>
+            </ng-container>
+            <ng-template #noPaymentRow>
+              <tr>
+                <td>{{ unit.id }}</td>
+                <td>{{ unit.doorNumber || 'N/A' }}</td>
+                <td colspan="3" class="no-payments">No payments found</td>
+              </tr>
+            </ng-template>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- No Units Fallback -->
+    <div *ngIf="units.length === 0" class="no-units">
+      <p>No units found for this property.</p>
+    </div>
+  
+  </div>
+  

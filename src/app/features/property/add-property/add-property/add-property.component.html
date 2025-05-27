@@ -1,165 +1,193 @@
-<div class="container mt-4">
-  <h2 class="mb-4 text-primary fw-bold">Add New Property</h2>
+<div class="container mt-4 p-4 bg-light rounded shadow">
+  <h2 class="mb-4 text-primary text-center">Add New Property</h2>
 
-  <form #form="ngForm" (ngSubmit)="onFormSubmit()" enctype="multipart/form-data">
-    <!-- Property Section -->
-    <div class="card shadow-sm p-4 mb-5">
-      <h5 class="mb-3 text-secondary">🏠 Property Details</h5>
+  <!-- Success/Error Message -->
+  <div *ngIf="message" class="alert alert-info">
+    {{ message }}
+  </div>
 
-      <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          class="form-control"
-          [(ngModel)]="model.name"
-          required />
-      </div>
+  <!-- Property Form -->
+  <form (ngSubmit)="onFormSubmit()">
 
-      <div class="mb-3">
-        <label for="type" class="form-label">Type</label>
-        <input
-          type="text"
-          id="type"
-          name="type"
-          class="form-control"
-          [(ngModel)]="model.type"
-          required />
-      </div>
-
-      <div class="mb-3">
-        <label for="location" class="form-label">Location</label>
-        <input
-          type="text"
-          id="location"
-          name="location"
-          class="form-control"
-          [(ngModel)]="model.location"
-          required />
-      </div>
-
-      <div class="mb-3">
-        <label for="imageFile" class="form-label">Upload Property Image</label>
-        <input
-          type="file"
-          id="imageFile"
-          class="form-control"
-          (change)="onFileSelected($event)" />
-      </div>
-    </div>
-
-    <!-- Units Section -->
-    <div class="mb-4">
-      <h5 class="text-secondary mb-3">🏢 Units</h5>
-
-      <div
-        class="card shadow-sm p-4 mb-4"
-        *ngFor="let unit of model.units; let i = index">
-        <h6 class="mb-3">Unit {{ i + 1 }}</h6>
-
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Price</label>
-            <input
-              type="number"
-              class="form-control"
-              name="unitPrice{{i}}"
-              [(ngModel)]="unit.price"
-              required />
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Type</label>
-            <input
-              type="text"
-              class="form-control"
-              name="unitType{{i}}"
-              [(ngModel)]="unit.type"
-              required />
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Bathrooms</label>
-            <input
-              type="number"
-              class="form-control"
-              name="unitBathrooms{{i}}"
-              [(ngModel)]="unit.bathrooms"
-              required />
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Size (sq ft)</label>
-            <input
-              type="number"
-              class="form-control"
-              name="unitSize{{i}}"
-              [(ngModel)]="unit.size"
-              required />
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Floor</label>
-            <input
-              type="number"
-              class="form-control"
-              name="unitFloor{{i}}"
-              [(ngModel)]="unit.floor"
-              required />
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Door Number</label>
-            <input
-              type="number"
-              class="form-control"
-              name="unitDoorNumber{{i}}"
-              [(ngModel)]="unit.doorNumber"
-              required />
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Occupancy Status</label>
-            <input
-              type="text"
-              class="form-control"
-              name="unitStatus{{i}}"
-              [(ngModel)]="unit.status"
-              required />
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Upload Unit Image</label>
-            <input
-              type="file"
-              class="form-control"
-              (change)="onUnitImageSelected($event, i)" />
+    <div class="property-form-layout mb-4">
+      <!-- Left: Property Details -->
+      <div class="d-flex mt-3 w-100">
+        <div class="me-3 w-50">
+          <div class="property-form-fields">
+            <div class="mb-3">
+              <label class="form-label">Name</label>
+              <input class="form-control" [(ngModel)]="model.name" name="name" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Location</label>
+              <input class="form-control" [(ngModel)]="model.location" name="location" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Type</label>
+              <input class="form-control" [(ngModel)]="model.type" name="type" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Description</label>
+              <input class="form-control" [(ngModel)]="model.description" name="description" required>
+            </div>
           </div>
         </div>
 
-        <div class="d-flex justify-content-end">
-          <button
-            type="button"
-            class="btn btn-outline-danger btn-sm"
-            (click)="model.units.splice(i, 1)">
+        <div class="w-50">
+          <!-- Right: Image Upload -->
+          <div class="property-image-preview">
+            <div class="mb-3">
+              <label class="form-label">Property Image</label>
+              <input type="file" class="form-control" (change)="onFileSelected($event)">
+              <div *ngIf="propertyImagePreview" class="mt-2">
+                <img [src]="propertyImagePreview" alt="Property Preview" class="property-img" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Features Row -->
+     <h3 class="mb-4 text-center">  Property Features</h3>
+    <div class="features-row">
+      <!-- General Features -->
+      <div class="feature-group">
+        <div class="form-section-title">General Features</div>
+        <ng-container *ngIf="features$ | async as features">
+          <div *ngFor="let feature of features" class="form-check">
+            <input type="checkbox" class="form-check-input" [checked]="model.generalFeatures.includes(feature.id)"
+              (change)="onGeneralFeatureChange($event, feature.id)">
+            <label class="form-check-label">{{ feature.name }}</label>
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- Indoor Features -->
+      <div class="feature-group">
+        <div class="form-section-title">Indoor Features</div>
+        <ng-container *ngIf="indoor$ | async as features">
+          <div *ngFor="let feature of features" class="form-check">
+            <input type="checkbox" class="form-check-input" [checked]="model.indoorFeatures.includes(feature.id)"
+              (change)="onIndoorFeatureChange($event, feature.id)">
+            <label class="form-check-label">{{ feature.name }}</label>
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- Outdoor Features -->
+      <div class="feature-group">
+        <div class="form-section-title">Outdoor Features</div>
+        <ng-container *ngIf="outdoor$ | async as features">
+          <div *ngFor="let feature of features" class="form-check">
+            <input type="checkbox" class="form-check-input" [checked]="model.outdoorFeatures.includes(feature.id)"
+              (change)="onOutdoorFeatureChange($event, feature.id)">
+            <label class="form-check-label">{{ feature.name }}</label>
+          </div>
+        </ng-container>
+      </div>
+
+    </div>
+    <h3 class="mb-4 text-center">  Property Policies</h3>
+    <div *ngFor="let policy of policy$ | async">
+      <div class="card mb-3">
+        <div class="card-body" (click)="onSelectPolicy(policy)">
+          <h5>{{ policy.name }}</h5>
+
+          <div *ngIf="policyDescriptions[policy.id]">
+            <ul class="list-unstyled">
+              <li *ngFor="let desc of policyDescriptions[policy.id]; let j = index"
+                class="d-flex justify-content-between align-items-center mb-1">
+                <span>
+                  • {{ desc }}
+                </span>
+                <button type="button" class="btn btn-sm btn-outline-danger"
+                  (click)="removePolicyDescription(policy.id, j)">
+                  X
+                </button>
+              </li>
+            </ul>
+            <input class="form-control mt-2" [(ngModel)]="newPolicyDescriptionInputs[policy.id]"
+              name="desc_{{policy.id}}" placeholder="Enter description" />
+
+            <button type="button" class="btn btn-sm btn-success mt-1" (click)="onAddPolicyDescription(policy.id)">
+              Add Description
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Units Section -->
+    <h3 class="mb-4 text-center">  Property Units</h3>
+
+    <div *ngFor="let unit of model.units; let i = index" class="unit-card">
+      <div class="unit-content">
+        <div class="unit-fields">
+          <div class="row g-3 align-items-center">
+            <div class="col-md-6">
+              <label class="form-label">Type</label>
+              <input class="form-control" [(ngModel)]="unit.type" name="unit-type-{{i}}" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Price</label>
+              <input class="form-control" type="number" [(ngModel)]="unit.price" name="unit-price-{{i}}" required>
+            </div>
+            <div class="col-md-6 mt-3">
+              <label class="form-label">Bathrooms</label>
+              <input class="form-control" type="number" [(ngModel)]="unit.bathrooms" name="unit-bathrooms-{{i}}"
+                required>
+            </div>
+            <div class="col-md-6 mt-3">
+              <label class="form-label">Size (sq ft)</label>
+              <input class="form-control" type="number" [(ngModel)]="unit.size" name="unit-size-{{i}}" required>
+            </div>
+            <div class="col-md-6 mt-3">
+              <label class="form-label">Floor</label>
+              <input class="form-control" type="number" [(ngModel)]="unit.floor" name="unit-floor-{{i}}" required>
+            </div>
+            <div class="col-md-6 mt-3">
+              <label class="form-label">Door #</label>
+              <input class="form-control" [(ngModel)]="unit.doorNumber" name="unit-door-{{i}}" required>
+            </div>
+            <div class="col-md-12 mt-3">
+              <label class="form-label">Status</label>
+              <select class="form-select" [(ngModel)]="unit.status" name="unit-status-{{i}}" required>
+                <option value="">Select status</option>
+                <option value="Available">Available</option>
+                <option value="Booked">Booked</option>
+                <option value="Reserved">Reserved</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="unit-image-section ms-md-4 mt-3 mt-md-0">
+          <img *ngIf="unitImageUrls[i]" [src]="unitImageUrls[i]" alt="Unit Image" class="unit-img" />
+          <div class="mt-2">
+            <label class="form-label">Change Unit Image</label>
+            <input type="file" class="form-control" (change)="onUnitFileSelected($event, i)" />
+          </div>
+        </div>
+        <!-- ✅ Remove Unit Button -->
+        <div class="text-end mt-2">
+          <button type="button" class="btn btn-outline-danger btn-sm" (click)="removeUnit(i)">
             Remove Unit
           </button>
         </div>
       </div>
+    </div>
 
-      <button
-        type="button"
-        class="btn btn-outline-primary"
-        (click)="model.units.push({ propertyId: 0, price: 0, type: '', bathrooms: 0, size: 0, floor: 1, doorNumber: '', status: '' })"
->
-        ➕ Add Another Unit
+    <!-- Add Unit Button -->
+    <div class="text-end">
+      <button type="button" class="btn btn-outline-primary mt-3" (click)="addUnit()">
+        <i class="bi bi-plus-circle"></i> Add Unit
       </button>
     </div>
 
+    <!-- Submit Button -->
     <div class="text-center mt-4">
-      <button type="submit" class="btn btn-primary px-4 py-2">
-        💾 Save Property
+      <button type="submit" class="btn btn-success px-4">
+        <i class="bi bi-save"></i> Submit Property
       </button>
     </div>
   </form>

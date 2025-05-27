@@ -1,0 +1,56 @@
+<div class="booking-summary-container">
+    <h2 class="summary-title">Booking Summary</h2>
+  
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+  
+    <!-- Booking Details -->
+    <div *ngIf="booking" class="booking-card">
+      <h4>Booking Reference: <code>{{ booking.bookingReference }}</code></h4>
+  
+      <div class="booking-detail">
+        <span class="label">Tenant ID:</span>
+        <span class="value">{{ booking.tenentId }}</span>
+      </div>
+  
+      <div class="booking-detail">
+        <span class="label">Unit ID:</span>
+        <span class="value">{{ booking.unitId }}</span>
+      </div>
+  
+      <div class="booking-detail">
+        <span class="label">Status:</span>
+        <span class="value badge" [ngClass]="{
+          'badge-warning': booking.status === 'Pending',
+          'badge-success': booking.status === 'Confirmed',
+          'badge-secondary': booking.status === 'Completed'
+        }">
+          {{ booking.status }}
+        </span>
+      </div>
+  
+      <div class="booking-detail">
+        <span class="label">Notes:</span>
+        <span class="value">{{ booking.notes || 'None' }}</span>
+      </div>
+  
+      <div class="booking-detail">
+        <span class="label">Created On:</span>
+        <span class="value">{{ booking.bookingDate| date: 'medium' }}</span>
+      </div>
+    </div>
+
+    <div *ngIf="booking">
+      <p>Complete Payment for Booking Reference: {{ booking.bookingReference }} to secure the Unit</p>
+      <button class="btn btn-success" (click)="requestStkPush()">Pay Now</button>
+    </div>
+    
+  
+    <!-- No booking found -->
+    <div *ngIf="!booking && !errorMessage" class="alert alert-info">
+      Booking not found or still loading...
+    </div>
+  </div>
+  

@@ -15,7 +15,7 @@
             <div class="units-section">
                 <div class="units-wrapper card shadow-sm border-0 rounded-4 p-4">
                     <div *ngIf="Property$ | async as properties" class="units-grid">
-                        <div *ngFor="let property of properties" class="unit-card">
+                        <div *ngFor="let property of properties" class="unit-card" (click)="goToEditUnit(property.id)">
                             <div class="unit-details card h-100 shadow-sm border-0 rounded-4 clickable-card">
                                 <h3>{{ property.name }}</h3>
                                 <p><strong>Location:</strong> {{ property.location }}</p>
@@ -42,7 +42,8 @@
                             <ul class="income-summary-list">
                                 <li *ngFor="let property of Property$ | async" class="income-summary-item">
                                     <strong>{{ property.name }}:</strong>
-                                    <span class="income-amount">{{ propertiesIncome[property.name] | number:'1.0-0' }}</span>
+                                    <span class="income-amount">{{ propertiesIncome[property.name] | number:'1.0-0'
+                                        }}</span>
                                 </li>
                             </ul>
                         </div>

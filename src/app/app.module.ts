@@ -16,6 +16,12 @@ import { PropertyDetailsComponent } from './features/public/property-details/pro
 import { EditTenentComponent } from './features/tenant/edit-tenant/edit-tenent/edit-tenent.component';
 import { SidebarComponent } from './core/features/sidebar/sidebar/sidebar.component';
 import { ManagerPortalComponent } from './features/public/manager-portal/manager-portal/manager-portal.component';
+import { CreateBookingRequestComponent } from './features/unit/booking-preview/create-booking-request/create-booking-request/create-booking-request.component';
+import { BookingSummaryComponent } from './features/unit/booking-preview/booking-summary/booking-summary/booking-summary.component';
+import { EditUnitComponent } from './features/unit/edit-unit/edit-unit/edit-unit.component';
+import { PaymentListComponent } from './features/unit/payments/payment-list/payment-list/payment-list.component';
+import { UnitPaymentListComponent } from './features/unit/payments/unit-payment-list/unit-payment-list/unit-payment-list.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 
@@ -33,13 +39,19 @@ import { ManagerPortalComponent } from './features/public/manager-portal/manager
     EditTenentComponent,
     PropertyDetailsComponent,
     SidebarComponent,
-    ManagerPortalComponent
+    ManagerPortalComponent,
+    CreateBookingRequestComponent,
+    BookingSummaryComponent,
+    EditUnitComponent,
+    PaymentListComponent,
+    UnitPaymentListComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    NgSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

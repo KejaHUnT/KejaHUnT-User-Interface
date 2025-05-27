@@ -1,58 +1,51 @@
-<div class="container">
-  <div class="my-5">
-    <div class="row g-4">
-      <ng-container *ngIf="Property$ | async as properties">
-        <div class="col-12 col-md-6 col-lg-4" *ngFor="let property of properties">
-          <div 
-            class="card h-100 shadow-sm border-0 rounded-4 clickable-card"
-            [routerLink]="['property/details/', property.id]"
-          >
-            <div class="card-body d-flex flex-column p-0">
-
-              <!-- Property Image -->
-              <div class="property-image-container">
-                <img *ngIf="imageUrls[property.id]"
-                     [src]="imageUrls[property.id]"
-                     alt="{{ property.name }}"
-                     class="card-img-top rounded-top-4">
-                <div *ngIf="!imageUrls[property.id]" class="no-image-placeholder rounded-top-4">
-                  <span></span>
-                </div>
-              </div>
-
-              <!-- Name & Location bar below image -->
-              <div class="info-bar d-flex justify-content-between align-items-center px-3 py-2">
-                <h5 class="card-title text-primary fw-bold mb-0">{{ property.name }}</h5>
-                <span class="property-location text-muted d-flex align-items-center mb-0">
-                  <i class="bi bi-geo-alt-fill me-1 text-danger"></i>
-                  {{ property.location }}
-                </span>
-              </div>
-
-              <!-- Type badge -->
-              <div class="badge-container px-3 pb-2">
-                <span class="badge bg-light text-dark property-type">
-                  {{ property.type }}
-                </span>
-              </div>
-
-              <!-- Units Section -->
-              <div class="units-section flex-grow-1 p-3">
-                <h6 class="units-title mb-2">Units</h6>
-                <div class="units-container">
-                  <div class="unit-item" *ngFor="let unit of property.units">
-                    <p class="unit-price"><strong>Price:</strong> {{ unit.price | currency }}</p>
-                    <p class="unit-type"><strong>Type:</strong> {{ unit.type }}</p>
-                    <p class="unit-type"><strong>Floor:</strong> {{ unit.floor }}</p>
-                    <p class="unit-available"><strong>Occupancy:</strong> {{ unit.status }}</p>
-                  </div>
-                </div>
-              </div>
-
+<div class="container my-5">
+  <div class="row g-4">
+    <ng-container *ngIf="Property$ | async as properties">
+      <div class="col-12 col-md-6 col-lg-4" *ngFor="let property of properties">
+        <div class="card h-100 shadow-sm border-0 rounded-4 property-card"
+          [routerLink]="['property/details/', property.id]">
+          <!-- Image -->
+          <div class="property-image-container">
+            <img *ngIf="imageUrls[property.id]" [src]="imageUrls[property.id]" alt="{{ property.name }}"
+              class="card-img-top rounded-top-4">
+            <div *ngIf="!imageUrls[property.id]" class="no-image-placeholder rounded-top-4">
+              <span>No Image</span>
             </div>
           </div>
+
+          <!-- Info Section -->
+          <div class="p-3 d-flex flex-column justify-content-between flex-grow-1">
+            <!-- Title and Location -->
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div>
+                <h5 class="fw-bold text-primary mb-1">{{ property.name }}</h5>
+                <p class="text-muted mb-0">
+                  <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ property.location }}
+                </p>
+              </div>
+              <span class="badge bg-light text-dark">{{ property.type }}</span>
+            </div>
+
+            <!-- Highlight Unit (only show first) -->
+            <!-- Highlight Unit (only show first) -->
+            <div *ngIf="property.units.length > 0" class="unit-info-container mt-3">
+              <div class="unit-info-item">
+                <i class="bi bi-currency-dollar text-success me-2"></i>
+                <span class="fw-semibold">Ksh {{ property.units[0].price | number:'1.0-0' }}</span>
+              </div>
+              <div class="unit-info-item">
+                <i class="bi bi-aspect-ratio text-primary me-2"></i>
+                <span>{{ property.units[0].size }} m²</span>
+              </div>
+              <div class="unit-info-item">
+                <i class="bi bi-house-door-fill text-warning me-2"></i>
+                <span>{{ property.units[0].type }}</span>
+              </div>
+            </div>
+
+          </div>
         </div>
-      </ng-container>
-    </div>
+      </div>
+    </ng-container>
   </div>
 </div>

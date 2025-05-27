@@ -1,0 +1,40 @@
+.custom-navbar {
+    position: relative;
+    height: 60px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar-left {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .navbar-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  @media (max-width: 768px) {
+    .navbar-left {
+      position: static;
+      transform: none;
+    }
+  
+    .navbar-center {
+      position: static;
+      transform: none;
+      text-align: center;
+      width: 100%;
+    }
+  
+    .navbar-brand {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+  

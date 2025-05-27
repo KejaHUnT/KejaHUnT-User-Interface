@@ -1,0 +1,71 @@
+.three-panel-layout {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .panel {
+    flex: 1;
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  /* Colors for statuses */
+  .status-paid {
+    color: green;
+    font-weight: bold;
+  }
+  .status-cancelled {
+    color: red;
+    font-weight: bold;
+  }
+  .status-pending {
+    color: gray;
+    font-weight: bold;
+  }
+  
+  .row-paid {
+    background-color: #e6ffea;
+  }
+  .row-cancelled {
+    background-color: #f3b3b3;
+  }
+  .row-pending {
+    background-color: #fbf663;
+  }
+  .payment-table-section {
+    margin-top: 2rem;
+  }
+  
+  .table-wrapper {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  
+  .payment-table {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    background-color: white;
+  }
+  
+  .payment-table th,
+  .payment-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .payment-table th {
+    background-color: #f0f0f0;
+    font-weight: 600;
+  }
+  
+  .payment-table tr:last-child td {
+    border-bottom: none;
+  }
+  

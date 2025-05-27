@@ -1,149 +1,81 @@
-<!-- Tenant Form Section -->
-<div *ngIf="model.units.length > 0" class="container tenant-form mt-4">
-  <h1 class="mb-4 page-title text-primary">Add New Tenant</h1>
+<div class="container py-4">
+  <h2 class="page-title mb-4">Add Tenant</h2>
 
-  <form #form="ngForm" (ngSubmit)="onFormSubmit()" class="tenant-form-inner">
-    <div class="row g-3">
-
+  <form (ngSubmit)="onFormSubmit()" #tenantForm="ngForm" class="tenant-form-inner">
+    <div class="row mb-3">
       <div class="col-md-6">
-        <label for="fullName" class="form-label">Name</label>
-        <input type="text" id="fullName" name="fullName" class="form-control" [(ngModel)]="model.fullName" />
+        <label class="form-label">Full Name</label>
+        <input type="text" class="form-control" name="fullName" [(ngModel)]="model.fullName" required>
       </div>
 
       <div class="col-md-6">
-        <label for="phoneNumber" class="form-label">Phone Number</label>
-        <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" [(ngModel)]="model.phoneNumber" />
+        <label class="form-label">Phone Number</label>
+        <input type="tel" class="form-control" name="phoneNumber" [(ngModel)]="model.phoneNumber" required>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label">National ID No</label>
+        <input type="number" class="form-control" name="idNo" [(ngModel)]="model.idNo" required>
       </div>
 
       <div class="col-md-6">
-        <label for="idNo" class="form-label">ID Number</label>
-        <input type="number" id="idNo" name="idNo" class="form-control" [(ngModel)]="model.idNo" />
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" name="email" [(ngModel)]="model.email">
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Employer</label>
+        <input type="text" class="form-control" name="employer" [(ngModel)]="model.employer">
       </div>
 
       <div class="col-md-6">
-        <label for="email" class="form-label">Email</label>
-        <input type="text" id="email" name="email" class="form-control" [(ngModel)]="model.email" />
+        <label class="form-label">Created By</label>
+        <input type="text" class="form-control" name="createdBy" [(ngModel)]="model.createdBy">
       </div>
+    </div>
 
+    <div class="row mb-4">
       <div class="col-md-12">
-        <label for="employer" class="form-label">Employer</label>
-        <input type="text" id="employer" name="employer" class="form-control" [(ngModel)]="model.employer" />
-      </div>
-
-      <input type="hidden" name="propertyId" [(ngModel)]="model.propertyId" />
-
-      <!-- Selected Units -->
-       <!-- Add Unit Button -->
-<div *ngIf="model.propertyId && model.units.length > 0" class="mb-3">
-  <button class="btn btn-outline-secondary" (click)="openUnitModal()">+ Add Another Unit</button>
-</div>
-
-      <div class="col-12 mt-4">
-        <h5 class="text-secondary">Selected Unit(s)</h5>
-
-        <div class="row row-cols-1 row-cols-md-2 g-3">
-          <div *ngFor="let unit of model.units; let i = index" class="col">
-            <div class="p-3 rounded border shadow-sm bg-light">
-              <p class="mb-1"><strong>Type:</strong> {{ unit.type }}</p>
-              <p class="mb-1"><strong>Price:</strong> {{ unit.price | currency }}</p>
-              <p class="mb-1"><strong>Bathrooms:</strong> {{ unit.bathrooms }}</p>
-              <p class="mb-3"><strong>Size:</strong> {{ unit.size }} m²</p>
-              <p class="mb-3"><strong>Floor:</strong> {{ unit.floor }} m²</p>
-              <p class="mb-3"><strong>Door Number:</strong> {{ unit.doorNumber }} m²</p>
-              <p class="mb-3"><strong>Occupancy</strong> {{ unit.status }} m²</p>
-
-              <div class="mb-2">
-                <label for="unitNoOfUnits{{i}}" class="form-label">Floor</label>
-                <input type="number" id="floor{{i}}" name="unitNoOfUnits{{i}}"
-                  class="form-control form-control-sm" [(ngModel)]="unit.floor" min="1" />
-              </div>
-
-              <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeUnit(i)">Remove Unit</button>
-            </div>
-          </div>
+        <label class="form-label">Selected Unit</label>
+        <div class="selected-unit-info p-3 rounded border" *ngIf="selectedUnit; else noUnit">
+          <p><strong>Unit Name:</strong> {{ selectedUnit.type }}</p>
+          <p><strong>Monthly Rent:</strong> Ksh {{ selectedUnit.price }}</p>
+          <button type="button" class="btn btn-outline-secondary btn-sm" (click)="openUnitModal()">View Unit Property</button>
         </div>
+        <ng-template #noUnit>
+          <p class="text-muted fst-italic">No unit selected. This may have been passed via the link.</p>
+        </ng-template>
       </div>
+    </div>
 
-      <div class="col-md-12 mt-4">
-        <label for="createdBy" class="form-label">Created By</label>
-        <input type="text" id="createdBy" name="createdBy" class="form-control" [(ngModel)]="model.createdBy" />
-      </div>
-
-      <div class="col-12 mt-3 text-end">
-        <button type="submit" class="btn btn-primary px-4">Save Tenant</button>
-      </div>
+    <div class="d-flex justify-content-between">
+      <button type="submit" class="btn btn-success">Submit Tenant</button>
+      <a routerLink="/admin/tenant" class="btn btn-outline-secondary">Cancel</a>
     </div>
   </form>
-</div>
 
-<!-- Unit Selector (If No Unit Selected) -->
-<div *ngIf="model.units.length === 0" class="unit-selector-section mt-5">
-  <h4 class="text-danger fw-semibold">No Unit Selected</h4>
-  <p class="text-muted">Please choose a property and one of its available units.</p>
-
-  <ng-container *ngIf="Property$ | async as properties">
-    <div class="row g-4">
-      <div class="col-12 col-md-6 col-lg-4" *ngFor="let property of properties">
-        <div class="card h-100 border-0 shadow-sm rounded-4 p-3">
-          <div class="card-body d-flex flex-column gap-2">
-
-            <h5 class="text-primary fw-bold mb-0">{{ property.name }}</h5>
-            <small class="text-muted"><i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ property.location }}</small>
-            <span class="badge bg-light text-dark w-fit-content">Type: {{ property.type }}</span>
-
-            <h6 class="mt-2 mb-1 text-secondary">Available Units</h6>
-
-            <div class="d-flex flex-wrap gap-2">
-              <div class="border rounded p-2 bg-light flex-grow-1" style="min-width: 130px; flex-basis: calc(50% - 0.5rem);" *ngFor="let unit of property.units">
-                <div class="d-flex flex-column small">
-                  <span><strong>{{ unit.type }}</strong></span>
-                  <span>Price: {{ unit.price | currency }}</span>
-                  <span>Baths: {{ unit.bathrooms }}</span>
-                  <span>Size: {{ unit.size }} m²</span>
-                  <span>Floor: {{ unit.floor }}</span>
-                  <span>Door Number: {{ unit.doorNumber }}</span>
-                  <span>Occupancy: {{ unit.status }}</span>
-                  <button
-                    class="btn btn-sm btn-success mt-2"
-                    (click)="onBookNow(unit, property.id)"
-                  >
-                  </button>
-                </div>
-              </div>
-            </div>
-
-          </div>
+  <!-- Modal -->
+  <div class="modal fade" id="unitModal" tabindex="-1" aria-labelledby="unitModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="unitModalLabel">Unit Property Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-      </div>
-    </div>
-  </ng-container>
-</div>
-
-<!-- Modal HTML structure -->
-<div class="modal fade" id="unitModal" tabindex="-1" aria-labelledby="unitModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="unitModalLabel">Select Unit</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <!-- List filtered units to select -->
-        <div *ngFor="let unit of filteredUnits">
-          <div>
-            <p>{{ unit.type }} - {{ unit.size }} sq.m</p>
-            <button class="btn btn-primary" (click)="addUnitToTenant(unit)">Add Unit</button>
-          </div>
+        <div class="modal-body" *ngIf="selectedProperty">
+          <h5>{{ selectedProperty.name }}</h5>
+          <p><strong>Location:</strong> {{ selectedProperty.location }}</p>
+          <p><strong>Description:</strong> {{ selectedProperty.name }}</p>
+          <p><strong>Added By:</strong> {{ selectedProperty.id }}</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-
-
-
-<!-- <div class="images-container-modal" [ngClass]="{'d-block': isImageSelectorVisisble, 'd-none': !isImageSelectorVisisble}">
-    <button type="button" class="btn btn-light" style="position: fixed; top: 10px; right: 10px" (click)="closeImageSelector()">X</button>
-    <app-image-selector></app-image-selector>
-</div> -->

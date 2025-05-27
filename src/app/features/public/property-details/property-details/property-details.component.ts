@@ -81,20 +81,22 @@ export class PropertyDetailsComponent implements OnInit {
       if (this.model) {
         const selectedPropertyId = this.model.id;
         const selectedUnitDetails = unit;
-  
-        // Navigate to AddTenantComponent, passing the propertyId and unit details
-        this.router.navigate(['/admin/tenant/add'], {
+    
+        // Navigate to PreviewBookingComponent with query parameters
+        this.router.navigate(['preview-booking/:unitId'], {
           queryParams: {
             propertyId: selectedPropertyId,
-            unitType: selectedUnitDetails.type,
+            unitId: selectedUnitDetails.id,
+            unitName: selectedUnitDetails.name,
             unitSize: selectedUnitDetails.size,
-            unitNo: selectedUnitDetails.noOfUnits,
             unitRent: selectedUnitDetails.price,
-            unitBathrooms: selectedUnitDetails.bathrooms
+            unitStatus: selectedUnitDetails.status,
+            unitDescription: selectedUnitDetails.description
           }
         });
       }
     }
+    
 
     ngOnDestroy(): void {
       this.routeSubscription?.unsubscribe();
