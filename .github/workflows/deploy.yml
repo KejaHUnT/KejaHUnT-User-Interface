@@ -21,7 +21,7 @@ jobs:
         run: npm install
 
       - name: Build Angular App
-        run: npm run build -- -- configuration production
+        run: npx ng build KejaHUnT --configuration production
 
       - name: Deploy to Target Repo
         run: |
