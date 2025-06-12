@@ -1,0 +1,36 @@
+name: Build and Deploy Angular App
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Angular App
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Angular App
+        run: npx ng build KejaHUnT --configuration production
+
+      - name: Deploy to Target Repo
+        run: |
+          cd dist/keja-hun-t  
+          git init
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote add origin https://x-access-token:${{ secrets.UI_DEPLOYMENT }}@github.com/Kalukwo/KejaHUnTdeployment.git
+          git checkout -b main
+          git add .
+          git commit -m "Deploy Angular build"
+          git push --force origin main
