@@ -7,6 +7,11 @@ import { UpdatePropertyRequest } from '../../models/update-property-request.mode
 import { UnitService } from 'src/app/features/unit/services/unit.service';
 import { ImageService } from 'src/app/features/shared/images/service/image.service';
 import { FileResponse } from 'src/app/features/shared/images/models/file-response.model';
+import { GeneralFeatures } from '../../models/general-feature.model';
+import { IndoorFeature } from '../../models/indoor-feature.model';
+import { outdoorFeature } from '../../models/outdoor-feature.model';
+import { Policy } from '../../models/policy.model';
+import { UpdatePolicyDescription } from '../../models/update-policy-description.model';
 
 @Component({
   selector: 'app-edit-property',
@@ -22,6 +27,15 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
   propertyId: string = '';
   unitImageUrls: string[] = []; // Array to store base64 image data
   propertyImageUrl: string | null = null; // Store the property image base64 data
+  features$?: Observable<GeneralFeatures[]>;
+  indoor$?: Observable<IndoorFeature[]>;
+  outdoor$?: Observable<outdoorFeature[]>;
+  policy$?: Observable<Policy[]>;
+  //  Maps policyId -> description[]
+  policyDescription: { [key: number]: string[] } = {};
+
+  // For new description input fields
+  newPolicyDescriptionInputs: { [key: number]: string } = {};
 
   routeSubscription?: Subscription;
   updatePropertySubscription?: Subscription;
@@ -36,6 +50,12 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+
+    this.features$ = this.propertyService.getAllFeatures();
+    this.indoor$ = this.propertyService.getAllIndoorFeatures();
+    this.outdoor$ = this.propertyService.getAllOutdorrFeatures();
+    this.policy$ = this.propertyService.getAllPolicies();
+
     this.routeSubscription = this.route.paramMap.subscribe({
       next: (params) => {
         this.id = params.get('id');
@@ -44,6 +64,12 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
           this.getPropertyByIdSubscription = this.propertyService.getPopertyById(this.id).subscribe({
             next: (response) => {
               this.model = response;
+
+              this.model.generalFeatures = (response.generalFeatures || []).map((f: any) => f.id);
+              this.model.indoorFeatures = (response.indoorFeatures || []).map((f: any) => f.id);
+              this.model.outDoorFeatures = (response.outDoorFeatures || []).map((f: any) => f.id);
+              this.initializePolicyDescriptions();
+
               if (!this.model.units) {
                 this.model.units = [];
               }
@@ -104,21 +130,151 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Handlers for checkbox changes, updating selected feature arrays
+  onGeneralFeatureChange(event: Event, featureId: number): void {
+    const checked = (event.target as HTMLInputElement).checked;
+    if (this.model) {
+      if (checked) {
+        this.model.generalFeatures = [
+          ...(this.model.generalFeatures || []),
+          featureId
+        ];
+      } else {
+        this.model.generalFeatures = (
+          this.model.generalFeatures || []
+        ).filter(id => id !== featureId);
+      }
+    }
+  }
+
+  onIndoorFeatureChange(event: Event, featureId: number): void {
+    const checked = (event.target as HTMLInputElement).checked;
+    if (this.model) {
+      if (checked) {
+        this.model.indoorFeatures = [
+          ...(this.model.indoorFeatures || []),
+          featureId
+        ];
+      } else {
+        this.model.indoorFeatures = (
+          this.model.indoorFeatures || []
+        ).filter(id => id !== featureId);
+      }
+    }
+  }
+
+  onOutdoorFeatureChange(event: Event, featureId: number): void {
+    const checked = (event.target as HTMLInputElement).checked;
+    if (this.model) {
+      if (checked) {
+        this.model.outDoorFeatures = [
+          ...(this.model.outDoorFeatures || []),
+          featureId
+        ];
+      } else {
+        this.model.outDoorFeatures = (
+          this.model.outDoorFeatures || []
+        ).filter(id => id !== featureId);
+      }
+    }
+  }
+
+  onSelectPolicy(policy: Policy): void {
+    if (!this.policyDescription[policy.id]) {
+      this.policyDescription[policy.id] = [];
+      this.newPolicyDescriptionInputs[policy.id] = '';
+    }
+  }
+
+  onAddPolicyDescription(policyId: number): void {
+    const desc = this.newPolicyDescriptionInputs[policyId]?.trim();
+    if (desc) {
+      if (!this.policyDescription[policyId]) {
+        this.policyDescription[policyId] = [];
+      }
+      this.policyDescription[policyId].push(desc);
+      this.newPolicyDescriptionInputs[policyId] = '';
+    }
+  }
+
+
+  initializePolicyDescriptions() {
+    this.policyDescription = {}; // reset just in case
+
+    if (this.model?.policyDescriptions) {
+      for (const desc of this.model.policyDescriptions) {
+        const policyId = desc.policyId;
+        if (!this.policyDescription[policyId]) {
+          this.policyDescription[policyId] = [];
+        }
+        this.policyDescription[policyId].push(desc.name);
+      }
+    }
+  }
+
+  removePolicyDescription(policyId: number, descriptionIndex: number): void {
+    const descriptions = this.policyDescription[policyId];
+    if (descriptions && descriptionIndex > -1 && descriptionIndex < descriptions.length) {
+      descriptions.splice(descriptionIndex, 1);
+
+      // Clean up if no descriptions remain
+      if (descriptions.length === 0) {
+        delete this.policyDescription[policyId];
+      }
+    }
+  }
 
   // Submit form to update property and units
   onFormSubmit(): void {
     if (!this.model) return;
 
     const propertyFormData = new FormData();
+    propertyFormData.append('documentId', this.model?.documentId ?? ''); // send GUID string or empty string
     propertyFormData.append('name', this.model.name);
     propertyFormData.append('location', this.model.location);
     propertyFormData.append('type', this.model.type);
+    propertyFormData.append('description', this.model.description);
+    // Append policy descriptions to the form data
+    const policyDescriptions = this.model?.policyDescriptions ?? {};
+
+    // Use the current policyDescription map, which includes new changes, not model.policyDescriptions
+    Object.keys(this.policyDescription).forEach(idStr => {
+      const policyId = parseInt(idStr, 10);
+      const descriptions = this.policyDescription[policyId];
+
+      if (Array.isArray(descriptions)) {
+        descriptions.forEach((descriptionName: string) => {
+          const policyDescription = {
+            id: policyId, // Assuming new descriptions, set ID to 0
+            name: descriptionName
+          };
+
+          propertyFormData.append('policyDescriptions', JSON.stringify(policyDescription));
+        });
+      }
+    });
 
     if (this.selectedImageFile) {
       propertyFormData.append('imageFile', this.selectedImageFile, this.selectedImageFile.name);
     }
 
-    this.propertyService.updateProperty(this.propertyId, propertyFormData).subscribe({
+
+
+    // Append each ID individually
+    this.model.generalFeatures.forEach((featureId: number) => {
+      propertyFormData.append('generalFeatures', featureId.toString());
+    });
+
+    this.model.indoorFeatures.forEach((featureId: number) => {
+      propertyFormData.append('indoorFeatures', featureId.toString());
+    });
+
+    this.model.outDoorFeatures.forEach((featureId: number) => {
+      propertyFormData.append('outdoorFeatures', featureId.toString());
+    });
+
+
+    this.updatePropertySubscription = this.propertyService.updateProperty(this.propertyId, propertyFormData).subscribe({
       next: (propertyResponse) => {
         //  If no units exist, skip forkJoin and navigate immediately
         if (!this.model?.units || this.model.units.length === 0) {

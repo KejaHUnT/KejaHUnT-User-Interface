@@ -10,6 +10,7 @@ import { IndoorFeature } from '../models/indoor-feature.model';
 import { outdoorFeature } from '../models/outdoor-feature.model';
 import { Policy } from '../models/policy.model';
 import { AddPolicyDescription } from '../models/add-policy-description.model';
+import { UpdatePolicyDescription } from '../models/update-policy-description.model';
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +56,10 @@ export class PropertyService {
 
   addPolicyDescription(model: AddPolicyDescription): Observable<void> {
     return this.http.post<void>(`${environment.apiBaseUrl}/api/feature/policy`, model);
+  }
+
+  updatePolicyDescription(id: string, model: UpdatePolicyDescription): Observable<void> {
+    return this.http.put<void>(`${environment.apiBaseUrl}/api/feature/description`, model);
   }
 
 }
