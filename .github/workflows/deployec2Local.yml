@@ -1,4 +1,4 @@
-name: Build and Deploy Angular App
+name: Build and Deploy Angular App in ec2
 
 on:
   workflow_dispatch:
