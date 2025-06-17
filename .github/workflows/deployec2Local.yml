@@ -31,8 +31,10 @@ jobs:
       - name: Upload Angular Build to EC2
         run: |
           rsync -avz -e "ssh -i ~/.ssh/ec2_key.pem -o StrictHostKeyChecking=no" \
+            --rsync-path="sudo rsync" \
             dist/keja-hun-t/ \
             ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/var/www/html/
+
 
       - name: Configure Nginx on EC2
         run: |
