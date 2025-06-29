@@ -25,12 +25,16 @@ jobs:
 
       - name: Deploy to Target Repo
         run: |
-          cd dist/keja-hun-t  
-          git init
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git remote add origin https://x-access-token:${{ secrets.UI_DEPLOYMENT }}@github.com/Kalukwo/KejaHUnTdeployment.git
-          git checkout -b main
-          git add .
-          git commit -m "Deploy Angular build"
-          git push --force origin main
+         cd dist/keja-hun-t
+         git init
+         git config user.name "github-actions[bot]"
+         git config user.email "github-actions[bot]@users.noreply.github.com"
+         git checkout -b main
+         git add .
+         git commit -m "Deploy Angular build"
+    
+         echo "Setting remote..."
+         git remote add origin https://x-access-token:${{ secrets.UI_DEPLOYMENT }}@github.com/Kalukwo/KejaHUnTdeployment.git
+    
+         echo "Pushing to remote..."
+         git push --force origin main
