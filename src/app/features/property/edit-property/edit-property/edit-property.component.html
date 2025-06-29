@@ -37,85 +37,82 @@
 
   <div class="features-section">
 
-  <!-- General Features -->
-  <!-- General Features -->
-<div class="feature-group">
-  <div class="form-section-title">General Features</div>
-  <ng-container *ngIf="features$ | async as features">
-    <div *ngFor="let feature of features" class="form-check">
-      <input type="checkbox" 
-             class="form-check-input"
-             [checked]="model.generalFeatures.includes(feature.id)"
-             (change)="onGeneralFeatureChange($event, feature.id)">
-      <label class="form-check-label">{{ feature.name }}</label>
-    </div>
-  </ng-container>
-</div>
-
-<!-- Indoor Features -->
-<div class="feature-group">
-  <div class="form-section-title">Indoor Features</div>
-  <ng-container *ngIf="indoor$ | async as features">
-    <div *ngFor="let feature of features" class="form-check">
-      <input type="checkbox" 
-             class="form-check-input"
-             [checked]="model.indoorFeatures.includes(feature.id)"
-             (change)="onIndoorFeatureChange($event, feature.id)">
-      <label class="form-check-label">{{ feature.name }}</label>
-    </div>
-  </ng-container>
-</div>
-
-<!-- Outdoor Features -->
-<div class="feature-group">
-  <div class="form-section-title">Outdoor Features</div>
-  <ng-container *ngIf="outdoor$ | async as features">
-    <div *ngFor="let feature of features" class="form-check">
-      <input type="checkbox" 
-             class="form-check-input"
-             [checked]="model.outDoorFeatures.includes(feature.id)"
-             (change)="onOutdoorFeatureChange($event, feature.id)">
-      <label class="form-check-label">{{ feature.name }}</label>
-    </div>
-  </ng-container>
-</div>
-  <!-- Shared loading template -->
-  <ng-template #loading>
-    <p>Loading features...</p>
-  </ng-template>
-
-</div>
-
-<!-- Policies Section -->
-    <h3 class="mb-4 text-center">  Property Policies</h3>
-    <div *ngFor="let policy of policy$ | async">
-      <div class="card mb-3">
-        <div class="card-body" (click)="onSelectPolicy(policy)">
-          <h5>{{ policy.name }}</h5>
-
-          <div *ngIf="policyDescription[policy.id]">
-            <ul class="list-unstyled">
-              <li *ngFor="let desc of policyDescription[policy.id]; let j = index"
-                class="d-flex justify-content-between align-items-center mb-1">
-                <span>
-                  • {{ desc }}
-                </span>
-                <button type="button" class="btn btn-sm btn-outline-danger"
-                  (click)="removePolicyDescription(policy.id, j)">
-                  X
-                </button>
-              </li>
-            </ul>
-            <input class="form-control mt-2" [(ngModel)]="newPolicyDescriptionInputs[policy.id]"
-              name="desc_{{policy.id}}" placeholder="Enter description" />
-
-            <button type="button" class="btn btn-sm btn-success mt-1" (click)="onAddPolicyDescription(policy.id)">
-              Add Description
-            </button>
-          </div>
+    <!-- General Features -->
+    <!-- General Features -->
+    <div class="feature-group">
+      <div class="form-section-title">General Features</div>
+      <ng-container *ngIf="features$ | async as features">
+        <div *ngFor="let feature of features" class="form-check">
+          <input type="checkbox" class="form-check-input" [checked]="model.generalFeatures.includes(feature.id)"
+            (change)="onGeneralFeatureChange($event, feature.id)">
+          <label class="form-check-label">{{ feature.name }}</label>
         </div>
+      </ng-container>
+    </div>
+
+    <!-- Indoor Features -->
+    <div class="feature-group">
+      <div class="form-section-title">Indoor Features</div>
+      <ng-container *ngIf="indoor$ | async as features">
+        <div *ngFor="let feature of features" class="form-check">
+          <input type="checkbox" class="form-check-input" [checked]="model.indoorFeatures.includes(feature.id)"
+            (change)="onIndoorFeatureChange($event, feature.id)">
+          <label class="form-check-label">{{ feature.name }}</label>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- Outdoor Features -->
+    <div class="feature-group">
+      <div class="form-section-title">Outdoor Features</div>
+      <ng-container *ngIf="outdoor$ | async as features">
+        <div *ngFor="let feature of features" class="form-check">
+          <input type="checkbox" class="form-check-input" [checked]="model.outDoorFeatures.includes(feature.id)"
+            (change)="onOutdoorFeatureChange($event, feature.id)">
+          <label class="form-check-label">{{ feature.name }}</label>
+        </div>
+      </ng-container>
+    </div>
+    <!-- Shared loading template -->
+    <ng-template #loading>
+      <p>Loading features...</p>
+    </ng-template>
+
+  </div>
+
+  <!-- Policies Section -->
+<h3 class="mb-4 text-center">Property Policies</h3>
+<div *ngFor="let policy of policy$ | async">
+  <div class="card mb-3">
+    <div class="card-body" (click)="onSelectPolicy(policy)">
+      <h5>{{ policy.name }}</h5>
+
+      <div *ngIf="policyDescriptions[policy.id]">
+        <ul class="list-unstyled">
+          <li *ngFor="let desc of policyDescriptions[policy.id]; let j = index"
+              class="d-flex justify-content-between align-items-center mb-1">
+            <span>• {{ desc }}</span>
+            <button type="button" class="btn btn-sm btn-outline-danger"
+                    (click)="removePolicyDescription(policy.id, j)">
+              X
+            </button>
+          </li>
+        </ul>
+
+        <input class="form-control mt-2"
+               [(ngModel)]="newPolicyDescriptionInputs[policy.id]"
+               name="desc_{{policy.id}}"
+               placeholder="Enter description" />
+
+        <button type="button" class="btn btn-sm btn-success mt-1"
+                (click)="onAddPolicyDescription(policy.id)">
+          Add Description
+        </button>
       </div>
     </div>
+  </div>
+</div>
+
 
   <!-- Units Section -->
   <div class="units-section mt-5">

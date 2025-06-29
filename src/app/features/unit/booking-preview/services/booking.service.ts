@@ -29,9 +29,11 @@ export class BookingService {
     return this.http.get<BookingResponse[]>(`${environment.bookingApiBaseUrl}/api/booking/tenant/${tenantId}`);
   }
 
-  requestStkPush(bookingId: number): Observable<any> {
-    return this.http.get<any>(`${environment.bookingApiBaseUrl}/api/booking/pay/${bookingId}`, {});
+  requestStkPush(bookingId: number, phoneNumber: string): Observable<any> {
+    const url = `${environment.bookingApiBaseUrl}/api/booking/pay/${bookingId}?phoneNumber=${encodeURIComponent(phoneNumber)}`;
+    return this.http.get<any>(url);
   }
+
 
   updateBookingStatus(request: UpdateBookingStatus): Observable<BookingResponse> {
     return this.http.patch<BookingResponse>(`${environment.bookingApiBaseUrl}/api/booking/status`, request);
