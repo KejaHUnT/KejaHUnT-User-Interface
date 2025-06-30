@@ -1,0 +1,97 @@
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-areas: "center left right";
+  gap: 20px;
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 10px;
+}
+
+.moved-left {
+  grid-area: center;
+}
+
+.moved-center {
+  grid-area: left;
+}
+
+.dashboard-right {
+  grid-area: right;
+}
+
+.card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+.card h4 {
+  margin-bottom: 10px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.table th,
+.table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.btn, .btn-outline {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #3b82f6;
+  border: 2px solid #3b82f6;
+}
+
+.overdue {
+  color: rgb(13, 247, 13);
+  font-weight: bold;
+}
+
+.bar-placeholder {
+  height: 100px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* Optional responsive stacking */
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "center"
+      "left"
+      "right";
+  }
+}

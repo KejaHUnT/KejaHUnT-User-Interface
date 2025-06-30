@@ -30,8 +30,8 @@ export class PropertyService {
     return this.http.get<Property>(`${environment.apiBaseUrl}/api/property/${id}`);
   }
 
-  updateProperty(id: string, formData: FormData): Observable<Property> {
-    return this.http.put<Property>(`${environment.apiBaseUrl}/api/property/${id}`, formData);
+  updateProperty(id: string, formData: FormData): Observable<UpdatePropertyRequest> {
+    return this.http.put<UpdatePropertyRequest>(`${environment.apiBaseUrl}/api/property/${id}`, formData);
   }
 
   deleteProperty(id: string): Observable<Property> {

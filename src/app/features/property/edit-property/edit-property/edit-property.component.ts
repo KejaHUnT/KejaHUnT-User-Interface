@@ -12,6 +12,7 @@ import { IndoorFeature } from '../../models/indoor-feature.model';
 import { outdoorFeature } from '../../models/outdoor-feature.model';
 import { Policy } from '../../models/policy.model';
 import { AddPolicyDescription } from '../../models/add-policy-description.model';
+import { UpdatePropertyRequest } from '../../models/update-property-request.model';
 
 @Component({
   selector: 'app-edit-property',
@@ -21,7 +22,8 @@ import { AddPolicyDescription } from '../../models/add-policy-description.model'
 export class EditPropertyComponent implements OnInit, OnDestroy {
   id: string | null = null;
   selectedImageFile: File | null = null;
-  model?: Property;
+  model?: UpdatePropertyRequest;
+  model1?: Property;
   unitImageFiles: { [index: number]: File } = {};
   message: string = '';
   propertyId: string = '';
@@ -47,7 +49,7 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
     private propertyService: PropertyService,
     private imageService: ImageService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.features$ = this.propertyService.getAllFeatures();
@@ -62,17 +64,17 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
           this.propertyId = this.id;
           this.getPropertyByIdSubscription = this.propertyService.getPopertyById(this.id).subscribe({
             next: (response) => {
-              this.model = response;
+              this.model1 = response;
 
-              this.model.generalFeatures = (response.generalFeatures || []).map((f: any) => f.id);
-              this.model.indoorFeatures = (response.indoorFeatures || []).map((f: any) => f.id);
-              this.model.outDoorFeatures = (response.outDoorFeatures || []).map((f: any) => f.id);
+              this.model1.generalFeatures = (response.generalFeatures || []).map((f: any) => f.id);
+              this.model1.indoorFeatures = (response.indoorFeatures || []).map((f: any) => f.id);
+              this.model1.outDoorFeatures = (response.outDoorFeatures || []).map((f: any) => f.id);
               this.initializePolicyDescriptions();
 
-              if (!this.model.units) this.model.units = [];
+              if (!this.model1.units) this.model1.units = [];
 
-              if (this.model.documentId) {
-                this.imageService.getFileByDocumentId(this.model.documentId).subscribe({
+              if (this.model1.documentId) {
+                this.imageService.getFileByDocumentId(this.model1.documentId).subscribe({
                   next: (fileResponse: FileResponse) => {
                     this.propertyImageUrl = `data:image/${fileResponse.extension.replace('.', '')};base64,${fileResponse.base64}`;
                   },
@@ -80,7 +82,7 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
                 });
               }
 
-              this.model.units.forEach((unit, index) => {
+              this.model1.units.forEach((unit, index) => {
                 if (unit.documentId) {
                   this.imageService.getFileByDocumentId(unit.documentId).subscribe({
                     next: (fileResponse: FileResponse) => {
@@ -229,7 +231,7 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
     formData.append('policyDescriptions', JSON.stringify(this.model.policyDescriptions));
     formData.append('units', JSON.stringify(this.model.units));
 
-    
+
 
     this.updatePropertySubscription = this.propertyService.updateProperty(this.propertyId, formData).subscribe({
       next: () => {

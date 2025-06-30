@@ -1,12 +1,16 @@
 import { Unit } from "./unit.model";
+import { UpdatePolicyDescription } from "./update-policy-description.model";
 
 export interface UpdatePropertyRequest {
-    name: string;
-    location: string;
-    type: string;
-    description: string;
-    generalFeatures: number[];
-    outdoorFeatures: number[];
-    indoorFeatures: number[];
-    units: Unit[];
+    id: number;
+        name: string;
+        location: string;
+        type: string;
+        documentId: string;
+        description: string;
+        generalFeatures: number[];
+        outDoorFeatures: number[];
+        indoorFeatures: number[];
+        units: Unit[];
+        policyDescriptions: UpdatePolicyDescription[];
 }

@@ -22,6 +22,7 @@ import { EditUnitComponent } from './features/unit/edit-unit/edit-unit/edit-unit
 import { PaymentListComponent } from './features/unit/payments/payment-list/payment-list/payment-list.component';
 import { UnitPaymentListComponent } from './features/unit/payments/unit-payment-list/unit-payment-list/unit-payment-list.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { PageComponent } from './features/tenant/dashboard/components/page/page.component';
 
 
 
@@ -44,7 +45,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     BookingSummaryComponent,
     EditUnitComponent,
     PaymentListComponent,
-    UnitPaymentListComponent
+    UnitPaymentListComponent,
+    PageComponent
   ],
   imports: [
     BrowserModule,

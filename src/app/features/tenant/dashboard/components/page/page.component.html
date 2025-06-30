@@ -1,0 +1,114 @@
+<div class="dashboard-grid" *ngIf="unitDetails && propertyDetails">
+  <!-- CENTER COLUMN (now displayed first) -->
+  <div class="dashboard-center moved-left">
+    <div class="card">
+      <h4> Payment Summary</h4>
+      <p><strong>Total Paid:</strong> KES {{ totalPaid | number:'1.0-0' }}</p>
+
+      <ng-container *ngIf="overdueBalance !== null; else normalBalance">
+        <p><strong>Balance (Overpay):</strong>
+          <span class="overdue">KES {{ overdueBalance | number:'1.0-0' }}</span>
+        </p>
+      </ng-container>
+
+      <ng-template #normalBalance>
+        <p><strong>Balance:</strong>
+          <span [class.overdue]="unitDetails.price - totalPaid > 0">
+            KES {{ unitDetails.price - totalPaid | number:'1.0-0' }}
+          </span>
+        </p>
+      </ng-template>
+
+      <div class="bar-placeholder">[ Rent Trend Chart]</div>
+    </div>
+
+    <div class="card" *ngIf="payments.length > 0">
+      <h4> Payment History</h4>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Unit</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Paid On</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let payment of payments">
+            <td>{{ payment.unitId }}</td>
+            <td>KES {{ payment.amount | number:'1.0-0' }}</td>
+            <td>{{ payment.status }}</td>
+            <td>{{ payment.createdAt | date }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- LEFT COLUMN (now displayed second) -->
+  <div class="dashboard-left moved-center">
+    <div class="card">
+      <h4> Unit Details</h4>
+      <p><strong>Door No:</strong> {{ unitDetails.doorNumber }}</p>
+      <p><strong>Rent:</strong> KES {{ unitDetails.price | number:'1.0-0' }}</p>
+      <p><strong>Status:</strong> {{ unitDetails.status }}</p>
+      <p><strong>Size:</strong> {{ unitDetails.size }} m²</p>
+      <p><strong>Floor:</strong> {{ unitDetails.floor }}</p>
+      <p><strong>Bathrooms:</strong> {{ unitDetails.bathrooms }}</p>
+      <p><strong>Unit Type:</strong> {{ unitDetails.type }}</p>
+    </div>
+
+    <div class="card">
+      <h4> Property Info</h4>
+      <ul>
+        <li><strong>Name:</strong> {{ propertyDetails.name }}</li>
+        <li><strong>Location:</strong> {{ propertyDetails.location }}</li>
+        <li><strong>Type:</strong> {{ propertyDetails.type }}</li>
+        <li><strong>Description:</strong> {{ propertyDetails.description }}</li>
+
+        <li *ngIf="propertyDetails.generalFeatures.length > 0">
+          <strong>General Features:</strong>
+          <ul>
+            <li *ngFor="let feature of propertyDetails.generalFeatures">{{ feature.name }}</li>
+          </ul>
+        </li>
+
+        <li *ngIf="propertyDetails.indoorFeatures.length > 0">
+          <strong>Indoor Features:</strong>
+          <ul>
+            <li *ngFor="let feature of propertyDetails.indoorFeatures">{{ feature.name }}</li>
+          </ul>
+        </li>
+
+        <li *ngIf="propertyDetails.outDoorFeatures.length > 0">
+          <strong>Outdoor Features:</strong>
+          <ul>
+            <li *ngFor="let feature of propertyDetails.outDoorFeatures">{{ feature.name }}</li>
+          </ul>
+        </li>
+
+        <li *ngIf="propertyDetails.policyDescriptions.length > 0">
+          <strong>Policies:</strong>
+          <ul>
+            <li *ngFor="let policy of propertyDetails.policyDescriptions">{{ policy.name }}</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- RIGHT COLUMN (unchanged) -->
+  <div class="dashboard-right">
+    <div class="card">
+      <h4> Quick Actions</h4>
+      <button class="btn"> Pay Rent</button>
+      <button class="btn-outline"> View Lease</button>
+    </div>
+
+    <div class="card">
+      <h4> Announcements</h4>
+      <p><strong>Reminder:</strong> Ensure rent is paid before 5th of every month.</p>
+      <p><strong>Notice:</strong> Power maintenance on Sunday from 9AM to 1PM.</p>
+    </div>
+  </div>
+</div>
