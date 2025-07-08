@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UnitService } from '../../../services/unit.service';
 import { BookingService } from '../../services/booking.service';
 import { BookingRequest } from '../../models/booking-request.model';
+import { ImageService } from 'src/app/features/shared/images/service/image.service';
+import { FileResponse } from 'src/app/features/shared/images/models/file-response.model';
 
 @Component({
   selector: 'app-create-booking-request',
@@ -14,6 +16,7 @@ import { BookingRequest } from '../../models/booking-request.model';
 export class CreateBookingRequestComponent implements OnInit {
   unitId!: number;
   unitDetails!: Unit;
+  unitImageUrl: string = '';
   tenantId!: number;
   notes: string = '';
   bookingResponse?: BookingResponse;
@@ -24,30 +27,38 @@ export class CreateBookingRequestComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private bookingService: BookingService,
-    private unitService: UnitService
+    private unitService: UnitService,
+    private imageService: ImageService
   ) {}
 
   ngOnInit(): void {
-    // Step 1: Extract unitId from route params
     this.route.queryParams.subscribe(params => {
       this.unitId = +params['unitId'];
       this.getUnitDetails(this.unitId);
     });
 
-    // Step 2: Get tenantId from localStorage or auth service
     const storedTenantId = localStorage.getItem('tenantId');
     if (storedTenantId) {
       this.tenantId = +storedTenantId;
-    } else {
-      this.errorMessage = 'Tenant ID not found. Please log in.';
     }
   }
 
-  // Step 3: Fetch unit details from API
   getUnitDetails(unitId: number): void {
     this.unitService.getUnitById(unitId.toString()).subscribe({
       next: (data) => {
         this.unitDetails = data;
+
+        // Fetch the image using documentId
+        if (this.unitDetails.documentId) {
+          this.imageService.getFileByDocumentId(this.unitDetails.documentId).subscribe({
+            next: (fileResponse: FileResponse) => {
+              this.unitImageUrl = `data:image/${fileResponse.extension.replace('.', '')};base64,${fileResponse.base64}`;
+            },
+            error: (err) => {
+              console.error('Error fetching unit image', err);
+            }
+          });
+        }
       },
       error: (err) => {
         this.errorMessage = 'Failed to load unit details.';
@@ -56,7 +67,6 @@ export class CreateBookingRequestComponent implements OnInit {
     });
   }
 
-  // Step 4: Send booking request
   confirmBooking(): void {
     if (!this.unitId || !this.tenantId) {
       this.errorMessage = 'Invalid unit or tenant.';
@@ -75,11 +85,9 @@ export class CreateBookingRequestComponent implements OnInit {
       next: (response) => {
         this.bookingResponse = response;
         this.isSubmitting = false;
-        // Optionally navigate to a booking summary or confirmation page
         this.router.navigate(['/booking/summary'], {
           queryParams: { reference: response.bookingReference }
         });
-        
       },
       error: (err) => {
         this.errorMessage = 'Booking failed. Please try again.';
@@ -88,7 +96,4 @@ export class CreateBookingRequestComponent implements OnInit {
       }
     });
   }
-
-  
-
 }

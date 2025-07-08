@@ -1,5 +1,5 @@
 export interface UpdatePolicyDescription {
-    id: number;
+    propertyId: number;
     name: string;
     policyId: number;
   }

@@ -14,6 +14,7 @@ import { BookingSummaryComponent } from './features/unit/booking-preview/booking
 import { EditUnitComponent } from './features/unit/edit-unit/edit-unit/edit-unit.component';
 import { PaymentListComponent } from './features/unit/payments/payment-list/payment-list/payment-list.component';
 import { UnitPaymentListComponent } from './features/unit/payments/unit-payment-list/unit-payment-list/unit-payment-list.component';
+import { PageComponent } from './features/tenant/dashboard/components/page/page.component';
 
 const routes: Routes = [
   {
@@ -71,6 +72,10 @@ const routes: Routes = [
   {
     path: 'unit/payment/:id',
     component: UnitPaymentListComponent
+  },
+  {
+    path: 'portal/tenant/:id',
+    component: PageComponent
   }
 
 ];

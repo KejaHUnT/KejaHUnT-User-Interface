@@ -1,67 +1,73 @@
 <div class="booking-preview-container container mt-4">
-    <div class="card shadow-sm p-4">
-      <h2 class="title text-center mb-4">Preview Booking</h2>
-  
-      <!-- Error message -->
-      <div *ngIf="errorMessage" class="alert alert-danger">
-        {{ errorMessage }}
-      </div>
-  
-      <!-- Unit Details -->
-      <div *ngIf="unitDetails" class="unit-details mb-4">
-        <h5 class="mb-3">Unit Information</h5>
-        <div class="row">
-          <div class="col-md-6 mb-2"><strong>Rent:</strong> KES {{ unitDetails.price | number:'1.0-0' }}</div>
-          <div class="col-md-6 mb-2"><strong>Size:</strong> {{ unitDetails.size }}</div>
-          <div class="col-md-6 mb-2"><strong>Bathrooms:</strong> {{ unitDetails.bathrooms }}</div>
-          <div class="col-md-6 mb-2"><strong>Floor:</strong> {{ unitDetails.floor }}</div>
+  <div class="card shadow-sm p-4">
+    <h2 class="title text-center mb-4">Preview Booking</h2>
+
+    <!-- Error message -->
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Unit Details -->
+    <div *ngIf="unitDetails" class="unit-details mb-4">
+      <h5 class="mb-3">Unit Information</h5>
+
+      <div class="row align-items-center">
+        <!-- Image Column -->
+        <div class="col-md-4 mb-3">
+          <img *ngIf="unitImageUrl" [src]="unitImageUrl" alt="Unit Image" class="img-fluid rounded shadow-sm"
+            style="max-height: 200px; object-fit: cover; width: 100%;" />
+          <div *ngIf="!unitImageUrl" class="text-muted">No image available</div>
+        </div>
+
+        <!-- Details Column -->
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <strong>Rent:</strong> KES {{ unitDetails.price | number:'1.0-0' }}
+            </div>
+            <div class="col-md-6 mb-2">
+              <strong>Size:</strong> {{ unitDetails.size }}
+            </div>
+            <div class="col-md-6 mb-2">
+              <strong>Bathrooms:</strong> {{ unitDetails.bathrooms }}
+            </div>
+            <div class="col-md-6 mb-2">
+              <strong>Floor:</strong> {{ unitDetails.floor }}
+            </div>
+          </div>
         </div>
       </div>
-  
-      <!-- Editable Tenant ID -->
-      <div class="form-group mb-3">
-        <label for="tenantId" class="form-label">Tenant ID (for testing):</label>
-        <input
-          type="number"
-          id="tenantId"
-          class="form-control"
-          [(ngModel)]="tenantId"
-          placeholder="Enter Tenant ID"
-        />
-      </div>
-  
-      <!-- Notes input -->
-      <div class="form-group mb-4">
-        <label for="notes" class="form-label">Notes (optional):</label>
-        <textarea
-          id="notes"
-          class="form-control"
-          [(ngModel)]="notes"
-          rows="3"
-          placeholder="You can include any special requests or information here..."
-        ></textarea>
-      </div>
-  
-      <!-- Confirm Booking Button -->
-      <div class="d-grid gap-2">
-        <button
-          class="btn btn-primary btn-lg"
-          (click)="confirmBooking()"
-          [disabled]="isSubmitting"
-        >
-          {{ isSubmitting ? 'Booking...' : 'Confirm Booking' }}
-        </button>
-      </div>
-  
-      <!-- Success message -->
-      <div *ngIf="bookingResponse" class="alert alert-success mt-4">
-        <h5 class="alert-heading">Booking Successful!</h5>
-        <p>
-          <strong>Booking Reference:</strong> <code>{{ bookingResponse.bookingReference }}</code><br />
-          <strong>Status:</strong> {{ bookingResponse.status }}
-        </p>
-        <p>You will be contacted shortly with further information.</p>
-      </div>
+    </div>
+
+
+    <!-- Editable Tenant ID -->
+    <div class="form-group mb-3">
+      <label for="tenantId" class="form-label">Tenant ID (for testing):</label>
+      <input type="number" id="tenantId" class="form-control" [(ngModel)]="tenantId" placeholder="Enter Tenant ID" />
+    </div>
+
+    <!-- Notes input -->
+    <div class="form-group mb-4">
+      <label for="notes" class="form-label">Notes (optional):</label>
+      <textarea id="notes" class="form-control" [(ngModel)]="notes" rows="3"
+        placeholder="You can include any special requests or information here..."></textarea>
+    </div>
+
+    <!-- Confirm Booking Button -->
+    <div class="d-grid gap-2">
+      <button class="btn btn-primary btn-lg" (click)="confirmBooking()" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Booking...' : 'Confirm Booking' }}
+      </button>
+    </div>
+
+    <!-- Success message -->
+    <div *ngIf="bookingResponse" class="alert alert-success mt-4">
+      <h5 class="alert-heading">Booking Successful!</h5>
+      <p>
+        <strong>Booking Reference:</strong> <code>{{ bookingResponse.bookingReference }}</code><br />
+        <strong>Status:</strong> {{ bookingResponse.status }}
+      </p>
+      <p>You will be contacted shortly with further information.</p>
     </div>
   </div>
-  
+</div>
