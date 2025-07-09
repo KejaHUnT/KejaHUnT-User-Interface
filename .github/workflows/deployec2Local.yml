@@ -1,41 +1,40 @@
 name: Build and Deploy Angular App in ec2
-
 on:
   workflow_dispatch:
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Angular App
         uses: actions/checkout@v3
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-
       - name: Install Dependencies
         run: npm install
-
       - name: Build Angular App
         run: npm run ng build
-
       - name: Save SSH key
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.EC2_KEY }}" > ~/.ssh/ec2_key.pem
           chmod 600 ~/.ssh/ec2_key.pem
-
       - name: Upload Angular Build to EC2
         run: |
           rsync -avz -e "ssh -i ~/.ssh/ec2_key.pem -o StrictHostKeyChecking=no" \
             --rsync-path="sudo rsync" \
             dist/keja-hun-t/ \
             ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/var/www/html/
-
-
+      - name: Install Ansible
+        run: pip install ansible
+      - name: Run Ansible Provisioning
+        run: |
+          ansible-playbook -i inventory.yml playbook.yml
+        env:
+          ANSIBLE_HOST: ${{ secrets.EC2_HOST }}
+          ANSIBLE_USER: ${{ secrets.EC2_USER }}
+          ANSIBLE_SSH_PRIVATE_KEY_FILE: ~/.ssh/ec2_key.pem
       - name: Configure Nginx on EC2
         run: |
           ssh -i ~/.ssh/ec2_key.pem -o StrictHostKeyChecking=no \
@@ -47,7 +46,6 @@ jobs:
                   root /var/www/html;
                   index index.html;
                   server_name _;
-
                   location / {
                       try_files \$uri \$uri/ /index.html;
                   }
