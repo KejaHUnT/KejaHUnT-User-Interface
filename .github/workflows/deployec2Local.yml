@@ -30,7 +30,7 @@ jobs:
         run: pip install ansible
       - name: Run Ansible Provisioning
         run: |
-          ansible-playbook -i inventory.yml playbook.yml
+          ansible-playbook -i ansible/inventory.yml ansible/playbook.yml
         env:
           ANSIBLE_HOST: ${{ secrets.EC2_HOST }}
           ANSIBLE_USER: ${{ secrets.EC2_USER }}
