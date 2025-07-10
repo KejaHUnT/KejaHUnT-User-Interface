@@ -2,11 +2,11 @@
 - hosts: web
   become: yes
   vars:
-    api_base_url: "https://api.yourapp.com"
-    tenant_api_base_url: "https://tenant.yourapp.com"
-    file_handler_api_base_url: "https://files.yourapp.com"
-    booking_api_base_url: "https://booking.yourapp.com"
-    payment_api_base_url: "https://payment.yourapp.com"
+    api_base_url: "http://34.238.253.105:5000/api"
+    tenant_api_base_url: "http://34.238.253.105:5000/tenant"
+    file_handler_api_base_url: "http://34.238.253.105:5000/files"
+    booking_api_base_url: "http://34.238.253.105:5000/booking"
+    payment_api_base_url: "http://34.238.253.105:5000/payment"
     app_path: "/var/www/html"
   
   tasks:
