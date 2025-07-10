@@ -13,4 +13,5 @@
     - name: Generate env.js from template
       template:
         src: env.js.j2
-        dest: "{{ app_path }}/env.js"
+        dest: "{{ app_path }}/assets/env.js"
+        mode: '0644'
