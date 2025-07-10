@@ -29,12 +29,11 @@ jobs:
       - name: Install Ansible
         run: pip install ansible
       - name: Run Ansible Provisioning
+      - name: Run Ansible Provisioning
         run: |
-          ansible-playbook -i ansible/inventory.yml ansible/playbook.yml
-        env:
-          ANSIBLE_HOST: ${{ secrets.EC2_HOST }}
-          ANSIBLE_USER: ${{ secrets.EC2_USER }}
-          ANSIBLE_SSH_PRIVATE_KEY_FILE: ~/.ssh/ec2_key.pem
+          ansible-playbook -i ansible/inventory.yml ansible/playbook.yml \
+            --private-key /tmp/ec2-key.pem \
+            --extra-vars "ec2_public_ip=${{ secrets.EC2_HOST }} ec2_user=${{ secrets.EC2_USER }}"
       - name: Configure Nginx on EC2
         run: |
           ssh -i ~/.ssh/ec2_key.pem -o StrictHostKeyChecking=no \
