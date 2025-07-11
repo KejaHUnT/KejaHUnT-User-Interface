@@ -1,3 +1,3 @@
-#!/bin/sh                    
-envsubst < template > env.js # Replaces ${VARIABLES} with actual values
-nginx -g 'daemon off;'       # Starts nginx web server in foreground
+#!/bin/sh
+envsubst < /usr/share/nginx/html/assets/env.template.js > /usr/share/nginx/html/assets/env.js
+nginx -g 'daemon off;'
