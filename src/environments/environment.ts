@@ -1,9 +1,8 @@
 export const environment = {
-    apiBaseUrl: 'https://localhost:7102/properties',
-    //apiBaseUrl: 'http://ec2-52-91-234-135.compute-1.amazonaws.com:5000',
-    tenantApiBaseUrl: 'https://localhost:8000',
-    fileHandlerApiBaseUrl: 'https://localhost:7115',
-    bookingApiBaseUrl: 'https://localhost:7160',
-    paymentApiBaseUrl: 'https://localhost:7299',
-    accessApiBaseUrl: 'https://localhost:7102/access',
+
+  apiBaseUrl: (window as any)._env?.API_BASE_URL || 'http://localhost:7209',
+  tenantApiBaseUrl: (window as any)._env?.TENANT_API_BASE_URL || 'https://localhost:7159',
+  fileHandlerApiBaseUrl: (window as any)._env?.FILE_HANDLER_API_BASE_URL || 'https://localhost:7115',
+  bookingApiBaseUrl: (window as any)._env?.BOOKING_API_BASE_URL || 'https://localhost:7160',
+  paymentApiBaseUrl: (window as any)._env?.PAYMENT_API_BASE_URL || 'https://localhost:7299',
 };

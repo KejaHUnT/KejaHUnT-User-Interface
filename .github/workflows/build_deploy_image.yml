@@ -1,0 +1,40 @@
+name: Build and Deploy Container
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Angular App
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install Dependencies
+        run: npm install
+      - name: Build Angular App
+        run: npm run ng build
+      - name: Build Docker Image
+        run: |
+          docker build -t kalukwo/kejahunt-angular:latest .
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      - name: Push to Docker Hub
+        run: |
+          docker push kalukwo/kejahunt-angular:latest
+          
+  trigger-remote:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger remote workflow
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.GCP_TRIGGER_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/Kalukwo/KejaHUnTinfrastructure/actions/workflows/deploy.yml/dispatches \
+            -d '{"ref":"main"}'          
