@@ -6,7 +6,7 @@ export interface UpdateTenantRequest {
     idNo: number;
     email: string;
     employer: string;
-    units: Unit[];
+    unitId: number;
     updatedAt: Date;
     updatedBy: string;
 }

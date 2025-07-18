@@ -1,0 +1,63 @@
+.booking-card-container {
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+  background-color: #f5f5f5;
+}
+
+.booking-card {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 700px;
+  padding: 24px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section-heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.unit-image {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.detail-group p {
+  margin: 4px 0;
+  font-size: 15px;
+}
+
+.price {
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+.action-section {
+  text-align: right;
+}
+
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.error-message {
+  margin-top: 16px;
+  color: #d32f2f;
+  font-weight: 500;
+}

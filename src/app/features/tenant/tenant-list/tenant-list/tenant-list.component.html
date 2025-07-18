@@ -15,7 +15,7 @@
                     <th>Id Number</th>
                     <th>Email</th>
                     <th>Employer</th>
-                    <th>Units</th>
+                    <th>Unit</th>
                     <th></th>
                 </tr>
             </thead>
@@ -27,12 +27,7 @@
                     <td>{{tenant.email}}</td>
                     <td>{{tenant.employer}}</td>
                     <td>
-                        <ul class="list-group">
-                            <li *ngFor="let unit of tenant.units" class="list-group-item">
-                                 PRICE: {{ unit.price | currency }}| Type: {{unit.type}} | Bathrooms: {{ unit.bathrooms }} | Size: {{ unit.size }} | Units Owned  {{ unit.doorNumber }} 
-                             </li>
-
-                        </ul>
+                        {{tenant.unitId ? tenant.unitId : 'N/A'}}
                     </td>
                     <td>
                         <div class="mt-3 d-flex">

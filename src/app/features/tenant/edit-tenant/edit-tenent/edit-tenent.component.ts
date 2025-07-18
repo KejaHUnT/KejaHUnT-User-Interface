@@ -34,8 +34,8 @@ export class EditTenentComponent implements OnInit, OnDestroy{
                 this.getTenantByIdSubscription = this.tenantService.getTenantById(this.id).subscribe({
                   next: (response) => {
                     this.model = response;
-                    if (!this.model.units) {
-                      this.model.units = [];
+                    if (!this.model.unitId) {
+                      this.model.unitId = 0;
                     }
                   }
                 });
@@ -54,18 +54,7 @@ export class EditTenentComponent implements OnInit, OnDestroy{
           email: this.model.email,
           idNo: this.model.idNo,
           employer: this.model.employer,
-          units: this.model.units.map(unit => ({
-            id: unit.id,
-            price: unit.price,
-            type: unit.type,
-            bathrooms: unit.bathrooms,
-            size: unit.size,
-            floor: unit.floor,
-            doorNumber: unit.doorNumber,
-            status: unit.status,
-            propertyId: unit.propertyId,
-            documentId: unit.documentId,
-          })),
+          unitId: this.model.unitId,
           updatedAt: new Date(),
           updatedBy: 'admin'
         };

@@ -1,0 +1,60 @@
+<div *ngIf="unit && property" class="booking-card-container">
+  <div class="booking-card mat-elevation-z4">
+
+    <h2 class="section-heading">Confirm Your Booking</h2>
+
+    <!-- Unit Image -->
+    <img *ngIf="unitImageUrl"
+         [src]="unitImageUrl"
+         alt="Unit Image"
+         class="unit-image" />
+
+    <!-- Property and Unit Details -->
+    <div class="detail-grid">
+
+      <!-- Property Details -->
+      <div class="detail-group">
+        <p><strong>Property Name:</strong> {{ property.name }}</p>
+        <p><strong>Property Type:</strong> {{ property.type }}</p>
+        <p><strong>Location:</strong> {{ property.location }}</p>
+      </div>
+
+      <!-- Unit Details -->
+      <div class="detail-group">
+        <p><strong>Unit Door Number:</strong> {{ unit.doorNumber }}</p>
+        <p><strong>Unit ID:</strong> {{ unit.id }}</p>
+        <p><strong>Floor:</strong> {{ unit.floor }}</p>
+        <p><strong>Status:</strong> {{ unit.status }}</p>
+      </div>
+
+      <!-- Unit Specifications -->
+      <div class="detail-group">
+        <p><strong>Price:</strong> <span class="price">Ksh {{ unit.price | number:'1.0-2' }}</span></p>
+        <p><strong>Bathrooms:</strong> {{ unit.bathrooms }}</p>
+        <p><strong>Size:</strong> {{ unit.size }} m²</p>
+      </div>
+
+    </div>
+
+    <!-- Confirm Button -->
+    <div class="action-section">
+      <button mat-raised-button color="primary"
+              (click)="confirmBooking()"
+              [disabled]="isSubmitting">
+        Confirm Booking
+      </button>
+    </div>
+
+    <!-- Submission State -->
+    <div *ngIf="isSubmitting" class="loading-spinner">
+      <mat-spinner diameter="30"></mat-spinner>
+      <span>Submitting...</span>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+  </div>
+</div>

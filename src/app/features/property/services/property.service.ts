@@ -19,11 +19,11 @@ export class PropertyService {
 
   constructor(private http: HttpClient) { }
   createProperty(formData: FormData): Observable<Property> {
-    return this.http.post<Property>(`${environment.apiBaseUrl}/api/property`, formData);
+    return this.http.post<Property>(`${environment.apiBaseUrl}/api/property?addAuth=true`, formData);
   }
 
   getAllProperties(): Observable<Property[]> {
-    return this.http.get<Property[]>(`${environment.apiBaseUrl}/api/property`);
+    return this.http.get<Property[]>(`${environment.apiBaseUrl}/api/property?addAuth=true`);
   }
 
   getPopertyById(id: string): Observable<Property> {
