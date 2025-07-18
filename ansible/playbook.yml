@@ -2,7 +2,7 @@
 - hosts: web
   become: yes
   vars:
-    api_base_url: "http://34.238.253.105:5000/properties"
+    api_base_url: "http://35.207.12.140:5000/properties"
     tenant_api_base_url: "http://34.238.253.105:5000/tenant"
     file_handler_api_base_url: "http://34.238.253.105:5000/files"
     booking_api_base_url: "http://34.238.253.105:5000/booking"
