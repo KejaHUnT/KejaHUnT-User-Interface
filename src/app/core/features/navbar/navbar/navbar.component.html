@@ -1,36 +1,19 @@
 <nav class="navbar navbar-expand-lg bg-light custom-navbar">
-  <div class="container-fluid">
-    <div class="navbar-left">
-      <ul class="navbar-nav flex-row">
-        <!-- <li class="nav-item me-3">
-          <a class="nav-link active" href="#">Home</a>
-        </li> -->
-        <li class="nav-item me-3">
-          <a class="nav-link active" [routerLink]="['admin/property']">Properties</a>
-        </li>
-        
-        <li class="nav-item me-3">
-          <a class="nav-link active" [routerLink]="['admin/tenant']">Tenants</a>
-        </li>
-        <li class="nav-item me-3" *ngIf="showBookingButton">
-          <a class="nav-link btn btn-warning text-secondary"
-             [routerLink]="['/booking/summary']"
-             [queryParams]="{ reference: bookingReference }">
-            View Booking
-          </a>
-        </li>
-        
-      </ul>
+  <div class="container-fluid d-flex justify-content-start align-items-center">
+
+    <!-- LEFT SIDE: Brand + BUY | RENT | SELL -->
+    <div class="navbar-left d-flex align-items-center">
+      <span class="navbar-brand text-primary">
+        <a class="nav-link" [routerLink]="['/']">KejaHUnT</a>
+      </span>
+      <div class="nav-links d-flex gap-3 fw-semibold ms-3">
+        <a class="nav-link" [routerLink]="['/buy']">BUY</a>
+        <span>|</span>
+        <a class="nav-link" [routerLink]="['/rent']">RENT</a>
+        <span>|</span>
+        <a class="nav-link" [routerLink]="['/sell']">SELL</a>
+      </div>
     </div>
 
-    <div class="navbar-center">
-      <a class="navbar-brand mx-auto" href="#">KejaHUnT</a>
-    </div>
   </div>
 </nav>
-
-<!-- Optional Search Form Below -->
-<form class="d-flex justify-content-center w-100 mt-3" role="search">
-  <input class="form-control w-25 me-2" type="search" placeholder="Search" aria-label="Search">
-  <button class="btn btn-outline-success" type="submit">Search</button>
-</form>

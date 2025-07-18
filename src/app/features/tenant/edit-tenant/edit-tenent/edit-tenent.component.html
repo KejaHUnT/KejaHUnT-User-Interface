@@ -30,57 +30,11 @@
           <input type="text" id="employer" name="employer" class="form-control custom-input" [(ngModel)]="model.employer" required>
         </div>
   
-        <h4 class="mt-4">Units</h4>
-        <div *ngFor="let unit of model.units; let i = index" class="card shadow-sm p-4 mb-4">
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Price</label>
-              <input type="number" name="price{{ i }}" class="form-control custom-input" [(ngModel)]="unit.price" required>
-            </div>
-  
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Type</label>
-              <input type="text" name="unitType{{ i }}" class="form-control custom-input" [(ngModel)]="unit.type" required>
-            </div>
-  
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Bathrooms</label>
-              <input type="number" name="bathrooms{{ i }}" class="form-control custom-input" [(ngModel)]="unit.bathrooms" required>
-            </div>
-  
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Size (sq ft)</label>
-              <input type="number" name="size{{ i }}" class="form-control custom-input" [(ngModel)]="unit.size" required>
-            </div>
-  
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Floor</label>
-              <input type="number" name="floor{{ i }}" class="form-control custom-input" [(ngModel)]="unit.floor" required>
-            </div>
-
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Floor</label>
-              <input type="text" name="doorNumber{{ i }}" class="form-control custom-input" [(ngModel)]="unit.doorNumber" required>
-            </div>
-
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Floor</label>
-              <input type="text" name="status{{ i }}" class="form-control custom-input" [(ngModel)]="unit.status" required>
-            </div>
-  
-            <div class="d-flex justify-content-end">
-              <button type="button" class="btn btn-danger btn-sm mt-2" (click)="model.units.splice(i, 1)">
-                Remove Unit
-              </button>
-            </div>
-          </div>
+        <div class="form-group mb-4">
+          <label for="employer" class="form-label">Unit</label>
+          <input type="number" id="unitId" name="unitId" class="form-control custom-input" [(ngModel)]="model.unitId" required>
         </div>
-  
-        <!-- Add Unit Button -->
-        <button type="button" class="btn btn-outline-primary mb-4" (click)="model.units.push({id: 0, price: 0, propertyId: 0, type: '', bathrooms: 0, size: 0, floor: 1, doorNumber: '', status: '', documentId: '' })">
-          + Add Unit
-        </button>
-  
+
         <!-- Updated By -->
         <div class="d-flex justify-content-between">
           <button type="submit" class="btn btn-primary px-4 py-2">Save</button>

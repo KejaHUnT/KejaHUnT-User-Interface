@@ -9,12 +9,14 @@ import { AddTenantComponent } from './features/tenant/add-tenant/add-tenant/add-
 import { PropertyDetailsComponent } from './features/public/property-details/property-details/property-details.component';
 import { EditTenentComponent } from './features/tenant/edit-tenant/edit-tenent/edit-tenent.component';
 import { ManagerPortalComponent } from './features/public/manager-portal/manager-portal/manager-portal.component';
-import { CreateBookingRequestComponent } from './features/unit/booking-preview/create-booking-request/create-booking-request/create-booking-request.component';
 import { BookingSummaryComponent } from './features/unit/booking-preview/booking-summary/booking-summary/booking-summary.component';
 import { EditUnitComponent } from './features/unit/edit-unit/edit-unit/edit-unit.component';
 import { PaymentListComponent } from './features/unit/payments/payment-list/payment-list/payment-list.component';
 import { UnitPaymentListComponent } from './features/unit/payments/unit-payment-list/unit-payment-list/unit-payment-list.component';
 import { PageComponent } from './features/tenant/dashboard/components/page/page.component';
+import { LoginComponent } from './features/auth/login/login/login.component';
+import { StepperComponent } from './features/public/onboarding/stepper/stepper/stepper.component';
+import { authGuard } from './features/auth/guard/auth.guard';
 
 const routes: Routes = [
   {
@@ -59,7 +61,8 @@ const routes: Routes = [
   },
   {
     path: 'preview-booking/:unitId',
-    component: CreateBookingRequestComponent
+    component: StepperComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'booking/summary',
@@ -76,6 +79,10 @@ const routes: Routes = [
   {
     path: 'portal/tenant/:id',
     component: PageComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
   }
 
 ];

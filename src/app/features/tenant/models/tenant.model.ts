@@ -7,5 +7,5 @@ export interface Tenant {
     idNo: number;
     email: string;
     employer: string;
-    units: Unit[];
+    unitId: number;
 }

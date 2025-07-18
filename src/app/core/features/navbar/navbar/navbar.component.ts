@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BookingResponse } from 'src/app/features/unit/booking-preview/models/booking-response.model';
 import { BookingService } from 'src/app/features/unit/booking-preview/services/booking.service';
 
@@ -10,8 +11,15 @@ import { BookingService } from 'src/app/features/unit/booking-preview/services/b
 export class NavbarComponent implements OnInit {
   showBookingButton = false;
   bookingReference: string = '';
+  searchQuery: string = '';
+  searchType: string = 'buy';
+  isMobileMenuOpen = false;
 
-  constructor(private bookingService: BookingService) {}
+
+
+  constructor(private bookingService: BookingService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.bookingService.getAllBookings().subscribe({
@@ -26,6 +34,10 @@ export class NavbarComponent implements OnInit {
         this.showBookingButton = false;
       }
     });
+  }
+
+  navigateToLogin(): void {
+    this.router.navigate(['/login']);
   }
 
 }
