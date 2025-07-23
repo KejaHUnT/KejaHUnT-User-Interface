@@ -25,23 +25,28 @@ const routes: Routes = [
   },
   {
     path: 'admin/property',
-    component: PropertyListComponent
+    component: PropertyListComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'admin/property/add',
-    component: AddPropertyComponent
+    component: AddPropertyComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'admin/property/:id',
-    component: EditPropertyComponent
+    component: EditPropertyComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'admin/tenant',
-    component: TenantListComponent
+    component: TenantListComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'admin/tenant/add',
-    component: AddTenantComponent
+    component: AddTenantComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'property/details/:id',
@@ -49,15 +54,18 @@ const routes: Routes = [
   },
   {
     path: 'admin/tenant/:id',
-    component: EditTenentComponent
+    component: EditTenentComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'unit/:id',
-    component: EditUnitComponent
+    component: EditUnitComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'portal/manage',
-    component: ManagerPortalComponent
+    component: ManagerPortalComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'preview-booking/:unitId',
@@ -70,15 +78,18 @@ const routes: Routes = [
   },
   {
     path: 'payment/:id',
-    component: PaymentListComponent
+    component: PaymentListComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'unit/payment/:id',
-    component: UnitPaymentListComponent
+    component: UnitPaymentListComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'portal/tenant/:id',
-    component: PageComponent
+    component: PageComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'login',

@@ -26,8 +26,8 @@ export class TenantService {
   }
 
   getTenantByEmail(email: string): Observable<Tenant> {
-  return this.http.get<Tenant>(`${environment.tenantApiBaseUrl}/api/tenant/${email}`);
-}
+    return this.http.get<Tenant>(`${environment.tenantApiBaseUrl}/api/tenant/${email}`);
+  }
 
   updateTenant(id: string, data: UpdateTenantRequest): Observable<Tenant> {
     return this.http.put<Tenant>(`${environment.tenantApiBaseUrl}/api/tenant/${id}`, data);
