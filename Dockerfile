@@ -11,6 +11,7 @@ FROM nginx:alpine
 COPY --from=build /app/dist/keja-hun-t /usr/share/nginx/html
 COPY --from=build /app/src/assets/env.template.js /usr/share/nginx/html/assets/
 COPY docker-entrypoint.sh /docker-entrypoint.sh
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 RUN chmod +x /docker-entrypoint.sh
 EXPOSE 80
 ENTRYPOINT ["/docker-entrypoint.sh"]
