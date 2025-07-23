@@ -13,10 +13,9 @@ export class AuthInterceptor implements HttpInterceptor {
 
   constructor(private cookieService: CookieService) {}
 
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.shouldInterceptRequest(request)) {
       const token = this.cookieService.get('Authorization');
-
       if (token) {
         const authRequest = request.clone({
           setHeaders: {
@@ -26,11 +25,12 @@ export class AuthInterceptor implements HttpInterceptor {
         return next.handle(authRequest);
       }
     }
-
     return next.handle(request);
   }
 
   private shouldInterceptRequest(request: HttpRequest<any>): boolean {
-    return request.urlWithParams.includes('addAuth=true');
+    // If URL params contain addAuth=false, skip adding token
+    const urlParams = new URLSearchParams(request.urlWithParams.split('?')[1]);
+    return urlParams.get('addAuth') !== 'false';
   }
 }

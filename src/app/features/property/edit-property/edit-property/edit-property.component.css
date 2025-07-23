@@ -1,3 +1,4 @@
+/* Container for the entire property edit form */
 .property-container {
   padding: 1.5rem;
   max-width: 1000px;
@@ -7,22 +8,49 @@
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
 }
 
+/* Property Image Section */
 .image-wrapper {
   position: relative;
   width: 100%;
   aspect-ratio: 3 / 2;
   overflow: hidden;
   border-radius: 10px;
+  margin-bottom: 1rem;
 }
 
-.property-image-img,
-.unit-image-horizontal {
+.property-image-img {
   width: 100%;
   height: auto;
   object-fit: cover;
   border-radius: 10px;
 }
 
+/* Section heading */
+.section-heading {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Form fields */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+.form-control,
+.form-select {
+  border-radius: 8px;
+  font-size: 0.95rem;
+  width: 100%;
+}
+
+/* Unit card styling */
 .unit-card-horizontal {
   display: flex;
   gap: 1.5rem;
@@ -44,30 +72,15 @@
   max-width: 220px;
 }
 
+.unit-image-horizontal {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
 .unit-content-horizontal {
   flex: 1 1 auto;
-}
-
-.unit-content-horizontal .form-label {
-  font-weight: 500;
-  margin-bottom: 0.25rem;
-}
-
-.unit-content-horizontal .form-control,
-.unit-content-horizontal .form-select {
-  border-radius: 8px;
-  font-size: 0.95rem;
-}
-
-.section-heading {
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-.action-buttons {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 /* Features section */
@@ -80,20 +93,19 @@
 }
 
 .feature-group {
-  background-color: var(--card-bg);
+  background-color: var(--card-bg, #fdfdfd);
   padding: 1rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-color, #ddd);
   border-radius: 8px;
   flex: 1 1 30%;
   min-width: 280px;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
 }
 
-/* Feature group labels */
 .feature-group .form-section-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--text-dark);
+  color: var(--text-dark, #333);
   margin-bottom: 0.75rem;
 }
 
@@ -101,8 +113,50 @@
   margin-bottom: 0.5rem;
 }
 
-/* Responsive handling for feature groups */
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.action-buttons button {
+  min-width: 120px;
+}
+
+/* Policy Description Section */
+.policy-group {
+  margin-bottom: 1.5rem;
+}
+
+.policy-group .policy-desc-list {
+  list-style-type: disc;
+  padding-left: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.policy-group .policy-desc-list li {
+  margin-bottom: 0.3rem;
+}
+
+.policy-group .remove-btn {
+  margin-left: 0.5rem;
+  color: red;
+  cursor: pointer;
+}
+
+/* Responsive behavior */
 @media (max-width: 768px) {
+  .unit-card-horizontal {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .unit-image-wrapper-horizontal {
+    max-width: 100%;
+  }
+
   .features-row {
     flex-direction: column;
   }

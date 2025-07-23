@@ -1,6 +1,25 @@
+<!-- Floating background particles -->
+<div class="floating-particles">
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+</div>
+
+<!-- Main Property Container -->
 <div class="property-container" *ngIf="model">
+  <div class="header text-center mb-4">
+    <h2>Edit Property</h2>
+    <p class="text-muted">Update details and manage units</p>
+  </div>
+
   <!-- Property Image Section -->
-  <div class="property-image">
+  <div class="property-image mb-4">
     <div class="image-wrapper">
       <img *ngIf="propertyImageUrl" [src]="propertyImageUrl" alt="{{ model.name }}" class="property-image-img" />
       <div class="overlay">
@@ -13,35 +32,31 @@
     </div>
   </div>
 
-  <!-- Property Form -->
-  <div class="property-header mt-4">
-    <div class="row g-3">
-      <div class="col-md-4">
-        <label class="form-label">Property Name</label>
-        <input class="form-control" [(ngModel)]="model.name" name="name" required />
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Type</label>
-        <input class="form-control" [(ngModel)]="model.type" name="type" required />
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Location</label>
-        <input class="form-control" [(ngModel)]="model.location" name="location" required />
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Description</label>
-        <input class="form-control" [(ngModel)]="model.description" name="description" required />
-      </div>
+  <!-- Property Details Form -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <label class="form-label">Property Name</label>
+      <input class="form-control" [(ngModel)]="model.name" name="name" required />
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Type</label>
+      <input class="form-control" [(ngModel)]="model.type" name="type" required />
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Location</label>
+      <input class="form-control" [(ngModel)]="model.location" name="location" required />
+    </div>
+    <div class="col-md-12">
+      <label class="form-label">Description</label>
+      <textarea class="form-control" [(ngModel)]="model.description" name="description" rows="2"></textarea>
     </div>
   </div>
 
-  <div class="features-section">
-
-    <!-- General Features -->
-    <!-- General Features -->
+  <!-- Features Section -->
+  <div class="features-row">
     <div class="feature-group">
       <div class="form-section-title">General Features</div>
-      <ng-container *ngIf="features$ | async as features">
+      <ng-container *ngIf="features$ | async as features; else loading">
         <div *ngFor="let feature of features" class="form-check">
           <input type="checkbox" class="form-check-input" [checked]="model.generalFeatures.includes(feature.id)"
             (change)="onGeneralFeatureChange($event, feature.id)">
@@ -50,10 +65,9 @@
       </ng-container>
     </div>
 
-    <!-- Indoor Features -->
     <div class="feature-group">
       <div class="form-section-title">Indoor Features</div>
-      <ng-container *ngIf="indoor$ | async as features">
+      <ng-container *ngIf="indoor$ | async as features; else loading">
         <div *ngFor="let feature of features" class="form-check">
           <input type="checkbox" class="form-check-input" [checked]="model.indoorFeatures.includes(feature.id)"
             (change)="onIndoorFeatureChange($event, feature.id)">
@@ -62,10 +76,9 @@
       </ng-container>
     </div>
 
-    <!-- Outdoor Features -->
     <div class="feature-group">
       <div class="form-section-title">Outdoor Features</div>
-      <ng-container *ngIf="outdoor$ | async as features">
+      <ng-container *ngIf="outdoor$ | async as features; else loading">
         <div *ngFor="let feature of features" class="form-check">
           <input type="checkbox" class="form-check-input" [checked]="model.outDoorFeatures.includes(feature.id)"
             (change)="onOutdoorFeatureChange($event, feature.id)">
@@ -73,46 +86,36 @@
         </div>
       </ng-container>
     </div>
-    <!-- Shared loading template -->
-    <ng-template #loading>
-      <p>Loading features...</p>
-    </ng-template>
-
   </div>
 
   <!-- Policies Section -->
-<h3 class="mb-4 text-center">Property Policies</h3>
-<div *ngFor="let policy of policy$ | async">
-  <div class="card mb-3">
-    <div class="card-body" (click)="onSelectPolicy(policy)">
-      <h5>{{ policy.name }}</h5>
+  <h3 class="mb-4 text-center">Property Policies</h3>
+  <div *ngFor="let policy of policy$ | async">
+    <div class="card mb-3 policy-group">
+      <div class="card-body" (click)="onSelectPolicy(policy)">
+        <h5>{{ policy.name }}</h5>
 
-      <div *ngIf="policyDescriptions[policy.id]">
-        <ul class="list-unstyled">
-          <li *ngFor="let desc of policyDescriptions[policy.id]; let j = index"
-              class="d-flex justify-content-between align-items-center mb-1">
-            <span>• {{ desc }}</span>
-            <button type="button" class="btn btn-sm btn-outline-danger"
-                    (click)="removePolicyDescription(policy.id, j)">
-              X
-            </button>
-          </li>
-        </ul>
+        <div *ngIf="policyDescriptions[policy.id]">
+          <ul class="policy-desc-list">
+            <li *ngFor="let desc of policyDescriptions[policy.id]; let j = index">
+              {{ desc }}
+              <span class="remove-btn" (click)="removePolicyDescription(policy.id, j)">×</span>
+            </li>
+          </ul>
 
-        <input class="form-control mt-2"
-               [(ngModel)]="newPolicyDescriptionInputs[policy.id]"
-               name="desc_{{policy.id}}"
-               placeholder="Enter description" />
+          <input class="form-control mt-2"
+                 [(ngModel)]="newPolicyDescriptionInputs[policy.id]"
+                 name="desc_{{policy.id}}"
+                 placeholder="Enter description" />
 
-        <button type="button" class="btn btn-sm btn-success mt-1"
-                (click)="onAddPolicyDescription(policy.id)">
-          Add Description
-        </button>
+          <button type="button" class="btn btn-sm btn-success mt-2"
+                  (click)="onAddPolicyDescription(policy.id)">
+            Add Description
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-
 
   <!-- Units Section -->
   <div class="units-section mt-5">
@@ -168,21 +171,24 @@
       </div>
     </div>
 
-    <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+    <div class="d-flex justify-content-start mt-3 mb-4">
       <button class="btn btn-outline-primary btn-sm" type="button" (click)="addUnit()">+ Add Unit</button>
     </div>
 
     <ng-template #noUnits>
-      <p class="no-units">No units available.</p>
+      <p class="no-units text-muted">No units available. Add some to get started.</p>
     </ng-template>
   </div>
 
-  <!-- Submit -->
+  <!-- Action Buttons -->
   <div class="action-buttons mt-4">
     <button class="btn btn-primary" (click)="onFormSubmit()">Update Property</button>
     <button class="btn btn-danger" (click)="onDelete()">Delete Property</button>
   </div>
 
+  <div *ngIf="message" class="alert alert-info mt-3 text-center">{{ message }}</div>
 
-  <div *ngIf="message" class="alert alert-info mt-3">{{ message }}</div>
+  <ng-template #loading>
+    <p class="text-muted text-center">Loading features...</p>
+  </ng-template>
 </div>

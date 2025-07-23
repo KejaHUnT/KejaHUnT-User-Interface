@@ -1,44 +1,44 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { AuthService } from '../services/auth.service';
-import {jwtDecode} from 'jwt-decode'; // ✅ Correct import
+import { jwtDecode, JwtPayload } from 'jwt-decode';
+
+interface CustomJwtPayload extends JwtPayload {
+  exp: number;
+}
 
 export const authGuard: CanActivateFn = (route, state) => {
-  const cookieService = inject(CookieService);
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  const token = cookieService.get('Authorization');
-  const user = authService.getUser(); // Should return a user object with roles
+  try {
+    const user = authService.getUser();
+    const token = authService.getToken();
 
-  if (token && user) {
-    try {
-      const decodedToken: any = jwtDecode(token.replace('Bearer ', '')); // ✅ Correct usage
-      const expirationDate = decodedToken.exp * 1000; // Convert to milliseconds
-      const currentTime = new Date().getTime();
-
-      if (expirationDate < currentTime) {
-        // Token expired
-        authService.logout();
-        return router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url } });
-      }
-
-      if (user.roles?.includes('Tenant')) {
-        return true;
-      } else {
-        alert('Unauthorized');
-        return false;
-      }
-
-    } catch (error) {
-      console.error('JWT decode failed:', error);
+    if (!token || !user) {
       authService.logout();
       return router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url } });
     }
-  }
 
-  // Not logged in
-  authService.logout();
-  return router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url } });
+    const decodedToken = jwtDecode<CustomJwtPayload>(token);
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    if (!decodedToken.exp || decodedToken.exp < currentTime) {
+      authService.logout();
+      return router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url, expired: 'true' } });
+    }
+
+    const allowedRoles = ['Admin', 'Tenant'];
+    const hasValidRole = user.roles.some(role => allowedRoles.includes(role));
+    if (!hasValidRole) {
+      return router.createUrlTree(['/unauthorized']);
+    }
+
+    return true;
+
+  } catch (error) {
+    console.error('Auth Guard Error:', error);
+    authService.logout();
+    return router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url, error: 'invalid' } });
+  }
 };

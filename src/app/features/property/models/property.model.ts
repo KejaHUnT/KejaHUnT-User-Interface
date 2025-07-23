@@ -11,6 +11,7 @@ export interface Property {
     type: string;
     documentId: string;
     description: string;
+    email: string;
     generalFeatures: GeneralFeatures[];
     outDoorFeatures: outdoorFeature[];
     indoorFeatures: IndoorFeature[];

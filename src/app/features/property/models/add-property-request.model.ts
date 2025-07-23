@@ -5,6 +5,7 @@ export interface AddPropertyRequest {
     location: string;
     type: string;
     description: string;
+    email: string;
     generalFeatures: number[];
     outdoorFeatures: number[];
     indoorFeatures: number[];

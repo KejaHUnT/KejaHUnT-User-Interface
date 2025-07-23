@@ -11,15 +11,23 @@ import { outdoorFeature } from '../models/outdoor-feature.model';
 import { Policy } from '../models/policy.model';
 import { AddPolicyDescription } from '../models/add-policy-description.model';
 import { UpdatePolicyDescription } from '../models/update-policy-description.model';
+import { AuthService } from '../../auth/services/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PropertyService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              private authService: AuthService
+  ) { }
+
+  getPropertiesForLoggedInUser(): Observable<Property[]> {
+    const email = this.authService.getLoggedInUserEmail();  // Get email from auth service
+    return this.http.get<Property[]>(`${environment.apiBaseUrl}/api/property/${email}`);
+  }
   createProperty(formData: FormData): Observable<Property> {
-    return this.http.post<Property>(`${environment.apiBaseUrl}/api/property?addAuth=true`, formData);
+    return this.http.post<Property>(`${environment.apiBaseUrl}/api/properties/pending/submit?addAuth=true`, formData);
   }
 
   getAllProperties(): Observable<Property[]> {
@@ -29,6 +37,8 @@ export class PropertyService {
   getPopertyById(id: string): Observable<Property> {
     return this.http.get<Property>(`${environment.apiBaseUrl}/api/property/${id}`);
   }
+
+  
 
   updateProperty(id: string, formData: FormData): Observable<UpdatePropertyRequest> {
     return this.http.put<UpdatePropertyRequest>(`${environment.apiBaseUrl}/api/property/${id}`, formData);

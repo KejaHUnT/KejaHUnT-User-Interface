@@ -26,7 +26,7 @@ export class PropertyListComponent implements OnInit, OnDestroy {
   
 
   ngOnInit(): void {
-    this.properties$ = this.propertyService.getAllProperties();
+    this.properties$ = this.propertyService.getPropertiesForLoggedInUser();
 
     // Subscribe to the property observable and fetch images for each property
     this.properties$.subscribe({
@@ -54,19 +54,19 @@ export class PropertyListComponent implements OnInit, OnDestroy {
     });
   }
 
-  onDelete(id: string): void {
-    if (id) {
-      this.deletePropertySubscription = this.propertyService.deleteProperty(id).subscribe({
-        next: () => {
-          // Refresh the property list
-          this.properties$ = this.propertyService.getAllProperties();
-        },
-        error: (error) => {
-          console.error('Error deleting property:', error);
-        }
-      });
-    }
-  }
+  // onDelete(id: string): void {
+  //   if (id) {
+  //     this.deletePropertySubscription = this.propertyService.deleteProperty(id).subscribe({
+  //       next: () => {
+  //         // Refresh the property list
+  //         this.properties$ = this.propertyService.getAllProperties();
+  //       },
+  //       error: (error) => {
+  //         console.error('Error deleting property:', error);
+  //       }
+  //     });
+  //   }
+  // }
 
   navigateToProperty(propertyId: number) {
     this.router.navigate(['/admin/property', propertyId]);
@@ -75,7 +75,27 @@ export class PropertyListComponent implements OnInit, OnDestroy {
   goToEditUnit(unitId: number): void {
     this.router.navigate(['/unit', unitId]);
   }
-  
+
+  // Add this method to your PropertyListComponent class
+
+trackByPropertyId(index: number, property: Property): number {
+  return property.id;
+}
+
+// Also update your onDelete method to handle the string conversion:
+onDelete(id: string): void {
+  if (id) {
+    this.deletePropertySubscription = this.propertyService.deleteProperty(id).subscribe({
+      next: () => {
+        // Refresh the property list - use the same method as in ngOnInit
+        this.properties$ = this.propertyService.getPropertiesForLoggedInUser();
+      },
+      error: (error) => {
+        console.error('Error deleting property:', error);
+      }
+    });
+  }
+}
 
   ngOnDestroy(): void {
     this.deletePropertySubscription?.unsubscribe();
