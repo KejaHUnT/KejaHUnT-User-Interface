@@ -29,8 +29,10 @@ export class ConfigService {
         const newConfig = this.parseEnvFile(envFileContent);
         
         if (this.hasConfigChanged(newConfig)) {
-          console.log('Config changed! Reloading...');
-          window.location.reload();
+          console.log('Config changed! Updating...');
+          // Update the config without reloading the page
+          window._env = { ...newConfig };
+          this.currentConfig = { ...newConfig };
         }
       },
       error: (err) => {
