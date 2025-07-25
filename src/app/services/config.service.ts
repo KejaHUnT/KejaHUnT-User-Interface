@@ -24,7 +24,14 @@ export class ConfigService {
     const timestamp = new Date().getTime();
     const envUrl = `/assets/env.js?t=${timestamp}`;
     
-    this.http.get(envUrl, { responseType: 'text' }).subscribe({
+    this.http.get(envUrl, { 
+      responseType: 'text',
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
+    }).subscribe({
       next: (envFileContent) => {
         const newConfig = this.parseEnvFile(envFileContent);
         
