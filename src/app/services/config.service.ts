@@ -20,16 +20,18 @@ export class ConfigService {
   }
 
   private checkForConfigChanges() {
-    // Fetch the env.js file with cache-busting timestamp
+    // Multiple cache-busting strategies
     const timestamp = new Date().getTime();
-    const envUrl = `/assets/env.js?t=${timestamp}`;
+    const random = Math.random().toString(36).substring(7);
+    const envUrl = `/assets/env-v2.js?t=${timestamp}&r=${random}&cb=${Date.now()}`;
     
     this.http.get(envUrl, { 
       responseType: 'text',
       headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
         'Pragma': 'no-cache',
-        'Expires': '0'
+        'Expires': '0',
+        'If-Modified-Since': 'Mon, 26 Jul 1997 05:00:00 GMT'
       }
     }).subscribe({
       next: (envFileContent) => {
