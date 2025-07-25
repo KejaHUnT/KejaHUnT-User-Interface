@@ -1,3 +1,4 @@
+<!-- Property Detail Page Template with Enhanced Info -->
 <div class="property-container" *ngIf="model">
   <!-- Property Image Section -->
   <div class="property-image">
@@ -21,50 +22,107 @@
     </div>
   </div>
 
-  <!-- Units Section -->
-<div class="units-section">
-  <h2 class="section-heading">Available Units</h2>
-
-  <div *ngIf="model.units.length > 0; else noUnits" class="units-grid">
-    <div *ngFor="let unit of model.units; let i = index" class="unit-card-modern">
-      
-      <!-- Unit Image -->
-      <div class="unit-image-wrapper" *ngIf="unitImageUrls[i]">
-        <img [src]="unitImageUrls[i]" alt="{{ unit.type }}" class="unit-image" />
-      </div>
-
-      <!-- Unit Content -->
-      <div class="unit-content">
-        <div class="unit-header-row">
-          <span class="unit-type">{{ unit.type }}</span>
-          <span class="unit-price">Ksh {{ unit.price | number:'1.0-0' }}</span>
-        </div>
-
-        <div class="unit-details-row">
-          <span class="unit-feature">
-            <i class="bi bi-aspect-ratio me-1"></i> {{ unit.size }} m²
-          </span>
-          <span class="unit-feature">
-            <i class="bi bi-layers me-1"></i> Floor {{ unit.floor }}
-          </span>
-          <span class="unit-feature">
-            <i class="bi bi-droplet-half me-1"></i> {{ unit.bathrooms }} Bathrooms
-          </span>
-        </div>
-
-        <div class="unit-actions">
-          <button class="apply-button" (click)="onBookNow(unit)">Book Now</button>
-        </div>
-      </div>
-
+  <!-- Property Description -->
+  <div class="property-info">
+    <div class="info-block">
+      <h2>Description</h2>
+      <p>{{ model.description || 'No description available' }}</p>
+    </div>
+    <div class="info-block">
+      <h2>Email</h2>
+      <p>{{ model.email || 'Not provided' }}</p>
     </div>
   </div>
 
-  <ng-template #noUnits>
-    <p class="no-units">No units available for this property.</p>
-  </ng-template>
-</div>
+  <!-- Features Section -->
+  <div class="property-stats">
+    <div class="stat-item">
+      <p>{{ model.generalFeatures.length || 0 }}</p>
+      <span>General Features</span>
+    </div>
+    <div class="stat-item">
+      <p>{{ model.indoorFeatures.length || 0 }}</p>
+      <span>Indoor Features</span>
+    </div>
+    <div class="stat-item">
+      <p>{{ model.outDoorFeatures.length || 0 }}</p>
+      <span>Outdoor Features</span>
+    </div>
+    <div class="stat-item">
+      <p>{{ model.policyDescriptions.length || 0 }}</p>
+      <span>Policies</span>
+    </div>
+  </div>
 
+  <!-- Feature Lists -->
+  <div class="property-info">
+    <div class="info-block">
+      <h2>General Features</h2>
+      <ul *ngIf="model.generalFeatures?.length; else noGeneral">
+        <li *ngFor="let f of model.generalFeatures">{{ f.name }}</li>
+      </ul>
+      <ng-template #noGeneral><p class="no-units">None</p></ng-template>
+    </div>
+    <div class="info-block">
+      <h2>Indoor Features</h2>
+      <ul *ngIf="model.indoorFeatures?.length; else noIndoor">
+        <li *ngFor="let f of model.indoorFeatures">{{ f.name }}</li>
+      </ul>
+      <ng-template #noIndoor><p class="no-units">None</p></ng-template>
+    </div>
+    <div class="info-block">
+      <h2>Outdoor Features</h2>
+      <ul *ngIf="model.outDoorFeatures?.length; else noOutdoor">
+        <li *ngFor="let f of model.outDoorFeatures">{{ f.name }}</li>
+      </ul>
+      <ng-template #noOutdoor><p class="no-units">None</p></ng-template>
+    </div>
+    <div class="info-block">
+      <h2>Policies</h2>
+      <ul *ngIf="model.policyDescriptions?.length; else noPolicies">
+        <li *ngFor="let p of model.policyDescriptions">{{ p.name }}</li>
+      </ul>
+      <ng-template #noPolicies><p class="no-units">None</p></ng-template>
+    </div>
+  </div>
+
+  <!-- Units Section -->
+  <div class="units-section">
+    <h2 class="section-heading">Available Units</h2>
+    <div *ngIf="model.units.length > 0; else noUnits" class="units-grid">
+      <div *ngFor="let unit of model.units; let i = index" class="unit-card-modern">
+        <div class="unit-image-wrapper" *ngIf="unitImageUrls[i]">
+          <img [src]="unitImageUrls[i]" alt="{{ unit.type }}" class="unit-image" />
+        </div>
+
+        <div class="unit-content">
+          <div class="unit-header-row">
+            <span class="unit-type">{{ unit.type }}</span>
+            <span class="unit-price">Ksh {{ unit.price | number:'1.0-0' }}</span>
+          </div>
+
+          <div class="unit-details-row">
+            <span class="unit-feature">
+              <i class="bi bi-aspect-ratio me-1"></i> {{ unit.size }} m²
+            </span>
+            <span class="unit-feature">
+              <i class="bi bi-layers me-1"></i> Floor {{ unit.floor }}
+            </span>
+            <span class="unit-feature">
+              <i class="bi bi-droplet-half me-1"></i> {{ unit.bathrooms }} Bathrooms
+            </span>
+          </div>
+
+          <div class="unit-actions">
+            <button class="apply-button" (click)="onBookNow(unit)">Book Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #noUnits>
+      <p class="no-units">No units available for this property.</p>
+    </ng-template>
+  </div>
 
   <!-- Back Button -->
   <div class="back-button-container">

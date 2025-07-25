@@ -17,6 +17,12 @@
     <p>Manage your futuristic real estate empire</p>
   </div>
 
+  <div class="property-actions-top">
+    <a class="btn btn-add-property" routerLink="/admin/property/add">
+       Add Property
+    </a>
+  </div>
+
   <!-- Loading State -->
   <div class="loading-spinner" *ngIf="!(properties$ | async)">
     <div class="spinner"></div>
@@ -25,64 +31,54 @@
   <!-- Properties Grid -->
   <div class="properties-grid" *ngIf="properties$ | async as properties">
     <div class="property-card" *ngFor="let property of properties; trackBy: trackByPropertyId">
+
+      <!-- Image Section -->
       <div class="property-image">
-        <img 
-          *ngIf="imageUrls[property.id]; else noImage"
-          [src]="imageUrls[property.id]" 
-          [alt]="property.name"
+        <img *ngIf="imageUrls[property.id]; else noImage" [src]="imageUrls[property.id]" [alt]="property.name"
           loading="lazy">
         <ng-template #noImage>
           <div class="no-image-placeholder">🏢</div>
         </ng-template>
       </div>
-      
+
+      <!-- Content Section -->
       <div class="property-content">
         <h3 class="property-title">{{ property.name }}</h3>
-        <p class="property-location">📍 {{ property.location }}</p>
+        <p class="property-location">{{ property.location }}</p>
         <p class="property-description">{{ property.description || 'No description available' }}</p>
-        
+
         <div class="property-meta">
           <span class="property-type">{{ property.type || 'Property' }}</span>
           <span class="unit-count">{{ property.units.length || 0 }} Units</span>
         </div>
 
         <!-- Features Summary -->
-        <div class="features-summary" *ngIf="property.generalFeatures?.length || property.indoorFeatures?.length || property.outDoorFeatures?.length">
+        <div class="features-summary"
+          *ngIf="property.generalFeatures?.length || property.indoorFeatures?.length || property.outDoorFeatures?.length">
           <div class="feature-badges">
             <span class="feature-badge general" *ngIf="property.generalFeatures?.length">
-              🏠 {{ property.generalFeatures.length }} General
+              {{ property.generalFeatures.length }} General
             </span>
             <span class="feature-badge indoor" *ngIf="property.indoorFeatures?.length">
-              🏡 {{ property.indoorFeatures.length }} Indoor
+              {{ property.indoorFeatures.length }} Indoor
             </span>
             <span class="feature-badge outdoor" *ngIf="property.outDoorFeatures?.length">
-              🌳 {{ property.outDoorFeatures.length }} Outdoor
+              {{ property.outDoorFeatures.length }} Outdoor
             </span>
           </div>
         </div>
 
         <!-- Policy Indicators -->
         <div class="policy-indicators" *ngIf="property.policyDescriptions?.length">
-          <span class="policy-count">📋 {{ property.policyDescriptions.length }} Policies</span>
+          <span class="policy-count"> {{ property.policyDescriptions.length }} Policies</span>
         </div>
-        
+
+        <!-- Actions -->
         <div class="property-actions">
-          <button 
-            class="btn btn-primary"
-            (click)="navigateToProperty(property.id)">
-            View Details
-          </button>
-          <button 
-            class="btn btn-secondary"
-            (click)="goToEditUnit(property.id)"
-            *ngIf="property.units?.length">
-            Manage Units
-          </button>
-          <button 
-            class="btn btn-danger"
-            (click)="onDelete(property.id.toString())">
-            Delete
-          </button>
+          <button class="btn btn-primary" (click)="navigateToProperty(property.id)">View Details</button>
+          <button class="btn btn-secondary" (click)="goToEditUnit(property.id)" *ngIf="property.units?.length">Manage
+            Units</button>
+          <button class="btn btn-danger" (click)="onDelete(property.id.toString())">Delete</button>
         </div>
       </div>
     </div>

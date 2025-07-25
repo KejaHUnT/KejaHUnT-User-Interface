@@ -3,15 +3,16 @@
 
     <!-- LEFT SIDE: Brand + BUY | RENT | SELL -->
     <div class="navbar-left d-flex align-items-center">
-      <span class="navbar-brand text-primary">
-        <a class="nav-link" [routerLink]="['/']">KejaHUnT</a>
-      </span>
+      <a class="navbar-brand text-primary" [routerLink]="['/']">
+        <img src="assets/logo.png" alt="KejaHUnT Logo" style="height: 30px; width: auto;" />
+        KejaHUnT
+      </a>
       <div class="nav-links d-flex gap-3 fw-semibold ms-3">
-        <a class="nav-link" [routerLink]="['/buy']">BUY</a>
+        <a class="nav-link" [routerLink]="['/']">BUY</a>
         <span>|</span>
-        <a class="nav-link" [routerLink]="['/rent']">RENT</a>
+        <a class="nav-link" [routerLink]="['/']">RENT</a>
         <span>|</span>
-        <a class="nav-link" [routerLink]="['/sell']">SELL</a>
+        <a class="nav-link" [routerLink]="['/portal/manage']">SELL</a>
       </div>
     </div>
 
