@@ -15,11 +15,7 @@ export class NavbarComponent implements OnInit {
   searchType: string = 'buy';
   isMobileMenuOpen = false;
 
-
-
-  constructor(private bookingService: BookingService,
-    private router: Router
-  ) { }
+  constructor(private bookingService: BookingService, private router: Router) {}
 
   ngOnInit(): void {
     this.bookingService.getAllBookings().subscribe({
@@ -36,8 +32,11 @@ export class NavbarComponent implements OnInit {
     });
   }
 
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
   navigateToLogin(): void {
     this.router.navigate(['/login']);
   }
-
 }

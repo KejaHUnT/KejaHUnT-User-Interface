@@ -1,53 +1,170 @@
+<!-- Hero Section -->
+<section class="hero-section text-white py-5" style="background: linear-gradient(to right, rgba(0,0,0,0.6), rgba(0,128,128,0.6)), url('assets/hero.png') center/cover no-repeat;">
+  <div class="container text-center py-5">
+    <h1 class="display-4 fw-bold">Find Your <span class="text-warning">Dream Home</span></h1>
+    <p class="lead mt-3">Discover exceptional properties in prime locations. Your perfect home awaits with our curated collection of luxury real estate.</p>
+
+    <!-- Search Bar -->
+    <div class="d-flex flex-column flex-md-row justify-content-center align-items-center bg-white rounded-4 shadow p-3 mt-4 gap-2">
+      <div class="input-group me-md-3">
+        <span class="input-group-text bg-white border-0">
+          <i class="bi bi-geo-alt"></i>
+        </span>
+        <input type="text" class="form-control border-0" placeholder="Enter location, city, or neighborhood">
+      </div>
+
+      <select class="form-select border-0 me-md-3" style="max-width: 200px;">
+        <option selected>Property Type</option>
+        <option>House</option>
+        <option>Apartment</option>
+        <option>Villa</option>
+      </select>
+
+      <button class="btn btn-primary px-4">
+        <i class="bi bi-search me-2"></i> Search
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="why-choose-us py-5 bg-light text-center">
+  <div class="container">
+    <h2 class="fw-bold mb-4">Why Choose <span class="text-primary">KejaHUnT?</span></h2>
+    <p class="mb-5 text-muted">We simplify your property journey with tools and services that put you in control.</p>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card border-0 h-100 shadow-sm rounded-4">
+          <div class="card-body">
+            <i class="bi bi-shield-check fs-1 text-primary mb-3"></i>
+            <h5 class="fw-semibold mb-2">Verified Listings</h5>
+            <p class="text-muted">We ensure all our listings are verified and up-to-date for a trustworthy experience.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 h-100 shadow-sm rounded-4">
+          <div class="card-body">
+            <i class="bi bi-lightning fs-1 text-primary mb-3"></i>
+            <h5 class="fw-semibold mb-2">Fast & Easy Search</h5>
+            <p class="text-muted">Find homes quickly with our intuitive filters and powerful search engine.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 h-100 shadow-sm rounded-4">
+          <div class="card-body">
+            <i class="bi bi-people fs-1 text-primary mb-3"></i>
+            <h5 class="fw-semibold mb-2">Trusted by Landlords</h5>
+            <p class="text-muted">Thousands of landlords list with us daily — join a network you can trust.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-it-works py-5 text-center">
+  <div class="container">
+    <h2 class="fw-bold mb-4">How It Works</h2>
+    <p class="mb-5 text-muted">Get started in just a few easy steps</p>
+    <div class="row g-4">
+      <div class="col-md-3">
+        <div class="card border-0 h-100 shadow-sm rounded-4">
+          <div class="card-body">
+            <i class="bi bi-search fs-2 text-primary mb-2"></i>
+            <h6 class="fw-semibold">1. Search</h6>
+            <p class="small text-muted">Enter your preferred location and browse properties.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card border-0 h-100 shadow-sm rounded-4">
+          <div class="card-body">
+            <i class="bi bi-house-door fs-2 text-primary mb-2"></i>
+            <h6 class="fw-semibold">2. Explore</h6>
+            <p class="small text-muted">View photos, specs, and amenities for each property.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card border-0 h-100 shadow-sm rounded-4">
+          <div class="card-body">
+            <i class="bi bi-calendar-check fs-2 text-primary mb-2"></i>
+            <h6 class="fw-semibold">3. Book</h6>
+            <p class="small text-muted">Schedule a viewing or book directly online.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card border-0 h-100 shadow-sm rounded-4">
+          <div class="card-body">
+            <i class="bi bi-emoji-smile fs-2 text-primary mb-2"></i>
+            <h6 class="fw-semibold">4. Move In</h6>
+            <p class="small text-muted">Move into your new home with confidence and ease.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Property Listings -->
 <div class="container my-5">
+  <div class="text-center mb-5">
+    <h2 class="fw-bold">Featured Properties</h2>
+    <p class="text-muted">Browse our most popular listings curated just for you</p>
+  </div>
+
   <div class="row g-4">
     <ng-container *ngIf="Property$ | async as properties">
       <div class="col-12 col-md-6 col-xl-4" *ngFor="let property of properties">
-        <div class="card h-100 border-0 rounded-4 property-card" [routerLink]="['property/details/', property.id]">
+        <a [routerLink]="['/property/details', property.id]" class="text-decoration-none">
+          <div class="card property-card h-100 border-0 rounded-4">
+            <!-- Image Section -->
+            <div class="property-image-container position-relative">
+              <img *ngIf="imageUrls[property.id]" [src]="imageUrls[property.id]" alt="{{ property.name }}" class="card-img-top rounded-top-4" />
+              <div *ngIf="!imageUrls[property.id]" class="no-image-placeholder rounded-top-4 d-flex flex-column justify-content-center align-items-center text-muted">
+                <i class="bi bi-building fs-1"></i>
+                <span>No Image</span>
+              </div>
 
-          <!-- Image Section -->
-          <div class="property-image-container">
-            <img *ngIf="imageUrls[property.id]" [src]="imageUrls[property.id]" alt="{{ property.name }}"
-              class="card-img-top rounded-top-4">
-            <div *ngIf="!imageUrls[property.id]" class="no-image-placeholder rounded-top-4">
-              <i class="bi bi-building"></i>
-              <span>No Image</span>
+              <!-- Badges -->
+              <div class="property-type-badge position-absolute top-0 start-0 m-2">
+                <span class="badge bg-primary">{{ property.type }}</span>
+              </div>
+              <div class="featured-badge position-absolute top-0 end-0 m-2 bg-warning px-2 py-1 rounded text-dark small fw-semibold">
+                Featured
+              </div>
+              <div class="property-like-icon position-absolute bottom-0 end-0 m-2">
+                <i class="bi bi-heart text-danger"></i>
+              </div>
             </div>
 
-            <!-- Property Type Badge -->
-            <div class="property-type-badge">
-              <span class="badge bg-primary">{{ property.type }}</span>
+            <!-- Main Content -->
+            <div class="property-card-body p-3 d-flex flex-column justify-content-between flex-grow-1">
+              <div>
+                <div class="property-location small mb-1">
+                  <i class="bi bi-geo-alt-fill me-1"></i> {{ property.location }}
+                </div>
+                <h5 class="property-title fw-semibold mb-2">{{ property.name }}</h5>
+
+                <!-- Specs -->
+                <div class="property-specs d-flex flex-wrap gap-3 text-secondary small mb-3" *ngIf="property.units && property.units.length > 0">
+                  <span><i class="bi bi-house-door me-1"></i>{{ property.units[0].type || 'Unit' }}</span>
+                  <span><i class="bi bi-bathtub me-1"></i>{{ property.units[0].bathrooms || 2 }} Baths</span>
+                  <span><i class="bi bi-arrows-fullscreen me-1"></i>{{ property.units[0].size || '2,100' }} sq ft</span>
+                </div>
+              </div>
+
+              <!-- Price -->
+              <div class="price-amount h5 fw-bold mb-0">
+                Ksh {{ getMinPrice(property.units) | number:'1.0-0' }}
+              </div>
             </div>
           </div>
-
-          <!-- Main Info -->
-          <div class="card-body p-3">
-            <h5 class="property-title">{{ property.name }}</h5>
-            <div class="property-location mb-2">
-              <i class="bi bi-geo-alt-fill me-2"></i>
-              {{ property.location }}
-            </div>
-
-            <!-- Starting Price -->
-            <div class="price-section mt-3" *ngIf="property.units && property.units.length">
-              <div class="price-range">
-                <span class="price-from">From</span>
-                <span class="price-amount">Ksh {{ getMinPrice(property.units) | number:'1.0-0' }}</span>
-                <span class="price-period">/month</span>
-              </div>
-              <div class="unit-count text-light small" *ngIf="property.units.length > 1">
-                {{ property.units.length }} Units
-              </div>
-            </div>
-
-            <!-- CTA Button -->
-            <div class="text-end mt-4">
-              <div class="view-details-btn d-inline-flex align-items-center">
-                View Details <i class="bi bi-arrow-right-circle-fill ms-2"></i>
-              </div>
-            </div>
-          </div>
-          
-        </div>
+        </a>
       </div>
     </ng-container>
   </div>

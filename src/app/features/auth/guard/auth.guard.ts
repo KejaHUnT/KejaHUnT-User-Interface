@@ -17,7 +17,7 @@ export const authGuard: CanActivateFn = (route, state) => {
 
     if (!token || !user) {
       authService.logout();
-      return router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url } });
+      return router.createUrlTree(['/signin'], { queryParams: { returnUrl: state.url } });
     }
 
     const decodedToken = jwtDecode<CustomJwtPayload>(token);
@@ -25,7 +25,7 @@ export const authGuard: CanActivateFn = (route, state) => {
 
     if (!decodedToken.exp || decodedToken.exp < currentTime) {
       authService.logout();
-      return router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url, expired: 'true' } });
+      return router.createUrlTree(['/signin'], { queryParams: { returnUrl: state.url, expired: 'true' } });
     }
 
     const allowedRoles = ['Admin', 'Tenant'];
@@ -39,6 +39,6 @@ export const authGuard: CanActivateFn = (route, state) => {
   } catch (error) {
     console.error('Auth Guard Error:', error);
     authService.logout();
-    return router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url, error: 'invalid' } });
+    return router.createUrlTree(['/signin'], { queryParams: { returnUrl: state.url, error: 'invalid' } });
   }
 };

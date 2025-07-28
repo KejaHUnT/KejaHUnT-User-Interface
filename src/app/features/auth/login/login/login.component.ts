@@ -32,13 +32,24 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.returnUrl = params['returnUrl'] || '/';
+    // Detect login/register mode from URL
+    this.route.url.subscribe(segments => {
+      const currentPath = segments.map(s => s.path).join('/');
+      this.isLoginMode = currentPath === 'signin';
+
+      // Get returnUrl from query params
+      this.route.queryParams.subscribe(params => {
+        this.returnUrl = params['returnUrl'] || '/';
+      });
     });
   }
 
   toggleMode(): void {
     this.isLoginMode = !this.isLoginMode;
+    const targetRoute = this.isLoginMode ? '/signin' : '/register';
+    this.router.navigate([targetRoute], {
+      queryParams: { returnUrl: this.returnUrl }
+    });
   }
 
   onLoginSubmit(): void {
@@ -59,7 +70,7 @@ export class LoginComponent implements OnInit {
           roles: response.roles
         });
 
-        this.router.navigateByUrl(this.returnUrl); // Use returnUrl from query params
+        this.router.navigateByUrl(this.returnUrl);
       },
       error: (err) => {
         console.error('Login failed:', err);
@@ -73,6 +84,9 @@ export class LoginComponent implements OnInit {
       next: () => {
         alert('Registration successful! You can now log in.');
         this.isLoginMode = true;
+        this.router.navigate(['/signin'], {
+          queryParams: { returnUrl: this.returnUrl }
+        });
       },
       error: (err) => {
         console.error('Registration failed:', err);
