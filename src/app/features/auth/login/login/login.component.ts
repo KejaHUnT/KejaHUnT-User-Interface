@@ -44,6 +44,10 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  get model(): LoginRequest {
+    return this.isLoginMode ? this.loginModel : this.registerModel;
+  }
+
   toggleMode(): void {
     this.isLoginMode = !this.isLoginMode;
     const targetRoute = this.isLoginMode ? '/signin' : '/register';
@@ -55,6 +59,8 @@ export class LoginComponent implements OnInit {
   onLoginSubmit(): void {
     this.authService.login(this.loginModel).subscribe({
       next: (response) => {
+        console.log('Login success:', response);
+
         this.cookieService.set(
           'Authorization',
           response.token,
@@ -65,11 +71,7 @@ export class LoginComponent implements OnInit {
           'Strict'
         );
 
-        this.authService.setUser({
-          email: response.email,
-          roles: response.roles
-        });
-
+        // This is already called inside AuthService.login() tap()
         this.router.navigateByUrl(this.returnUrl);
       },
       error: (err) => {

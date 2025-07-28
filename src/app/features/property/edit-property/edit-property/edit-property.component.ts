@@ -66,9 +66,27 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
             next: (response) => {
               this.model1 = response;
 
+              // Initialize the model for updates
+              this.model = {
+                id: response.id,
+                documentId: response.documentId,
+                name: response.name,
+                location: response.location,
+                type: response.type,
+                description: response.description,
+                generalFeatures: (response.generalFeatures || []).map((f: any) => f.id),
+                indoorFeatures: (response.indoorFeatures || []).map((f: any) => f.id),
+                outDoorFeatures: (response.outDoorFeatures || []).map((f: any) => f.id),
+                policyDescriptions: response.policyDescriptions || [],
+                units: response.units || []
+              };
+
+              // Also update model1 arrays for backward compatibility
               this.model1.generalFeatures = (response.generalFeatures || []).map((f: any) => f.id);
               this.model1.indoorFeatures = (response.indoorFeatures || []).map((f: any) => f.id);
               this.model1.outDoorFeatures = (response.outDoorFeatures || []).map((f: any) => f.id);
+              
+              // Initialize policy descriptions with the model data
               this.initializePolicyDescriptions();
 
               if (!this.model1.units) this.model1.units = [];
@@ -178,6 +196,7 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
 
   initializePolicyDescriptions(): void {
     this.policyDescriptions = {};
+    // Use model instead of model1 for policy descriptions
     if (this.model?.policyDescriptions) {
       this.model.policyDescriptions.forEach(desc => {
         if (!this.policyDescriptions[desc.policyId]) {
@@ -204,7 +223,7 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
       });
     });
 
-    console.log('✅ Final Property Model Before Submit:', this.model);
+    console.log(' Final Property Model Before Submit:', this.model);
 
     const formData = new FormData();
     formData.append('id', this.model.id.toString());
@@ -230,8 +249,6 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
 
     formData.append('policyDescriptions', JSON.stringify(this.model.policyDescriptions));
     formData.append('units', JSON.stringify(this.model.units));
-
-
 
     this.updatePropertySubscription = this.propertyService.updateProperty(this.propertyId, formData).subscribe({
       next: () => {
