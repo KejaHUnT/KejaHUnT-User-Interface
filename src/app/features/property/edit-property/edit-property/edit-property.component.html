@@ -1,18 +1,11 @@
 <!-- Floating background particles -->
 <div class="floating-particles">
-  <div class="particle"></div>
-  <div class="particle"></div>
-  <div class="particle"></div>
-  <div class="particle"></div>
-  <div class="particle"></div>
-  <div class="particle"></div>
-  <div class="particle"></div>
-  <div class="particle"></div>
-  <div class="particle"></div>
+  <div class="particle" *ngFor="let i of [1,2,3,4,5,6,7,8,9]"></div>
 </div>
 
 <!-- Main Property Container -->
 <div class="property-container" *ngIf="model1">
+  <!-- Header -->
   <div class="header text-center mb-4">
     <h2>Edit Property</h2>
     <p class="text-muted">Update details and manage units</p>
@@ -21,7 +14,7 @@
   <!-- Property Image Section -->
   <div class="property-image mb-4">
     <div class="image-wrapper">
-      <img *ngIf="propertyImageUrl" [src]="propertyImageUrl" alt="{{ model1.name }}" class="property-image-img" />
+      <img *ngIf="propertyImageUrl" [src]="propertyImageUrl" [alt]="model1.name" class="property-image-img" />
       <div class="overlay">
         <span class="image-text">{{ model1.name }}</span>
       </div>
@@ -33,69 +26,75 @@
   </div>
 
   <!-- Property Details Form -->
-  <div class="row g-3 mb-4">
-    <div class="col-md-4">
-      <label class="form-label">Property Name</label>
-      <input class="form-control" [(ngModel)]="model1.name" name="name" required />
-    </div>
-    <div class="col-md-4">
-      <label class="form-label">Type</label>
-      <input class="form-control" [(ngModel)]="model1.type" name="type" required />
-    </div>
-    <div class="col-md-4">
-      <label class="form-label">Location</label>
-      <input class="form-control" [(ngModel)]="model1.location" name="location" required />
-    </div>
-    <div class="col-md-12">
-      <label class="form-label">Description</label>
-      <textarea class="form-control" [(ngModel)]="model1.description" name="description" rows="2"></textarea>
-    </div>
-  </div>
-
-  <!-- Features -->
-  <div class="row">
-    <!-- General Features -->
-    <div class="col-md-4">
-      <label>General Features:</label>
-      <div *ngIf="features$ | async as generalFeatures">
-        <div *ngFor="let feature of generalFeatures" class="form-check">
-          <input type="checkbox" class="form-check-input" [checked]="model?.generalFeatures?.includes(feature.id)"
-            (change)="onGeneralFeatureChange($event, feature.id)" id="general{{ feature.id }}" />
-          <label class="form-check-label" [for]="'general' + feature.id">{{ feature.name }}</label>
-        </div>
+  <form (ngSubmit)="onFormSubmit()" enctype="multipart/form-data">
+    <div class="row g-3 mb-4">
+      <div class="col-md-4">
+        <label class="form-label">Property Name</label>
+        <input name="name" class="form-control" [(ngModel)]="model!.name" required />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Type</label>
+        <input name="type" class="form-control" [(ngModel)]="model!.type" required />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Location</label>
+        <input name="location" class="form-control" [(ngModel)]="model!.location" required />
+      </div>
+      <div class="col-md-12">
+        <label class="form-label">Description</label>
+        <textarea name="description" class="form-control" [(ngModel)]="model!.description" rows="2"></textarea>
       </div>
     </div>
 
+    <!-- Features -->
+    <div class="row">
+      <!-- General Features -->
+      <div class="col-md-4">
+        <label>General Features:</label>
+        <div *ngIf="features$ | async as generalFeatures">
+          <div *ngFor="let feature of generalFeatures" class="form-check">
+            <input type="checkbox" class="form-check-input"
+                   [checked]="model?.generalFeatures?.includes(feature.id)"
+                   (change)="onGeneralFeatureChange($event, feature.id)"
+                   [id]="'general' + feature.id" />
+            <label class="form-check-label" [for]="'general' + feature.id">{{ feature.name }}</label>
+          </div>
+        </div>
+      </div>
 
-    <!-- Indoor Features -->
-    <div class="col-md-4">
-      <label>Indoor Features:</label>
-      <div *ngIf="features$ | async as indoorFeatures">
-        <div *ngFor="let feature of indoorFeatures" class="form-check">
-          <input type="checkbox" class="form-check-input" [checked]="model?.indoorFeatures?.includes(feature.id)"
-            (change)="onIndoorFeatureChange($event, feature.id)" id="indoor{{ feature.id }}" />
-          <label class="form-check-label" [for]="'general' + feature.id">{{ feature.name }}</label>
+      <!-- Indoor Features -->
+      <div class="col-md-4">
+        <label>Indoor Features:</label>
+        <div *ngIf="indoor$ | async as indoorFeatures">
+          <div *ngFor="let feature of indoorFeatures" class="form-check">
+            <input type="checkbox" class="form-check-input"
+                   [checked]="model?.indoorFeatures?.includes(feature.id)"
+                   (change)="onIndoorFeatureChange($event, feature.id)"
+                   [id]="'indoor' + feature.id" />
+            <label class="form-check-label" [for]="'indoor' + feature.id">{{ feature.name }}</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Outdoor Features -->
+      <div class="col-md-4">
+        <label>Outdoor Features:</label>
+        <div *ngIf="outdoor$ | async as outdoorFeatures">
+          <div *ngFor="let feature of outdoorFeatures" class="form-check">
+            <input type="checkbox" class="form-check-input"
+                   [checked]="model?.outDoorFeatures?.includes(feature.id)"
+                   (change)="onOutdoorFeatureChange($event, feature.id)"
+                   [id]="'outdoor' + feature.id" />
+            <label class="form-check-label" [for]="'outdoor' + feature.id">{{ feature.name }}</label>
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- Outdoor Features -->
-    <div class="col-md-4">
-      <label>Outdoor Features:</label>
-      <div *ngIf="features$ | async as outdoorFeatures">
-        <div *ngFor="let feature of outdoorFeatures" class="form-check">
-          <input type="checkbox" class="form-check-input" [checked]="model?.outDoorFeatures?.includes(feature.id)"
-            (change)="onIndoorFeatureChange($event, feature.id)" id="outDoor{{ feature.id }}" />
-          <label class="form-check-label" [for]="'general' + feature.id">{{ feature.name }}</label>
-        </div>
-      </div>
-    </div>
-
 
     <!-- Policies Section -->
     <h3 class="mb-4 text-center">Property Policies</h3>
-    <div *ngFor="let policy of policy$ | async">
-      <div class="card mb-3 policy-group">
+    <div *ngIf="policy$ | async as policies">
+      <div *ngFor="let policy of policies" class="card mb-3 policy-group">
         <div class="card-body" (click)="onSelectPolicy(policy)">
           <h5>{{ policy.name }}</h5>
 
@@ -106,11 +105,12 @@
                 <span class="remove-btn" (click)="removePolicyDescription(policy.id, j)">×</span>
               </li>
             </ul>
-
-            <input class="form-control mt-2" [(ngModel)]="newPolicyDescriptionInputs[policy.id]"
-              name="desc_{{policy.id}}" placeholder="Enter description" />
-
-            <button type="button" class="btn btn-sm btn-success mt-2" (click)="onAddPolicyDescription(policy.id)">
+            <input class="form-control mt-2"
+                   [name]="'policyDesc_' + policy.id"
+                   [(ngModel)]="newPolicyDescriptionInputs[policy.id]"
+                   placeholder="Enter description" />
+            <button class="btn btn-sm btn-success mt-2" type="button"
+                    (click)="onAddPolicyDescription(policy.id)">
               Add Description
             </button>
           </div>
@@ -122,8 +122,8 @@
     <div class="units-section mt-5">
       <h2 class="section-heading">Edit Units</h2>
 
-      <div *ngIf="model1.units.length > 0; else noUnits">
-        <div *ngFor="let unit of model1.units; let i = index" class="unit-card-horizontal">
+      <div *ngIf="model?.units?.length; else noUnits">
+        <div *ngFor="let unit of model?.units; let i = index" class="unit-card-horizontal">
           <!-- Image Column -->
           <div class="unit-image-wrapper-horizontal">
             <img *ngIf="unitImageUrls[i]" [src]="unitImageUrls[i]" alt="Unit Image" class="unit-image-horizontal" />
@@ -138,19 +138,19 @@
             <div class="row g-3">
               <div class="col-md-6">
                 <label class="form-label">Type</label>
-                <input class="form-control" [(ngModel)]="unit.type" name="type{{ i }}" required />
+                <input class="form-control" [(ngModel)]="unit.type" [name]="'unitType' + i" required />
               </div>
               <div class="col-md-6">
                 <label class="form-label">Price</label>
-                <input type="number" class="form-control" [(ngModel)]="unit.price" name="price{{ i }}" required />
+                <input type="number" class="form-control" [(ngModel)]="unit.price" [name]="'unitPrice' + i" required />
               </div>
               <div class="col-md-6">
                 <label class="form-label">Bathrooms</label>
-                <input type="number" class="form-control" [(ngModel)]="unit.bathrooms" name="bathrooms{{ i }}" />
+                <input type="number" class="form-control" [(ngModel)]="unit.bathrooms" [name]="'unitBathrooms' + i" />
               </div>
               <div class="col-md-6">
                 <label class="form-label">Status</label>
-                <select class="form-select" [(ngModel)]="unit.status" name="status{{ i }}">
+                <select class="form-select" [(ngModel)]="unit.status" [name]="'unitStatus' + i">
                   <option value="Available">Available</option>
                   <option value="Reserved">Reserved</option>
                   <option value="Booked">Booked</option>
@@ -158,11 +158,11 @@
               </div>
               <div class="col-md-6">
                 <label class="form-label">Size (m²)</label>
-                <input type="number" class="form-control" [(ngModel)]="unit.size" name="size{{ i }}" />
+                <input type="number" class="form-control" [(ngModel)]="unit.size" [name]="'unitSize' + i" />
               </div>
               <div class="col-md-6">
                 <label class="form-label">Floor</label>
-                <input type="number" class="form-control" [(ngModel)]="unit.floor" name="floor{{ i }}" />
+                <input type="number" class="form-control" [(ngModel)]="unit.floor" [name]="'unitFloor' + i" />
               </div>
             </div>
             <div class="d-flex justify-content-end mt-3">
@@ -182,14 +182,11 @@
     </div>
 
     <!-- Action Buttons -->
-    <div class="action-buttons mt-4">
-      <button class="btn btn-primary" (click)="onFormSubmit()">Update Property</button>
-      <button class="btn btn-danger" (click)="onDelete()">Delete Property</button>
+    <div class="action-buttons mt-4 d-flex gap-2">
+      <button class="btn btn-primary" type="submit">Update Property</button>
+      <button class="btn btn-danger" type="button" (click)="onDelete()">Delete Property</button>
     </div>
 
     <div *ngIf="message" class="alert alert-info mt-3 text-center">{{ message }}</div>
-
-    <ng-template #loading>
-      <p class="text-muted text-center">Loading features...</p>
-    </ng-template>
-  </div>
+  </form>
+</div>

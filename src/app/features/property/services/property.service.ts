@@ -31,7 +31,7 @@ export class PropertyService {
   }
 
   getAllProperties(): Observable<Property[]> {
-    return this.http.get<Property[]>(`${environment.apiBaseUrl}/api/property?addAuth=true`);
+    return this.http.get<Property[]>(`${environment.apiBaseUrl}/api/property`);
   }
 
   getPopertyById(id: string): Observable<Property> {

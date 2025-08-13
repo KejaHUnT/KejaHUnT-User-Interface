@@ -125,58 +125,79 @@ export class AddPropertyComponent implements OnInit {
         const propertyId = propertyResponse.id;
         this.latestPropertyId = propertyId;
 
-        Object.keys(this.policyDescriptions).forEach(policyIdStr => {
-          const policyId = parseInt(policyIdStr);
-          this.policyDescriptions[policyId].forEach(name => {
-            const policyDescription: AddPolicyDescription = {
-              name,
-              policyId,
-              propertyId
-            };
-            this.propertyService.addPolicyDescription(policyDescription).subscribe();
-          });
+        // Create policy descriptions after property is created, using the new property ID
+        this.createPolicyDescriptions(propertyId).then(() => {
+          // After policy descriptions are created, handle units
+          this.handleUnitsCreation(propertyId);
+        }).catch(() => {
+          // Even if policy descriptions fail, continue with units
+          this.handleUnitsCreation(propertyId);
         });
-
-        if (this.model.units.length > 0) {
-          const unitsForUpload = this.model.units.map(unit => ({
-            price: unit.price,
-            type: unit.type,
-            bathrooms: unit.bathrooms,
-            size: unit.size,
-            floor: unit.floor,
-            doorNumber: unit.doorNumber,
-            status: unit.status,
-            propertyId: propertyId
-          }));
-
-          const unitFormData = new FormData();
-          unitFormData.append('units', JSON.stringify(unitsForUpload));
-
-          this.model.units.forEach(unit => {
-            if (unit.imageFile) {
-              unitFormData.append('imageFile', unit.imageFile, unit.imageFile.name);
-            }
-          });
-
-          this.unitService.createUnit(unitFormData).subscribe({
-            next: () => {
-              this.message = 'Property and units created successfully!';
-              this.router.navigateByUrl('admin/property');
-            },
-            error: () => {
-              this.message = 'Property created, but failed to add units.';
-              this.router.navigateByUrl('admin/property');
-            }
-          });
-        } else {
-          this.message = 'Property created successfully!';
-          this.router.navigateByUrl('admin/property');
-        }
       },
       error: () => {
         this.message = 'Failed to create property.';
       }
     });
+  }
+
+  private createPolicyDescriptions(pendingPropertyId: number): Promise<void> {
+    const policyPromises: Promise<any>[] = [];
+
+    Object.keys(this.policyDescriptions).forEach(policyIdStr => {
+      const policyId = parseInt(policyIdStr);
+      this.policyDescriptions[policyId].forEach(name => {
+        const policyDescription: AddPolicyDescription = {
+          name,
+          policyId,
+          pendingPropertyId // Using the propertyId from the created property
+        };
+
+        const promise = this.propertyService.addPolicyDescription(policyDescription).toPromise();
+        policyPromises.push(promise);
+      });
+    });
+
+    return Promise.all(policyPromises).then(() => {
+      console.log('All policy descriptions created successfully');
+    });
+  }
+
+  private handleUnitsCreation(propertyId: number): void {
+    if (this.model.units.length > 0) {
+      const unitsForUpload = this.model.units.map(unit => ({
+        price: unit.price,
+        type: unit.type,
+        bathrooms: unit.bathrooms,
+        size: unit.size,
+        floor: unit.floor,
+        doorNumber: unit.doorNumber,
+        status: unit.status,
+        propertyId: propertyId // Using the propertyId from the created property
+      }));
+
+      const unitFormData = new FormData();
+      unitFormData.append('units', JSON.stringify(unitsForUpload));
+
+      this.model.units.forEach(unit => {
+        if (unit.imageFile) {
+          unitFormData.append('imageFile', unit.imageFile, unit.imageFile.name);
+        }
+      });
+
+      this.unitService.createUnit(unitFormData).subscribe({
+        next: () => {
+          this.message = 'Property, policy descriptions, and units created successfully!';
+          this.router.navigateByUrl('admin/property');
+        },
+        error: () => {
+          this.message = 'Property and policy descriptions created, but failed to add units.';
+          this.router.navigateByUrl('admin/property');
+        }
+      });
+    } else {
+      this.message = 'Property and policy descriptions created successfully!';
+      this.router.navigateByUrl('admin/property');
+    }
   }
 
   onGeneralFeatureChange(event: Event, featureId: number): void {

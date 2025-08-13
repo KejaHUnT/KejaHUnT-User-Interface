@@ -20,7 +20,7 @@ export class ManagerPortalComponent {
   ) { }
 
   ngOnInit(): void {
-    this.Property$ = this.propertyService.getAllProperties();
+    this.Property$ = this.propertyService.getPropertiesForLoggedInUser();
     // Calculate the expected income after fetching the properties
     this.Property$.subscribe(properties => {
       this.calculateIncome(properties);

@@ -32,18 +32,35 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.returnUrl = params['returnUrl'] || '/';
+    // Detect login/register mode from URL
+    this.route.url.subscribe(segments => {
+      const currentPath = segments.map(s => s.path).join('/');
+      this.isLoginMode = currentPath === 'signin';
+
+      // Get returnUrl from query params
+      this.route.queryParams.subscribe(params => {
+        this.returnUrl = params['returnUrl'] || '/';
+      });
     });
+  }
+
+  get model(): LoginRequest {
+    return this.isLoginMode ? this.loginModel : this.registerModel;
   }
 
   toggleMode(): void {
     this.isLoginMode = !this.isLoginMode;
+    const targetRoute = this.isLoginMode ? '/signin' : '/register';
+    this.router.navigate([targetRoute], {
+      queryParams: { returnUrl: this.returnUrl }
+    });
   }
 
   onLoginSubmit(): void {
     this.authService.login(this.loginModel).subscribe({
       next: (response) => {
+        console.log('Login success:', response);
+
         this.cookieService.set(
           'Authorization',
           response.token,
@@ -54,12 +71,8 @@ export class LoginComponent implements OnInit {
           'Strict'
         );
 
-        this.authService.setUser({
-          email: response.email,
-          roles: response.roles
-        });
-
-        this.router.navigateByUrl(this.returnUrl); // Use returnUrl from query params
+        // This is already called inside AuthService.login() tap()
+        this.router.navigateByUrl(this.returnUrl);
       },
       error: (err) => {
         console.error('Login failed:', err);
@@ -73,6 +86,9 @@ export class LoginComponent implements OnInit {
       next: () => {
         alert('Registration successful! You can now log in.');
         this.isLoginMode = true;
+        this.router.navigate(['/signin'], {
+          queryParams: { returnUrl: this.returnUrl }
+        });
       },
       error: (err) => {
         console.error('Registration failed:', err);

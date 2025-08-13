@@ -1,19 +1,47 @@
-<nav class="navbar navbar-expand-lg bg-light custom-navbar">
-  <div class="container-fluid d-flex justify-content-start align-items-center">
+<nav class="navbar navbar-expand-lg custom-navbar">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
 
-    <!-- LEFT SIDE: Brand + BUY | RENT | SELL -->
+    <!-- LEFT SIDE: Brand Logo -->
     <div class="navbar-left d-flex align-items-center">
-      <span class="navbar-brand text-primary">
-        <a class="nav-link" [routerLink]="['/']">KejaHUnT</a>
-      </span>
-      <div class="nav-links d-flex gap-3 fw-semibold ms-3">
-        <a class="nav-link" [routerLink]="['/buy']">BUY</a>
-        <span>|</span>
-        <a class="nav-link" [routerLink]="['/rent']">RENT</a>
-        <span>|</span>
-        <a class="nav-link" [routerLink]="['/sell']">SELL</a>
-      </div>
+      <a class="navbar-brand d-flex align-items-center text-white text-decoration-none" [routerLink]="['/']">
+        <i class="fas fa-home me-2" style="color: #ffa500; font-size: 24px;"></i>
+        <span class="fw-bold fs-4">kejaHUnT</span>
+      </a>
     </div>
 
+    <!-- TOGGLE BUTTON for Small Screens -->
+    <button class="navbar-toggler d-lg-none text-white border-0" type="button" (click)="toggleMobileMenu()">
+      <i class="fas" [ngClass]="isMobileMenuOpen ? 'fa-times' : 'fa-bars'" style="font-size: 24px;"></i>
+    </button>
+
+    <!-- RIGHT SIDE: Navigation Links & Sign In -->
+    <div class="navbar-right d-none d-lg-flex align-items-center">
+      <div class="nav-links d-flex gap-4 me-4">
+        <a class="nav-link text-white text-decoration-none fw-medium" [routerLink]="['/']">Buy</a>
+        <a class="nav-link text-white text-decoration-none fw-medium" [routerLink]="['/']">Rent</a>
+        <a class="nav-link text-white text-decoration-none fw-medium" [routerLink]="['/portal/manage']">Sell</a>
+        <a class="nav-link text-white text-decoration-none fw-medium" [routerLink]="['/']">About</a>
+      </div>
+
+      <button class="btn btn-outline-light px-3 py-2 fw-medium" [routerLink]="['/signin']">
+        Sign In
+      </button>
+    </div>
+
+  </div>
+
+  <!-- MOBILE MENU COLLAPSIBLE -->
+  <div class="mobile-menu d-lg-none mt-2" *ngIf="isMobileMenuOpen">
+    <div class="nav-links flex-column d-flex gap-3 mb-3 px-3">
+      <a class="nav-link text-white text-decoration-none fw-medium" [routerLink]="['/']" (click)="toggleMobileMenu()">Buy</a>
+      <a class="nav-link text-white text-decoration-none fw-medium" [routerLink]="['/']" (click)="toggleMobileMenu()">Rent</a>
+      <a class="nav-link text-white text-decoration-none fw-medium" [routerLink]="['/portal/manage']" (click)="toggleMobileMenu()">Sell</a>
+      <a class="nav-link text-white text-decoration-none fw-medium" [routerLink]="['/']" (click)="toggleMobileMenu()">About</a>
+    </div>
+    <div class="px-3 mb-3">
+      <button class="btn btn-outline-light w-100 py-2 fw-medium" [routerLink]="['/signin']" (click)="toggleMobileMenu()">
+        Sign In
+      </button>
+    </div>
   </div>
 </nav>
