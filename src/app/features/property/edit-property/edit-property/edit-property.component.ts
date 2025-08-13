@@ -1,17 +1,19 @@
-// ... All imports remain the same ...
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Property } from '../../models/property.model';
-import { catchError, forkJoin, Observable, of, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { catchError, forkJoin, Observable, of, Subscription } from 'rxjs';
+
 import { PropertyService } from '../../services/property.service';
 import { UnitService } from 'src/app/features/unit/services/unit.service';
 import { ImageService } from 'src/app/features/shared/images/service/image.service';
-import { FileResponse } from 'src/app/features/shared/images/models/file-response.model';
+import { AuthService } from 'src/app/features/auth/services/auth.service';
+
+import { Property } from '../../models/property.model';
 import { GeneralFeatures } from '../../models/general-feature.model';
 import { IndoorFeature } from '../../models/indoor-feature.model';
 import { outdoorFeature } from '../../models/outdoor-feature.model';
 import { Policy } from '../../models/policy.model';
-import { AddPolicyDescription } from '../../models/add-policy-description.model';
+import { FileResponse } from 'src/app/features/shared/images/models/file-response.model';
+
 import { UpdatePropertyRequest } from '../../models/update-property-request.model';
 
 @Component({
@@ -48,6 +50,7 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
     private unitService: UnitService,
     private propertyService: PropertyService,
     private imageService: ImageService,
+    private authService: AuthService,
     private router: Router
   ) { }
 
@@ -66,7 +69,6 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
             next: (response) => {
               this.model1 = response;
 
-              // Initialize the model for updates
               this.model = {
                 id: response.id,
                 documentId: response.documentId,
@@ -74,6 +76,7 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
                 location: response.location,
                 type: response.type,
                 description: response.description,
+                email: '',
                 generalFeatures: (response.generalFeatures || []).map((f: any) => f.id),
                 indoorFeatures: (response.indoorFeatures || []).map((f: any) => f.id),
                 outDoorFeatures: (response.outDoorFeatures || []).map((f: any) => f.id),
@@ -81,12 +84,6 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
                 units: response.units || []
               };
 
-              // Also update model1 arrays for backward compatibility
-              this.model1.generalFeatures = (response.generalFeatures || []).map((f: any) => f.id);
-              this.model1.indoorFeatures = (response.indoorFeatures || []).map((f: any) => f.id);
-              this.model1.outDoorFeatures = (response.outDoorFeatures || []).map((f: any) => f.id);
-              
-              // Initialize policy descriptions with the model data
               this.initializePolicyDescriptions();
 
               if (!this.model1.units) this.model1.units = [];
@@ -96,7 +93,7 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
                   next: (fileResponse: FileResponse) => {
                     this.propertyImageUrl = `data:image/${fileResponse.extension.replace('.', '')};base64,${fileResponse.base64}`;
                   },
-                  error: (err) => console.error('Failed to fetch property image', err),
+                  error: (err) => console.error('Failed to fetch property image', err)
                 });
               }
 
@@ -106,7 +103,7 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
                     next: (fileResponse: FileResponse) => {
                       this.unitImageUrls[index] = `data:image/${fileResponse.extension.replace('.', '')};base64,${fileResponse.base64}`;
                     },
-                    error: (err) => console.error(`Failed to fetch unit ${index} image`, err),
+                    error: (err) => console.error(`Failed to fetch unit ${index} image`, err)
                   });
                 }
               });
@@ -123,7 +120,7 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
     if (input.files?.length) {
       this.selectedImageFile = input.files[0];
       const reader = new FileReader();
-      reader.onload = () => this.propertyImageUrl = reader.result as string;
+      reader.onload = () => (this.propertyImageUrl = reader.result as string);
       reader.readAsDataURL(this.selectedImageFile);
     }
   }
@@ -134,7 +131,7 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
       const file = input.files[0];
       this.unitImageFiles[index] = file;
       const reader = new FileReader();
-      reader.onload = () => this.unitImageUrls[index] = reader.result as string;
+      reader.onload = () => (this.unitImageUrls[index] = reader.result as string);
       reader.readAsDataURL(file);
     }
   }
@@ -196,7 +193,6 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
 
   initializePolicyDescriptions(): void {
     this.policyDescriptions = {};
-    // Use model instead of model1 for policy descriptions
     if (this.model?.policyDescriptions) {
       this.model.policyDescriptions.forEach(desc => {
         if (!this.policyDescriptions[desc.policyId]) {
@@ -223,7 +219,7 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
       });
     });
 
-    console.log(' Final Property Model Before Submit:', this.model);
+    this.model.email = this.authService.getLoggedInUserEmail() ?? '';
 
     const formData = new FormData();
     formData.append('id', this.model.id.toString());
@@ -232,6 +228,7 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
     formData.append('location', this.model.location);
     formData.append('type', this.model.type);
     formData.append('description', this.model.description);
+    formData.append('email', this.model.email);
 
     (this.model.generalFeatures || []).forEach(id =>
       formData.append('generalFeatures', id.toString())
@@ -248,7 +245,16 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
     }
 
     formData.append('policyDescriptions', JSON.stringify(this.model.policyDescriptions));
+
+    // FIX: Send units as a JSON string
     formData.append('units', JSON.stringify(this.model.units));
+
+    this.model.units.forEach((unit, index) => {
+      const unitImage = this.unitImageFiles[index];
+      if (unitImage) {
+        formData.append('unitImageFiles', unitImage, unitImage.name); // SAME name for each
+      }
+    });
 
     this.updatePropertySubscription = this.propertyService.updateProperty(this.propertyId, formData).subscribe({
       next: () => {
@@ -256,10 +262,14 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl('admin/property');
       },
       error: err => {
-        console.error(' Property update failed:', err);
+        console.error('Property update failed:', err);
         this.message = 'Failed to update property.';
       }
     });
+
+    console.log('Units:', this.model.units);
+    console.log('Unit Image Files:', this.unitImageFiles);
+
   }
 
   addUnit(): void {
@@ -288,7 +298,7 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
           delete this.unitImageFiles[index];
         },
         error: err => {
-          console.error(' Failed to delete unit:', err);
+          console.error('Failed to delete unit:', err);
           alert('Failed to delete unit. Please try again.');
         }
       });
@@ -302,7 +312,7 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
     if (this.id) {
       this.deletePropertySubscription = this.propertyService.deleteProperty(this.id).subscribe({
         next: () => this.router.navigateByUrl('admin/property'),
-        error: err => console.error(' Delete failed:', err)
+        error: err => console.error('Delete failed:', err)
       });
     }
   }
@@ -313,4 +323,6 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
     this.getPropertyByIdSubscription?.unsubscribe();
     this.deletePropertySubscription?.unsubscribe();
   }
+
+
 }

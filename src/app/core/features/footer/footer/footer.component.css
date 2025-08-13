@@ -1,0 +1,127 @@
+.kejahunt-footer {
+  background: linear-gradient(135deg, #0a0a0a, #141e30);
+  color: #f1f1f1;
+  padding: 40px 20px 10px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* ===== Layout ===== */
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+@media (min-width: 768px) {
+  .footer-container {
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .footer-container > div {
+    flex: 1 1 200px;
+  }
+}
+
+/* ===== Branding ===== */
+.footer-branding .logo {
+  font-size: 26px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.footer-branding .highlight {
+  color: #4dd0e1;
+}
+
+.footer-branding p {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #cdd4e1;
+}
+
+/* ===== Links & Contact ===== */
+.footer-links h4,
+.footer-contact h4,
+.footer-social h4 {
+  margin-bottom: 10px;
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.footer-links ul,
+.footer-contact ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links ul li,
+.footer-contact ul li {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.footer-links ul li a,
+.footer-contact ul li a {
+  text-decoration: none;
+  color: #cdd4e1;
+  transition: color 0.3s ease;
+}
+
+.footer-links ul li a:hover,
+.footer-contact ul li a:hover {
+  color: #4dd0e1;
+}
+
+.footer-contact ul li i {
+  margin-right: 8px;
+  color: #4dd0e1;
+}
+
+/* ===== Social Icons ===== */
+.footer-social .icons {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.footer-social .icons a {
+  color: #cdd4e1;
+  font-size: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.footer-social .icons a:hover {
+  color: #4dd0e1;
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-3px);
+}
+
+.footer-social .icons a.coming-soon {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.footer-social .icons a.coming-soon:hover {
+  color: #cdd4e1;
+  background: rgba(255, 255, 255, 0.05);
+  transform: none;
+}
+
+/* ===== Footer Bottom ===== */
+.footer-bottom {
+  text-align: center;
+  padding: 15px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 13px;
+  color: #888;
+  margin-top: 30px;
+}

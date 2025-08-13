@@ -36,6 +36,7 @@ import { CreateBookingStepComponent } from './features/public/onboarding/step2/c
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { PaymentStepComponent } from './features/public/onboarding/step3/create-payment-step/create-payment-step/create-payment-step.component';
+import { FooterComponent } from './core/features/footer/footer/footer.component';
 
 
 
@@ -63,7 +64,8 @@ import { PaymentStepComponent } from './features/public/onboarding/step3/create-
     StepperComponent,
     AddTenantStepComponent,
     CreateBookingStepComponent,
-    PaymentStepComponent
+    PaymentStepComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
