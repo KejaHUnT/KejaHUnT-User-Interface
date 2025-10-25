@@ -1,184 +1,228 @@
-:root {
-  --primary-color: #007bff;
-  --text-dark: #343a40;
-  --text-muted: #6c757d;
-  --bg-light: #f8f9fa;
-  --card-bg: #ffffff;
-  --border-color: #dee2e6;
+/* === Container === */
+.property-form-container {
+  background-color: #0f172a;
+  color: #f0fdfa;
+  border-radius: 1rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 2rem auto;
 }
 
-/* Layout */
-.property-form-layout {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
+/* === Page Title === */
+.page-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #38bdf8;
+  margin-bottom: 2rem;
 }
 
-.property-form-fields,
-.property-image-preview {
-  flex: 1 1 48%;
-  min-width: 300px;
+/* === Alerts === */
+.alert-message {
+  background-color: #1e293b;
+  border-left: 4px solid #22d3ee;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  color: #22d3ee;
 }
 
-/* Image styling */
-.property-img,
-.unit-img {
+/* === Card Sections === */
+.card-section {
+  background-color: #1e293b;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.section-header {
+  color: #22d3ee;
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #38bdf8;
+  padding-bottom: 0.5rem;
+}
+
+/* === Form Grid === */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: #f0fdfa;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
   width: 100%;
+  border: 1px solid #334155;
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background-color: #1e293b;
+  color: #f0fdfa;
+  transition: 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: #38bdf8;
+  outline: none;
+  box-shadow: 0 0 6px #38bdf8;
+}
+
+/* === Image Previews === */
+.image-preview {
+  margin-top: 0.5rem;
+  width: 100%;
+  border-radius: 0.75rem;
   max-height: 250px;
   object-fit: cover;
-  border-radius: 8px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.1);
-  transition: all 0.3s ease-in-out;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.6);
 }
 
-/* Unit Cards */
-.unit-card {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+/* === Features Section === */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
 }
 
-.unit-content {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  width: 100%;
+.feature-card {
+  background-color: #1e293b;
+  border-radius: 1rem;
+  padding: 1.25rem;
 }
 
-.unit-fields,
-.unit-image-section {
-  flex: 1 1 45%;
-  min-width: 280px;
-}
-
-/* Section titles */
-.form-section-title,
-.section-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--text-dark);
-  margin-bottom: 1rem;
-}
-
-/* Checkbox styling */
-.form-check-label {
-  color: var(--text-muted);
-}
-
-/* Selected chips (ng-select override) */
-::ng-deep .ng-select.custom-ng-select .ng-value-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-::ng-deep .ng-select.custom-ng-select .selected-feature-chip {
-  background-color: var(--primary-color);
-  color: white;
-  padding: 4px 10px;
-  margin-bottom: 4px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-}
-
-/* Policies Section */
-.policy-item {
-  background-color: var(--bg-light);
-  border-left: 4px solid var(--primary-color);
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.policy-button,
-.add-description-button {
-  font-weight: 600;
-  color: var(--primary-color);
-  background-color: #fff;
-  border: 2px solid var(--primary-color);
-  border-radius: 4px;
-  padding: 6px 12px;
-  margin-top: 0.5rem;
-  transition: all 0.3s ease;
-}
-
-.policy-button:hover,
-.btn-outline-primary:hover,
-.add-description-button:hover {
-  background-color: var(--primary-color);
-  color: white;
-}
-
-/* Policy descriptions */
-.description-list {
-  list-style-type: disc;
-  margin-left: 1.2rem;
-  color: #555;
-}
-
-.policy-details {
-  margin-top: 0.5rem;
-  margin-left: 1.2rem;
-}
-
-/* Responsive handling */
-@media (max-width: 768px) {
-  .property-form-layout {
-    flex-direction: column;
-  }
-
-  .property-image-preview,
-  .property-form-fields {
-    width: 100%;
-    min-width: auto;
-  }
-
-  .unit-fields,
-  .unit-image-section {
-    flex: 1 1 100%;
-  }
-}
-/* Features section */
-.features-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-}
-
-.feature-group {
-  background-color: var(--card-bg);
-  padding: 1rem;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  flex: 1 1 30%;
-  min-width: 280px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
-}
-
-/* Feature group labels */
-.feature-group .form-section-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text-dark);
+.feature-card h4 {
+  font-size: 1.2rem;
+  color: #22d3ee;
   margin-bottom: 0.75rem;
 }
 
-.feature-group .form-check {
-  margin-bottom: 0.5rem;
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #94a3b8;
 }
 
-/* Responsive handling for feature groups */
-@media (max-width: 768px) {
-  .features-row {
-    flex-direction: column;
-  }
+/* === Policies Section === */
+.policies-masonry {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
 
-  .feature-group {
-    width: 100%;
+.policy-card {
+  background-color: #1e293b;
+  border-radius: 1rem;
+  padding: 1rem 1.25rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.policy-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+
+.policy-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #22d3ee;
+}
+
+.policy-tag {
+  display: inline-block;
+  padding: 0.35rem 0.8rem;
+  background: linear-gradient(135deg, #0B6623, #0D923F);
+  color: #f0fdfa;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 999px;
+}
+
+/* === Units Section === */
+.unit-card {
+  background-color: #1e293b;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.unit-card .form-grid {
+  gap: 1rem;
+}
+
+.unit-card label {
+  color: #f0fdfa;
+}
+
+.unit-card input,
+.unit-card select {
+  background-color: #0f172a;
+  color: #f0fdfa;
+}
+
+.unitImage-preview {
+  width: 100%;
+  border-radius: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* === Buttons === */
+.add-btn,
+.remove-btn,
+.submit-btn {
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-btn,
+.submit-btn {
+  background-color: #22d3ee;
+  color: #0f172a;
+}
+
+.add-btn:hover,
+.submit-btn:hover {
+  background-color: #38bdf8;
+  color: #0f172a;
+}
+
+.remove-btn {
+  background-color: #f472b6;
+  color: #0f172a;
+}
+
+.remove-btn:hover {
+  background-color: #ec4899;
+}
+
+/* === Form Footer === */
+.form-footer {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .policies-masonry {
+    grid-template-columns: 1fr;
   }
 }

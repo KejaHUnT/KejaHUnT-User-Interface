@@ -1,93 +1,88 @@
-<!-- Property Detail Page Template with Enhanced Info -->
-<div class="property-container" *ngIf="model">
-  <!-- Property Image Section -->
-  <div class="property-image">
+<!-- === Property Detail Page as Premium Section Layout === -->
+<section class="property-section" *ngIf="model">
+  <!-- === Image Header === -->
+  <section class="property-image">
     <div class="image-wrapper">
       <img *ngIf="imageUrl" [src]="imageUrl" alt="{{ model.name }}" class="property-image-img" />
       <div class="overlay">
         <span class="image-text">{{ model.name }}</span>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Header Section -->
-  <div class="property-header">
-    <div class="property-title-category">
+  <!-- === Basic Details Section === -->
+  <section class="property-details-grid">
+    <div class="details-col">
       <h1 class="property-title">{{ model.name }}</h1>
       <span class="property-category">{{ model.type }}</span>
     </div>
-    <div class="property-location">
-      <h2>Location</h2>
+
+    <div class="details-col">
+      <h2 class="detail-heading"><i class="bi bi-geo-alt-fill me-1"></i> Location</h2>
       <p>{{ model.location }}</p>
     </div>
-  </div>
 
-  <!-- Property Description -->
-  <div class="property-info">
-    <div class="info-block">
-      <h2>Description</h2>
+    <div class="details-col">
+      <h2 class="detail-heading"><i class="bi bi-info-circle-fill me-1"></i> About this property</h2>
       <p>{{ model.description || 'No description available' }}</p>
     </div>
-    <div class="info-block">
-      <h2>Email</h2>
+
+    <div class="details-col">
+      <h2 class="detail-heading"><i class="bi bi-envelope-fill me-1"></i> Contact Email</h2>
       <p>{{ model.email || 'Not provided' }}</p>
     </div>
-  </div>
+  </section>
 
-  <!-- Features Section -->
-  <div class="property-stats">
-    <div class="stat-item">
-      <p>{{ model.generalFeatures.length || 0 }}</p>
-      <span>General Features</span>
-    </div>
-    <div class="stat-item">
-      <p>{{ model.indoorFeatures.length || 0 }}</p>
-      <span>Indoor Features</span>
-    </div>
-    <div class="stat-item">
-      <p>{{ model.outDoorFeatures.length || 0 }}</p>
-      <span>Outdoor Features</span>
-    </div>
-    <div class="stat-item">
-      <p>{{ model.policyDescriptions.length || 0 }}</p>
-      <span>Policies</span>
-    </div>
-  </div>
+  <!-- === Features Section === -->
+  <section class="features-section">
+    <div class="features-grid">
+      <div class="info-block">
+        <h2><i class="bi bi-house-door-fill me-1"></i> General Features</h2>
+        <ul *ngIf="model.generalFeatures?.length; else noGeneral">
+          <li *ngFor="let f of model.generalFeatures">{{ f.name }}</li>
+        </ul>
+        <ng-template #noGeneral>
+          <p class="no-units">None</p>
+        </ng-template>
+      </div>
 
-  <!-- Feature Lists -->
-  <div class="property-info">
-    <div class="info-block">
-      <h2>General Features</h2>
-      <ul *ngIf="model.generalFeatures?.length; else noGeneral">
-        <li *ngFor="let f of model.generalFeatures">{{ f.name }}</li>
-      </ul>
-      <ng-template #noGeneral><p class="no-units">None</p></ng-template>
-    </div>
-    <div class="info-block">
-      <h2>Indoor Features</h2>
-      <ul *ngIf="model.indoorFeatures?.length; else noIndoor">
-        <li *ngFor="let f of model.indoorFeatures">{{ f.name }}</li>
-      </ul>
-      <ng-template #noIndoor><p class="no-units">None</p></ng-template>
-    </div>
-    <div class="info-block">
-      <h2>Outdoor Features</h2>
-      <ul *ngIf="model.outDoorFeatures?.length; else noOutdoor">
-        <li *ngFor="let f of model.outDoorFeatures">{{ f.name }}</li>
-      </ul>
-      <ng-template #noOutdoor><p class="no-units">None</p></ng-template>
-    </div>
-    <div class="info-block">
-      <h2>Policies</h2>
-      <ul *ngIf="model.policyDescriptions?.length; else noPolicies">
-        <li *ngFor="let p of model.policyDescriptions">{{ p.name }}</li>
-      </ul>
-      <ng-template #noPolicies><p class="no-units">None</p></ng-template>
-    </div>
-  </div>
+      <div class="info-block">
+        <h2><i class="bi bi-door-open-fill me-1"></i> Indoor Features</h2>
+        <ul *ngIf="model.indoorFeatures?.length; else noIndoor">
+          <li *ngFor="let f of model.indoorFeatures">{{ f.name }}</li>
+        </ul>
+        <ng-template #noIndoor>
+          <p class="no-units">None</p>
+        </ng-template>
+      </div>
 
-  <!-- Units Section -->
-  <div class="units-section">
+      <div class="info-block">
+        <h2><i class="bi bi-tree-fill me-1"></i> Outdoor Features</h2>
+        <ul *ngIf="model.outDoorFeatures?.length; else noOutdoor">
+          <li *ngFor="let f of model.outDoorFeatures">{{ f.name }}</li>
+        </ul>
+        <ng-template #noOutdoor>
+          <p class="no-units">None</p>
+        </ng-template>
+      </div>
+    </div>
+  </section>
+
+  <!-- === Policies Section (Masonry Style) === -->
+  <section class="policies-section" *ngIf="groupedPolicies && groupedPolicies.length > 0">
+    <h2 class="section-heading">Policies</h2>
+    <div class="policies-masonry">
+      <div *ngFor="let policy of groupedPolicies" class="policy-card">
+        <h3 class="policy-title">{{ policy.name }}</h3>
+        <div class="policy-tags">
+          <span *ngFor="let desc of policy.descriptions" class="policy-tag">{{ desc.name }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- === Units Section === -->
+  <section class="units-section">
     <h2 class="section-heading">Available Units</h2>
     <div *ngIf="model.units.length > 0; else noUnits" class="units-grid">
       <div *ngFor="let unit of model.units; let i = index" class="unit-card-modern">
@@ -122,12 +117,10 @@
     <ng-template #noUnits>
       <p class="no-units">No units available for this property.</p>
     </ng-template>
-  </div>
+  </section>
 
-  <!-- Back Button -->
-  <div class="back-button-container">
-    <button [routerLink]="['']" class="back-button">
-      ← Back to Properties
-    </button>
-  </div>
-</div>
+  <!-- === Back Button === -->
+  <section class="back-button-container">
+    <button [routerLink]="['']" class="back-button">← Back to Properties</button>
+  </section>
+</section>

@@ -1,19 +1,19 @@
-/* Overall Container */
-.property-container {
-  padding: 2rem;
-  max-width: 1200px;
-  margin: auto;
+/* === Base Section === */
+.property-section {
   background-color: #0f172a;
-  color: #f1f5f9;
+  color: #000509;
   border-radius: 1rem;
+  margin: 0;
+  padding: 0;
 }
 
-/* Property Image Section */
+/* === Image Header === */
 .property-image .image-wrapper {
   position: relative;
-  border-radius: 1rem;
+  width: 100%;
+  height: 350px;
   overflow: hidden;
-  height: 300px;
+  border-radius: 0;
   background-color: #1e293b;
 }
 
@@ -29,30 +29,34 @@
   left: 0;
   width: 100%;
   background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-  padding: 1rem;
+  padding: 1rem 2rem;
 }
 
 .image-text {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   color: #facc15;
   font-weight: 600;
 }
 
-/* Header Section */
-.property-header {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin-top: 2rem;
-  gap: 1rem;
-  border-bottom: 1px solid #334155;
-  padding-bottom: 1rem;
+/* === Details Section === */
+.property-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+  padding: 0 2rem;
+}
+
+.details-col {
+  background-color: #1e293b;
+  padding: 1.2rem 1.5rem;
+  border-radius: 1rem;
 }
 
 .property-title {
   font-size: 2rem;
   color: #38bdf8;
-  margin: 0;
+  margin-bottom: 0.5rem;
 }
 
 .property-category {
@@ -65,61 +69,27 @@
   font-weight: 500;
 }
 
-.property-location h2 {
-  font-size: 1rem;
-  color: #94a3b8;
-  margin-bottom: 0.25rem;
-}
-
-.property-location p {
-  font-size: 0.95rem;
-}
-
-/* Info Sections */
-.property-info {
-  margin-top: 2rem;
-  display: grid;
-  gap: 2rem;
-}
-
-.info-block {
-  background-color: #1e293b;
-  padding: 1rem 1.5rem;
-  border-radius: 1rem;
-}
-
-.info-block h2 {
-  font-size: 1.2rem;
-  margin-bottom: 0.75rem;
+.detail-heading {
+  font-size: 1.1rem;
   color: #f472b6;
+  margin-bottom: 0.4rem;
 }
 
-.info-block p,
-.info-block ul {
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
-
-.no-units {
-  font-style: italic;
-  color: #94a3b8;
-}
-
-/* Feature Stats */
+/* === Quick Stats === */
 .property-stats {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: wrap;
-  margin: 2rem 0;
-  padding: 1rem;
-  border-radius: 1rem;
   background-color: #1e293b;
-  gap: 1rem;
+  margin: 2rem 0;
+  padding: 1.5rem 0;
+  border-radius: 0;
+  width: 100%;
 }
 
 .stat-item {
-  flex: 1 1 180px;
   text-align: center;
+  flex: 1 1 150px;
 }
 
 .stat-item p {
@@ -134,9 +104,39 @@
   color: #94a3b8;
 }
 
-/* Units Section */
+/* === Features & Policies === */
+.features-section {
+  margin: 0;
+  padding: 2rem 2rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.info-block {
+  background-color: #1e293b;
+  border-radius: 1rem;
+  padding: 1.5rem;
+}
+
+.info-block h2 {
+  color: #f472b6;
+  margin-bottom: 0.75rem;
+  font-size: 1.2rem;
+}
+
+.no-units {
+  font-style: italic;
+  color: #94a3b8;
+}
+
+/* === Units Section === */
 .units-section {
-  margin-top: 3rem;
+  margin-top: 2.5rem;
+  padding: 0 2rem;
 }
 
 .section-heading {
@@ -147,22 +147,19 @@
 
 .units-grid {
   display: grid;
-  gap: 1.5rem;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
 }
 
 .unit-card-modern {
   background-color: #1e293b;
   border-radius: 1rem;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
 }
 
 .unit-image-wrapper {
   height: 200px;
   background-color: #334155;
-  overflow: hidden;
 }
 
 .unit-image {
@@ -179,8 +176,8 @@
   display: flex;
   justify-content: space-between;
   font-weight: 600;
-  margin-bottom: 0.5rem;
   color: #fcd34d;
+  margin-bottom: 0.5rem;
 }
 
 .unit-price {
@@ -200,7 +197,7 @@
   color: #38bdf8;
 }
 
-/* Buttons */
+/* === Buttons === */
 .apply-button {
   padding: 0.4rem 1rem;
   background-color: #38bdf8;
@@ -217,10 +214,10 @@
   color: white;
 }
 
-/* Back Button */
+/* === Back Button === */
 .back-button-container {
-  margin-top: 3rem;
   text-align: center;
+  margin: 3rem 0 2rem;
 }
 
 .back-button {
@@ -239,18 +236,83 @@
   color: #0f172a;
 }
 
-/* Responsive */
+/* === Responsive === */
 @media (max-width: 768px) {
-  .property-header {
-    flex-direction: column;
+  .property-details-grid {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
   }
 
   .property-stats {
     flex-direction: column;
-    align-items: center;
+    gap: 1rem;
   }
 
-  .unit-details-row {
-    flex-direction: column;
+  .units-section {
+    padding: 0 1rem;
   }
+}
+/* === Policies Section Masonry (Dark Premium Theme) === */
+.policies-section {
+  margin-top: 2rem;
+  padding: 0 2rem;
+}
+
+.policies-section .section-heading {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #38bdf8; /* matches your primary highlight */
+  margin-bottom: 1rem;
+}
+
+/* Masonry container */
+.policies-masonry {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Policy card */
+.policy-card {
+  background: #1e293b; /* match your other cards */
+  border-radius: 1rem;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.policy-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+.policy-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #22d3ee; /* matches your section headings */
+}
+
+/* Chips / tags */
+.policy-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.policy-tag {
+  display: inline-block;
+  padding: 0.35rem 0.8rem;
+  background: linear-gradient(135deg, #0B6623, #0D923F); /* accent green */
+  color: #f0fdfa; /* light text for contrast */
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 999px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.policy-tag:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #0D923F, #0B6623);
 }
