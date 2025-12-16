@@ -14,7 +14,6 @@ import { TenantListComponent } from './features/tenant/tenant-list/tenant-list/t
 import { AddTenantComponent } from './features/tenant/add-tenant/add-tenant/add-tenant.component';
 import { PropertyDetailsComponent } from './features/public/property-details/property-details/property-details.component';
 import { EditTenentComponent } from './features/tenant/edit-tenant/edit-tenent/edit-tenent.component';
-import { SidebarComponent } from './core/features/sidebar/sidebar/sidebar.component';
 import { ManagerPortalComponent } from './features/public/manager-portal/manager-portal/manager-portal.component';
 import { BookingSummaryComponent } from './features/unit/booking-preview/booking-summary/booking-summary/booking-summary.component';
 import { EditUnitComponent } from './features/unit/edit-unit/edit-unit/edit-unit.component';
@@ -37,6 +36,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { PaymentStepComponent } from './features/public/onboarding/step3/create-payment-step/create-payment-step/create-payment-step.component';
 import { FooterComponent } from './core/features/footer/footer/footer.component';
+import { ManagePropertyUnitsComponent } from './features/unit/manage-property-units/manage-property-units.component';
+import { AddUnitComponent } from './features/unit/add-unit/add-unit.component';
 
 
 
@@ -53,7 +54,6 @@ import { FooterComponent } from './core/features/footer/footer/footer.component'
     PropertyDetailsComponent,
     EditTenentComponent,
     PropertyDetailsComponent,
-    SidebarComponent,
     ManagerPortalComponent,
     BookingSummaryComponent,
     EditUnitComponent,
@@ -65,7 +65,9 @@ import { FooterComponent } from './core/features/footer/footer/footer.component'
     AddTenantStepComponent,
     CreateBookingStepComponent,
     PaymentStepComponent,
-    FooterComponent
+    FooterComponent,
+    ManagePropertyUnitsComponent,
+    AddUnitComponent
   ],
   imports: [
     BrowserModule,

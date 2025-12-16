@@ -38,7 +38,7 @@
     <div class="features-grid">
       <div class="info-block">
         <h2><i class="bi bi-house-door-fill me-1"></i> General Features</h2>
-        <ul *ngIf="model.generalFeatures?.length; else noGeneral">
+        <ul *ngIf="model.generalFeatures.length; else noGeneral">
           <li *ngFor="let f of model.generalFeatures">{{ f.name }}</li>
         </ul>
         <ng-template #noGeneral>
@@ -48,7 +48,7 @@
 
       <div class="info-block">
         <h2><i class="bi bi-door-open-fill me-1"></i> Indoor Features</h2>
-        <ul *ngIf="model.indoorFeatures?.length; else noIndoor">
+        <ul *ngIf="model.indoorFeatures.length; else noIndoor">
           <li *ngFor="let f of model.indoorFeatures">{{ f.name }}</li>
         </ul>
         <ng-template #noIndoor>
@@ -58,7 +58,7 @@
 
       <div class="info-block">
         <h2><i class="bi bi-tree-fill me-1"></i> Outdoor Features</h2>
-        <ul *ngIf="model.outDoorFeatures?.length; else noOutdoor">
+        <ul *ngIf="model.outDoorFeatures.length; else noOutdoor">
           <li *ngFor="let f of model.outDoorFeatures">{{ f.name }}</li>
         </ul>
         <ng-template #noOutdoor>

@@ -1,63 +1,105 @@
-.booking-card-container {
-  display: flex;
-  justify-content: center;
+.booking-page {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
   padding: 24px;
   background-color: #f5f5f5;
 }
 
+/* LEFT CARD */
 .booking-card {
   background-color: #ffffff;
-  width: 100%;
-  max-width: 700px;
   padding: 24px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
 }
 
 .section-heading {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 600;
   margin-bottom: 16px;
+  color: #2b2b2b;
 }
 
 .unit-image {
   width: 100%;
-  max-height: 300px;
+  max-height: 280px;
   object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 16px;
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 
 .detail-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 24px;
-  margin-bottom: 24px;
+}
+
+.detail-group h4 {
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .detail-group p {
   margin: 4px 0;
   font-size: 15px;
+  color: #333;
+}
+
+/* RIGHT SUMMARY CARD */
+.summary-card {
+  background-color: #ffffff;
+  padding: 24px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.summary-heading {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #2b2b2b;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 15px;
+  color: #444;
 }
 
 .price {
+  font-weight: 600;
   color: #2e7d32;
-  font-weight: bold;
 }
 
-.action-section {
-  text-align: right;
+.divider {
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 16px 0;
 }
 
-.loading-spinner {
+.booking-actions {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 16px;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
 }
 
 .error-message {
-  margin-top: 16px;
+  margin-top: 12px;
   color: #d32f2f;
   font-weight: 500;
+  font-size: 14px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .booking-page {
+    grid-template-columns: 1fr;
+  }
 }

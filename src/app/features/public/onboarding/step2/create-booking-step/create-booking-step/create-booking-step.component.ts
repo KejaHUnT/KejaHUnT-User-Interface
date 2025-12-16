@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatStepper } from '@angular/material/stepper';
 import { Unit } from 'src/app/features/property/models/unit.model';
 import { Property } from 'src/app/features/property/models/property.model';
 import { UnitService } from 'src/app/features/unit/services/unit.service';
@@ -7,7 +9,6 @@ import { ImageService } from 'src/app/features/shared/images/service/image.servi
 import { FileResponse } from 'src/app/features/shared/images/models/file-response.model';
 import { BookingService } from 'src/app/features/unit/booking-preview/services/booking.service';
 import { BookingRequest } from 'src/app/features/unit/booking-preview/models/booking-request.model';
-import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-create-booking-step',
@@ -15,21 +16,23 @@ import { MatStepper } from '@angular/material/stepper';
   styleUrls: ['./create-booking-step.component.css']
 })
 export class CreateBookingStepComponent {
+
   @Input() unitId!: number;
   @Input() tenantId!: number;
   @Input() stepper!: MatStepper;
 
   unit?: Unit;
   property?: Property;
-  unitImageUrl: string = '';
-  isSubmitting: boolean = false;
-  errorMessage: string = '';
+  unitImageUrl = '';
+  isSubmitting = false;
+  errorMessage = '';
 
   constructor(
     private unitService: UnitService,
     private propertyService: PropertyService,
     private bookingService: BookingService,
-    private imageService: ImageService
+    private imageService: ImageService,
+    private router: Router
   ) {}
 
   initialize(unitId: number, tenantId: number): void {
@@ -39,56 +42,63 @@ export class CreateBookingStepComponent {
   }
 
   private fetchUnitDetails(unitId: number): void {
-    this.unitService.getUnitById(unitId.toString()).subscribe({
-      next: (unit) => {
-        this.unit = unit;
+    this.unitService.getUnitById(unitId.toString()).subscribe(unit => {
+      this.unit = unit;
 
-        if (unit.documentId) {
-          this.imageService.getFileByDocumentId(unit.documentId).subscribe({
-            next: (file: FileResponse) => {
-              this.unitImageUrl = `data:image/${file.extension.replace('.', '')};base64,${file.base64}`;
-            }
-          });
-        }
+      if (unit.documentId) {
+        this.imageService.getFileByDocumentId(unit.documentId).subscribe(
+          (file: FileResponse) =>
+            this.unitImageUrl =
+              `data:image/${file.extension.replace('.', '')};base64,${file.base64}`
+        );
+      }
 
-        if (unit.propertyId) {
-          this.propertyService.getPopertyById(unit.propertyId.toString()).subscribe({
-            next: (property) => {
-              this.property = property;
-            }
-          });
-        }
-      },
-      error: (err) => {
-        this.errorMessage = 'Failed to load unit details';
-        console.error(err);
+      if (unit.propertyId) {
+        this.propertyService
+          .getPopertyById(unit.propertyId.toString())
+          .subscribe(property => this.property = property);
       }
     });
   }
 
-  confirmBooking(): void {
-    if (!this.unitId || !this.tenantId) {
-      this.errorMessage = 'Invalid unit or tenant ID';
-      return;
-    }
-
-    const bookingRequest: BookingRequest = {
+  reserveLater(): void {
+    const request: BookingRequest = {
       unitId: this.unitId,
       tenentId: this.tenantId,
-      notes: ''
+      notes: 'Reserved for later payment'
     };
 
     this.isSubmitting = true;
 
-    this.bookingService.createBooking(bookingRequest).subscribe({
+    this.bookingService.createBooking(request).subscribe({
       next: () => {
         this.isSubmitting = false;
-        this.stepper.next(); // advance to the next step
+       this.router.navigate(['/portal/tenant', this.tenantId]);
       },
-      error: (err) => {
+      error: () => {
+        this.errorMessage = 'Reservation failed';
+        this.isSubmitting = false;
+      }
+    });
+  }
+
+  payNow(): void {
+    const request: BookingRequest = {
+      unitId: this.unitId,
+      tenentId: this.tenantId,
+      notes: 'Immediate payment booking'
+    };
+
+    this.isSubmitting = true;
+
+    this.bookingService.createBooking(request).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        this.stepper.next(); 
+      },
+      error: () => {
         this.errorMessage = 'Booking failed';
         this.isSubmitting = false;
-        console.error(err);
       }
     });
   }

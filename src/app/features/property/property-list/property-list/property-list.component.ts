@@ -72,8 +72,8 @@ export class PropertyListComponent implements OnInit, OnDestroy {
     this.router.navigate(['/admin/property', propertyId]);
   }
   
-  goToEditUnit(unitId: number): void {
-    this.router.navigate(['/unit', unitId]);
+  goToManageUnits(propertyId: number): void {
+    this.router.navigate([`/manage/${propertyId}/units`]);
   }
 
   // Add this method to your PropertyListComponent class

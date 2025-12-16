@@ -14,17 +14,10 @@
       <i class="fas" [ngClass]="isMobileMenuOpen ? 'fa-times' : 'fa-bars'" style="font-size: 24px;"></i>
     </button>
 
-    <!-- RIGHT SIDE: Navigation Links & Sign In -->
+    <!-- RIGHT SIDE: My Account Button -->
     <div class="navbar-right d-none d-lg-flex align-items-center">
-      <div class="nav-links d-flex gap-4 me-4">
-        <a class="nav-link text-white text-decoration-none fw-medium" [routerLink]="['/']">Buy</a>
-        <a class="nav-link text-white text-decoration-none fw-medium" [routerLink]="['/']">Rent</a>
-        <a class="nav-link text-white text-decoration-none fw-medium" [routerLink]="['/portal/manage']">Sell</a>
-        <a class="nav-link text-white text-decoration-none fw-medium" [routerLink]="['/']">About</a>
-      </div>
-
-      <button class="btn btn-outline-light px-3 py-2 fw-medium" [routerLink]="['/signin']">
-        Sign In
+      <button class="btn btn-outline-light px-3 py-2 fw-medium" (click)="goToAccount()">
+        My Account
       </button>
     </div>
 
@@ -32,15 +25,9 @@
 
   <!-- MOBILE MENU COLLAPSIBLE -->
   <div class="mobile-menu d-lg-none mt-2" *ngIf="isMobileMenuOpen">
-    <div class="nav-links flex-column d-flex gap-3 mb-3 px-3">
-      <a class="nav-link text-white text-decoration-none fw-medium" [routerLink]="['/']" (click)="toggleMobileMenu()">Buy</a>
-      <a class="nav-link text-white text-decoration-none fw-medium" [routerLink]="['/']" (click)="toggleMobileMenu()">Rent</a>
-      <a class="nav-link text-white text-decoration-none fw-medium" [routerLink]="['/portal/manage']" (click)="toggleMobileMenu()">Sell</a>
-      <a class="nav-link text-white text-decoration-none fw-medium" [routerLink]="['/']" (click)="toggleMobileMenu()">About</a>
-    </div>
     <div class="px-3 mb-3">
-      <button class="btn btn-outline-light w-100 py-2 fw-medium" [routerLink]="['/signin']" (click)="toggleMobileMenu()">
-        Sign In
+      <button class="btn btn-outline-light w-100 py-2 fw-medium" (click)="goToAccount(); toggleMobileMenu()">
+        My Account
       </button>
     </div>
   </div>

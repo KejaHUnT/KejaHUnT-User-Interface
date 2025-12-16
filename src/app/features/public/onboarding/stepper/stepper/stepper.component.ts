@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, AbstractControl } from '@angular/forms';
+import { MatStepper } from '@angular/material/stepper';
+
 import { AddTenantStepComponent } from '../../step1/add-tenant-step/add-tenant-step.component';
 import { CreateBookingStepComponent } from '../../step2/create-booking-step/create-booking-step/create-booking-step.component';
 import { PaymentStepComponent } from '../../step3/create-payment-step/create-payment-step/create-payment-step.component';
@@ -11,32 +13,25 @@ import { PaymentStepComponent } from '../../step3/create-payment-step/create-pay
   styleUrls: ['./stepper.component.css']
 })
 export class StepperComponent implements OnInit {
+
   unitId: number = 0;
   tenantId: number = 0;
   paymentAmount: number = 0;
 
+  @ViewChild(MatStepper) stepper!: MatStepper;
   @ViewChild('addTenant') addTenant?: AddTenantStepComponent;
   @ViewChild('createBooking') createBooking?: CreateBookingStepComponent;
   @ViewChild('paymentStep') paymentStep?: PaymentStepComponent;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      const id = +params['unitId'];
-      const amount = +params['amount'];
-
-      if (id && !isNaN(id)) {
-        this.unitId = id;
-      } else {
-        console.warn('Missing or invalid unitId in query params.');
-      }
-
-      if (amount && !isNaN(amount)) {
-        this.paymentAmount = amount;
-      } else {
-        console.warn('Missing or invalid amount in query params.');
-      }
+      this.unitId = +params['unitId'] || 0;
+      this.paymentAmount = +params['unitRent'] || 0;
     });
   }
 
@@ -44,40 +39,30 @@ export class StepperComponent implements OnInit {
     return this.addTenant?.form ?? new FormGroup({});
   }
 
-  get isFormInvalid(): boolean {
-    return this.addTenant?.form?.invalid ?? true;
-  }
-
-  submitTenantAndContinue(stepper: any): void {
-    if (this.addTenant?.form?.valid) {
-      this.addTenant.submitTenant(() => {
-        this.tenantId = this.addTenant?.tenantId ?? 0;
-        localStorage.setItem('tenantId', this.tenantId.toString());
-
-        this.createBooking?.initialize(this.unitId, this.tenantId);
-        stepper.next();
-      });
-    } else {
+  submitTenantAndContinue(): void {
+    if (!this.addTenant?.form?.valid) {
       this.addTenant?.form?.markAllAsTouched();
+      return;
     }
+
+    this.addTenant.submitTenant(() => {
+      this.tenantId = this.addTenant?.tenantId ?? 0;
+      localStorage.setItem('tenantId', this.tenantId.toString());
+
+      // Initialize booking step WITH stepper reference
+      this.createBooking?.initialize(this.unitId, this.tenantId);
+      this.createBooking!.stepper = this.stepper;
+
+      this.stepper.next();
+    });
   }
 
   submitPaymentStep(): void {
-    if (this.paymentStep) {
-      this.paymentStep.submitPayment();
-    }
+    this.paymentStep?.submitPayment();
   }
 
-  resetToEdit(stepper: any): void {
-    stepper.reset();
-    stepper.selectedIndex = 0;
-
-    // Re-enable and refresh form
-    if (this.addTenant?.form) {
-      Object.values(this.addTenant.form.controls).forEach(control => {
-        if (control.disabled) control.enable();
-      });
-      this.addTenant.refreshTenantDetails?.();
-    }
+  resetToEdit(): void {
+    this.stepper.reset();
+    this.stepper.selectedIndex = 0;
   }
 }

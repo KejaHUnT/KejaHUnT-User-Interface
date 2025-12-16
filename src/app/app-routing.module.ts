@@ -17,6 +17,8 @@ import { PageComponent } from './features/tenant/dashboard/components/page/page.
 import { LoginComponent } from './features/auth/login/login/login.component';
 import { StepperComponent } from './features/public/onboarding/stepper/stepper/stepper.component';
 import { authGuard } from './features/auth/guard/auth.guard';
+import { ManagePropertyUnitsComponent } from './features/unit/manage-property-units/manage-property-units.component';
+import { AddUnitComponent } from './features/unit/add-unit/add-unit.component';
 
 const routes: Routes = [
   {
@@ -89,6 +91,16 @@ const routes: Routes = [
   {
     path: 'portal/tenant/:id',
     component: PageComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'manage/:propertyId/units',
+    component: ManagePropertyUnitsComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'add-unit',
+    component: AddUnitComponent,
     canActivate: [authGuard]
   },
   {

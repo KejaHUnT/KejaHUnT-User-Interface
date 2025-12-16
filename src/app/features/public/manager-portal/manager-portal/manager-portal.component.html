@@ -1,62 +1,119 @@
-<app-sidebar></app-sidebar>
+<div class="content-container">
+  <!-- === KPI SECTION === -->
+  <div class="kpi-section mb-4">
+    <div class="kpi-card shadow-sm" (click)="navigateToProperties()">
+      <div class="kpi-icon bg-primary-light"><i class="bi bi-buildings"></i></div>
+      <div>
+        <h3>{{ (Property$ | async)?.length || 0 }}</h3>
+        <p>Registered Properties</p>
+      </div>
+    </div>
 
-<div class="content-container mt-2 rounded-4">
-    <div class="row">
-        <div class="col-8">
-            <div class="units-wrapper card shadow-sm border-0 rounded-4 p-4 mb-4 ">
-                <p>
-                    Welcome back, <br>
-                    We're delighted to have you. Need help on system walk through? Navigate to virtual assistant on the
-                    side
-                    menu
-                </p>
-            </div>
-            <h1 class="text-primary mb-3">Registered Properties</h1>
-            <div class="units-section">
-                <div class="units-wrapper card shadow-sm border-0 rounded-4 p-4">
-                    <div *ngIf="Property$ | async as properties" class="units-grid">
-                        <div *ngFor="let property of properties" class="unit-card" (click)="goToEditUnit(property.id)">
-                            <div class="unit-details card h-100 shadow-sm border-0 rounded-4 clickable-card">
-                                <h3>{{ property.name }}</h3>
-                                <p><strong>Location:</strong> {{ property.location }}</p>
-                                <p><strong>Type:</strong> {{ property.type }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> <!-- close col-8 -->
+    <div class="kpi-card shadow-sm" (click)="navigateToIncome()">
+      <div class="kpi-icon bg-success-light"><i class="bi bi-cash-stack"></i></div>
+      <div>
+        <h3>KES {{ totalExpectedIncome | number:'1.0-0' }}</h3>
+        <p>Total Expected Income</p>
+      </div>
+    </div>
 
-        <div class="col-4 d-flex flex-column">
-            <!-- Square Cards Container -->
-            <div class="square-cards-container">
-                <!-- First Square Card -->
-                <div class="square-card">
-                    <div class="card-content">
-                        <div class="income-summary-container">
-                            <div class="expected-income">
-                                <h5 class="expected-income-title">Expected Monthly Income</h5>
-                                <p class="expected-income-amount">{{ totalExpectedIncome | number:'1.0-0' }}</p>
-                            </div>
-                            <h5 class="income-summary-title">Property Income Summary</h5>
-                            <ul class="income-summary-list">
-                                <li *ngFor="let property of Property$ | async" class="income-summary-item">
-                                    <strong>{{ property.name }}:</strong>
-                                    <span class="income-amount">{{ propertiesIncome[property.name] | number:'1.0-0'
-                                        }}</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+    <div class="kpi-card shadow-sm" (click)="navigateToPending()">
+      <div class="kpi-icon bg-danger-light"><i class="bi bi-clock-history"></i></div>
+      <div>
+        <h3>KES {{ pendingBills | number:'1.0-0' }}</h3>
+        <p>Pending Bills</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- === LEFT SIDE (Properties) === -->
+    <div class="col-lg-8">
+      <div class="section-header d-flex justify-content-between align-items-center mb-3">
+        <h3 class="text-primary fw-bold">Registered Properties</h3>
+        <button class="btn btn-outline-primary" (click)="navigateToProperties()">
+          <i class="bi bi-gear"></i> Manage All
+        </button>
+      </div>
+
+      <div class="units-section">
+        <div class="units-wrapper card shadow-sm border-0 rounded-4 p-4">
+          <div *ngIf="Property$ | async as properties" class="units-grid">
+            <div
+              *ngFor="let property of properties"
+              class="unit-card"
+              [class.expanded]="property.expanded"
+              (click)="property.expanded = !property.expanded"
+            >
+              <div class="unit-header">
+                <h4>{{ property.name }}</h4>
+                <i
+                  class="bi"
+                  [ngClass]="{
+                    'bi-chevron-down': !property.expanded,
+                    'bi-chevron-up': property.expanded
+                  }"
+                ></i>
+              </div>
+
+              <div class="unit-body" [class.expanded]="property.expanded">
+                <p><strong>Location:</strong> {{ property.location }}</p>
+                <p><strong>Type:</strong> {{ property.type }}</p>
+                <p><strong>Description:</strong> {{ property.description }}</p>
+
+                <div class="d-flex gap-2 mt-3 flex-wrap">
+                  <button
+                    class="btn btn-outline-success flex-grow-1"
+                    (click)="goToEditUnit(property.id); $event.stopPropagation()"
+                  >
+                    <i class="bi bi-house-door"></i> Manage Property
+                  </button>
+                  <button
+                    class="btn btn-outline-primary flex-grow-1"
+                    (click)="goToManageUnits(property.id); $event.stopPropagation()"
+                  >
+                    <i class="bi bi-grid-3x3-gap"></i> Manage Units
+                  </button>
                 </div>
-                <!-- Second Square Card -->
-                <div class="square-card">
-                    <div class="card-content">
-                        <h5>Pending Bills</h5>
-                        <p>Calculate the remaining unpaid rents</p>
-                    </div>
-                </div>
+              </div>
             </div>
-        </div> <!-- close col-4 -->
-    </div> <!-- close row -->
-</div> <!-- close content-container -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- === RIGHT SIDE (Analytics) === -->
+    <div class="col-lg-4 d-flex flex-column gap-3">
+      <div class="square-card glass-card">
+        <div class="card-content">
+          <div class="income-summary-container">
+            <div class="expected-income text-center mb-3">
+              <h6 class="expected-income-title text-uppercase">Expected Monthly Income</h6>
+              <p class="expected-income-amount">KES {{ totalExpectedIncome | number:'1.0-0' }}</p>
+            </div>
+            <h6 class="income-summary-title">Property Income Summary</h6>
+            <ul class="income-summary-list">
+              <li *ngFor="let property of Property$ | async" class="income-summary-item">
+                <strong>{{ property.name }}</strong>
+                <span
+                  class="income-amount"
+                  [ngStyle]="{'color': propertiesIncome[property.name] > 0 ? 'var(--success)' : 'var(--danger)'}"
+                >
+                  {{ propertiesIncome[property.name] | number:'1.0-0' }}
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="square-card glass-card text-center">
+        <h6 class="text-danger fw-bold"><i class="bi bi-exclamation-circle"></i> Pending Bills</h6>
+        <p>Review unpaid rents and take quick action to keep your portfolio balanced.</p>
+        <button class="btn btn-outline-danger mt-2 w-100" (click)="navigateToPending()">
+          View Pending Bills
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

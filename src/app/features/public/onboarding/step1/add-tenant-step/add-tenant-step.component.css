@@ -1,18 +1,19 @@
 /* Form container */
 form {
-  background-color: #fff;
+  background-color: #ffffff;
   padding: 32px;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
   max-width: 800px;
   margin: 40px auto 16px;
+
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
   justify-content: space-between;
 }
 
-/* Field container: 48% width for 2-column layout */
+/* Two-column fields */
 mat-form-field {
   width: 48%;
   background-color: #f9f9f9;
@@ -20,7 +21,7 @@ mat-form-field {
   padding: 4px 8px;
 }
 
-/* Wide field (like employer) */
+/* Full-width fields */
 mat-form-field.full-width {
   width: 100%;
 }
@@ -28,28 +29,29 @@ mat-form-field.full-width {
 /* Labels */
 mat-label {
   font-weight: 600;
+  color: #2b2b2b;
+}
+
+/* Input text */
+input.mat-input-element {
+  font-size: 15px;
+  padding: 10px 0;
   color: #333;
 }
 
-/* Selected unit info */
+/* Info banner (if used later) */
 form > p {
   width: 100%;
-  font-size: 16px;
+  font-size: 15px;
   background-color: #e8f0fe;
   padding: 16px;
-  border-left: 5px solid #3f51b5;
+  border-left: 4px solid #3f51b5;
   border-radius: 8px;
   font-weight: 500;
   color: #2c3e50;
 }
 
-/* Input styling */
-input.mat-input-element {
-  font-size: 15px;
-  padding: 10px 0;
-}
-
-/* Responsive layout for small screens */
+/* Responsive */
 @media screen and (max-width: 768px) {
   form {
     flex-direction: column;

@@ -28,7 +28,7 @@ export const authGuard: CanActivateFn = (route, state) => {
       return router.createUrlTree(['/signin'], { queryParams: { returnUrl: state.url, expired: 'true' } });
     }
 
-    const allowedRoles = ['Admin', 'Tenant'];
+    const allowedRoles = ['Manager', 'Tenant'];
     const hasValidRole = user.roles.some(role => allowedRoles.includes(role));
     if (!hasValidRole) {
       return router.createUrlTree(['/unauthorized']);

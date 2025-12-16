@@ -1,46 +1,49 @@
-<mat-horizontal-stepper [linear]="true" #stepper *ngIf="unitId">
-  <!-- Step 1: Tenant -->
-  <mat-step [stepControl]="addTenantForm" [editable]="true">
+<mat-horizontal-stepper linear>
+
+  <!-- STEP 1 -->
+  <mat-step [stepControl]="addTenantForm">
     <ng-template matStepLabel>Tenant Profile</ng-template>
-    <app-add-tenant-step [unitId]="unitId" #addTenant></app-add-tenant-step>
 
-    <div class="step-buttons">
+    <app-add-tenant-step
+      #addTenant
+      [unitId]="unitId">
+    </app-add-tenant-step>
+
+    <div class="form-actions">
       <button mat-raised-button color="primary"
-              [disabled]="isFormInvalid"
-              (click)="submitTenantAndContinue(stepper)">
-        Next
+              (click)="submitTenantAndContinue()">
+        Continue
       </button>
     </div>
   </mat-step>
 
-  <!-- Step 2: Booking -->
-  <mat-step [editable]="true">
-    <ng-template matStepLabel>Confirm Booking</ng-template>
-    <app-create-booking-step #createBooking></app-create-booking-step>
+  <!-- STEP 2 -->
+  <mat-step>
+    <ng-template matStepLabel>Booking</ng-template>
 
-    <div class="step-buttons">
-      <button mat-raised-button matStepperPrevious>Back</button>
-      <button mat-stroked-button color="warn" (click)="resetToEdit(stepper)">
-        Reset & Edit
-      </button>
-      <button mat-raised-button color="primary" (click)="stepper.next()">Next</button>
-    </div>
+    <app-create-booking-step
+      #createBooking
+      [unitId]="unitId"
+      [tenantId]="tenantId"
+      [stepper]="stepper">
+    </app-create-booking-step>
   </mat-step>
 
-  <!-- Step 3: Payment -->
-  <mat-step [editable]="true">
+  <!-- STEP 3 -->
+  <mat-step>
     <ng-template matStepLabel>Payment</ng-template>
+
     <app-payment-step
       #paymentStep
-      [unitId]="unitId"
       [amount]="paymentAmount">
     </app-payment-step>
 
-    <div class="step-buttons">
-      <button mat-raised-button matStepperPrevious>Back</button>
-      <button mat-raised-button color="primary" (click)="submitPaymentStep()">
-        Submit Payment
+    <div class="form-actions">
+      <button mat-raised-button color="primary"
+              (click)="submitPaymentStep()">
+        Pay
       </button>
     </div>
   </mat-step>
+
 </mat-horizontal-stepper>

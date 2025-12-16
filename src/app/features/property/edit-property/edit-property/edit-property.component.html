@@ -3,8 +3,8 @@
   <div class="particle" *ngFor="let i of [1,2,3,4,5,6,7,8,9]"></div>
 </div>
 
-<!-- Main Property Container -->
-<div class="property-container" *ngIf="model1">
+<!-- Main Property Section -->
+<section class="property-section" *ngIf="model1">
   <!-- Header -->
   <div class="header text-center mb-4">
     <h2>Edit Property</h2>
@@ -27,6 +27,7 @@
 
   <!-- Property Details Form -->
   <form (ngSubmit)="onFormSubmit()" enctype="multipart/form-data">
+    <!-- Property Info -->
     <div class="row g-3 mb-4">
       <div class="col-md-4">
         <label class="form-label">Property Name</label>
@@ -48,43 +49,40 @@
 
     <!-- Features -->
     <div class="row">
-      <!-- General Features -->
       <div class="col-md-4">
         <label>General Features:</label>
         <div *ngIf="features$ | async as generalFeatures">
           <div *ngFor="let feature of generalFeatures" class="form-check">
             <input type="checkbox" class="form-check-input"
-                   [checked]="model?.generalFeatures?.includes(feature.id)"
-                   (change)="onGeneralFeatureChange($event, feature.id)"
-                   [id]="'general' + feature.id" />
+              [checked]="model?.generalFeatures?.includes(feature.id)"
+              (change)="onGeneralFeatureChange($event, feature.id)"
+              [id]="'general' + feature.id" />
             <label class="form-check-label" [for]="'general' + feature.id">{{ feature.name }}</label>
           </div>
         </div>
       </div>
 
-      <!-- Indoor Features -->
       <div class="col-md-4">
         <label>Indoor Features:</label>
         <div *ngIf="indoor$ | async as indoorFeatures">
           <div *ngFor="let feature of indoorFeatures" class="form-check">
             <input type="checkbox" class="form-check-input"
-                   [checked]="model?.indoorFeatures?.includes(feature.id)"
-                   (change)="onIndoorFeatureChange($event, feature.id)"
-                   [id]="'indoor' + feature.id" />
+              [checked]="model?.indoorFeatures?.includes(feature.id)"
+              (change)="onIndoorFeatureChange($event, feature.id)"
+              [id]="'indoor' + feature.id" />
             <label class="form-check-label" [for]="'indoor' + feature.id">{{ feature.name }}</label>
           </div>
         </div>
       </div>
 
-      <!-- Outdoor Features -->
       <div class="col-md-4">
         <label>Outdoor Features:</label>
         <div *ngIf="outdoor$ | async as outdoorFeatures">
           <div *ngFor="let feature of outdoorFeatures" class="form-check">
             <input type="checkbox" class="form-check-input"
-                   [checked]="model?.outDoorFeatures?.includes(feature.id)"
-                   (change)="onOutdoorFeatureChange($event, feature.id)"
-                   [id]="'outdoor' + feature.id" />
+              [checked]="model?.outDoorFeatures?.includes(feature.id)"
+              (change)="onOutdoorFeatureChange($event, feature.id)"
+              [id]="'outdoor' + feature.id" />
             <label class="form-check-label" [for]="'outdoor' + feature.id">{{ feature.name }}</label>
           </div>
         </div>
@@ -92,7 +90,7 @@
     </div>
 
     <!-- Policies Section -->
-    <h3 class="mb-4 text-center">Property Policies</h3>
+    <h3 class="mb-4 text-center section-heading">Property Policies</h3>
     <div *ngIf="policy$ | async as policies">
       <div *ngFor="let policy of policies" class="card mb-3 policy-group">
         <div class="card-body" (click)="onSelectPolicy(policy)">
@@ -121,10 +119,8 @@
     <!-- Units Section -->
     <div class="units-section mt-5">
       <h2 class="section-heading">Edit Units</h2>
-
       <div *ngIf="model?.units?.length; else noUnits">
         <div *ngFor="let unit of model?.units; let i = index" class="unit-card-horizontal">
-          <!-- Image Column -->
           <div class="unit-image-wrapper-horizontal">
             <img *ngIf="unitImageUrls[i]" [src]="unitImageUrls[i]" alt="Unit Image" class="unit-image-horizontal" />
             <div class="mt-2">
@@ -133,7 +129,6 @@
             </div>
           </div>
 
-          <!-- Form Column -->
           <div class="unit-content-horizontal">
             <div class="row g-3">
               <div class="col-md-6">
@@ -171,11 +166,9 @@
           </div>
         </div>
       </div>
-
       <div class="d-flex justify-content-start mt-3 mb-4">
         <button class="btn btn-outline-primary btn-sm" type="button" (click)="addUnit()">+ Add Unit</button>
       </div>
-
       <ng-template #noUnits>
         <p class="no-units text-muted">No units available. Add some to get started.</p>
       </ng-template>
@@ -189,4 +182,4 @@
 
     <div *ngIf="message" class="alert alert-info mt-3 text-center">{{ message }}</div>
   </form>
-</div>
+</section>

@@ -1,0 +1,51 @@
+.add-unit-container {
+  background: var(--card-bg, #ffffff);
+  animation: fadeIn 0.5s ease-in-out;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.add-unit-container h2 {
+  border-bottom: 2px solid var(--primary-color, #2563eb);
+  padding-bottom: 0.5rem;
+}
+
+.form-label {
+  color: var(--text-dark, #1f2937);
+}
+
+input,
+select {
+  border-radius: 10px;
+  padding: 0.6rem;
+  transition: all 0.2s ease;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--primary-color, #2563eb);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.unit-image-preview {
+  max-width: 250px;
+  max-height: 250px;
+  object-fit: cover;
+  margin-top: 1rem;
+}
+
+.btn {
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

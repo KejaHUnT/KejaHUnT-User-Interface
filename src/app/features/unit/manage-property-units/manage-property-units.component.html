@@ -1,0 +1,57 @@
+<div class="manage-units-container">
+  <div class="header">
+    <div>
+      <h2 *ngIf="property">Manage Units for <span class="property-name">{{ property.name }}</span></h2>
+      <h2 *ngIf="!property">Manage Units</h2>
+    </div>
+    <button class="btn add-btn" (click)="onAddUnit()">+ Add New Unit</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Loading units...</p>
+  </div>
+
+  <div *ngIf="!loading && units.length === 0" class="no-units">
+    <p>No units found for this property.</p>
+  </div>
+
+  <div class="unit-grid" *ngIf="!loading && units.length > 0">
+    <div class="unit-card" *ngFor="let unit of units">
+      <div class="unit-content">
+        
+        <!-- ✅ Unit Image -->
+        <div class="unit-image-container">
+          <img
+            *ngIf="unitImages[unit.id]"
+            [src]="unitImages[unit.id]"
+            alt="{{ unit.type }}"
+            class="unit-image"
+          />
+          <div *ngIf="!unitImages[unit.id]" class="image-placeholder">No Image</div>
+        </div>
+
+        <!-- ✅ Unit Info -->
+        <div class="unit-info">
+          <div class="unit-header">
+            <h3>{{ unit.type }}</h3>
+            <span [class]="unit.status.toLowerCase()">{{ unit.status }}</span>
+          </div>
+
+          <div class="unit-body">
+            <p><strong>Door:</strong> {{ unit.doorNumber }}</p>
+            <p><strong>Floor:</strong> {{ unit.floor }}</p>
+            <p><strong>Size:</strong> {{ unit.size }} m²</p>
+            <p><strong>Bathrooms:</strong> {{ unit.bathrooms }}</p>
+            <p><strong>Price:</strong> {{ unit.price | currency:'KES':'symbol' }}</p>
+          </div>
+
+          <div class="unit-actions">
+            <button class="btn edit-btn" (click)="onEdit(unit)">Edit</button>
+            <button class="btn delete-btn" (click)="onDelete(unit)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

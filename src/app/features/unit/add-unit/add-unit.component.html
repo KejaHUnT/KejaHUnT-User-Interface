@@ -1,0 +1,69 @@
+<div class="add-unit-container card shadow-lg border-0 rounded-4 p-4">
+  <h2 class="text-primary fw-bold mb-4">
+    <i class="bi bi-house-add"></i> Add New Unit
+  </h2>
+
+  <form [formGroup]="unitForm" (ngSubmit)="onSubmit()" novalidate>
+    <div class="row g-4">
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Price (KES)</label>
+        <input type="number" class="form-control" formControlName="price" placeholder="e.g., 25000" />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Type</label>
+        <input type="text" class="form-control" formControlName="type" placeholder="e.g., 2 Bedroom" />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Bathrooms</label>
+        <input type="number" class="form-control" formControlName="bathrooms" placeholder="e.g., 1" />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Size (sq. ft)</label>
+        <input type="number" class="form-control" formControlName="size" placeholder="e.g., 500" />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Floor</label>
+        <input type="number" class="form-control" formControlName="floor" placeholder="e.g., 2" />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Door Number</label>
+        <input type="text" class="form-control" formControlName="doorNumber" placeholder="e.g., A-203" />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Status</label>
+        <select class="form-select" formControlName="status">
+          <option value="Available">Available</option>
+          <option value="Booked">Booked</option>
+          <option value="Reserved">Reserved</option>
+          <option value="Unpaid">Unpaid</option>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Upload Image</label>
+        <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*" />
+      </div>
+
+      <div class="col-12 text-center" *ngIf="previewUrl">
+        <img [src]="previewUrl" alt="Preview" class="unit-image-preview rounded-3 shadow-sm" />
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end gap-3 mt-4">
+      <button type="button" class="btn btn-outline-secondary px-4" (click)="onCancel()">
+        <i class="bi bi-x-circle"></i> Cancel
+      </button>
+
+      <button type="submit" class="btn btn-primary px-4" [disabled]="isSubmitting">
+        <i class="bi bi-check-circle"></i>
+        {{ isSubmitting ? 'Saving...' : 'Create Unit' }}
+      </button>
+    </div>
+  </form>
+</div>

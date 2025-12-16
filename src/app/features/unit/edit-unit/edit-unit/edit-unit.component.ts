@@ -107,7 +107,7 @@ export class EditUnitComponent implements OnInit, OnDestroy {
     this.unitService.updateUnit(this.model.id.toString(), formData).subscribe({
       next: (response) => {
         console.log('Unit updated successfully:', response);
-        this.router.navigateByUrl('admin/property');
+        this.router.navigateByUrl(`manage/${this.model?.propertyId}/units`);
       },
       error: (err) => {
         console.error('Failed to update unit:', err);
@@ -118,10 +118,14 @@ export class EditUnitComponent implements OnInit, OnDestroy {
   onDelete(): void {
     if (this.id) {
       this.deleteUnitSubscription = this.unitService.deleteUnit(this.id).subscribe({
-        next: () => this.router.navigateByUrl('admin/property'),
+        next: () => this.router.navigateByUrl(`manage/${this.model?.propertyId}/units`),
         error: (err) => console.error('Delete failed', err)
       });
     }
+  }
+
+  onCancel(): void {
+    this.router.navigate([`/manage/${this.model?.propertyId}/units`]);
   }
 
   ngOnDestroy(): void {

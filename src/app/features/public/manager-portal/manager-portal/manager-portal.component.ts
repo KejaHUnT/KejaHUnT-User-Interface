@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Property } from 'src/app/features/property/models/property.model';
 import { PropertyService } from 'src/app/features/property/services/property.service';
 
@@ -9,48 +9,72 @@ import { PropertyService } from 'src/app/features/property/services/property.ser
   templateUrl: './manager-portal.component.html',
   styleUrls: ['./manager-portal.component.css']
 })
-export class ManagerPortalComponent {
-  Property$?: Observable<Property[]>;
-  propertiesIncome: { [key: string]: number } = {}; // Store income per property by property ID
-  totalExpectedIncome: number = 0; // Store the total expected income for all properties
+export class ManagerPortalComponent implements OnInit {
+  Property$?: Observable<(Property & { expanded?: boolean })[]>;
+  propertiesIncome: { [key: string]: number } = {};
+  totalExpectedIncome: number = 0;
+  pendingBills: number = 0;
 
-  constructor(private route: ActivatedRoute,
+  constructor(
+    private route: ActivatedRoute,
     private propertyService: PropertyService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.Property$ = this.propertyService.getPropertiesForLoggedInUser();
-    // Calculate the expected income after fetching the properties
-    this.Property$.subscribe(properties => {
-      this.calculateIncome(properties);
+    this.Property$ = new Observable<(Property & { expanded?: boolean })[]>(observer => {
+      this.propertyService.getPropertiesForLoggedInUser().subscribe(properties => {
+        const propsWithExpand = properties.map(p => ({ ...p, expanded: false }));
+        this.calculateIncome(propsWithExpand);
+        observer.next(propsWithExpand);
+      });
     });
   }
 
-  // Function to calculate income per property and total income
   calculateIncome(properties: Property[]): void {
     let totalIncome = 0;
+    let totalPending = 0;
 
     properties.forEach(property => {
       let propertyIncome = 0;
 
-      property.units.forEach(unit => {
-        propertyIncome += unit.price; // Calculate income for each unit
-      });
+      if (property.units && property.units.length > 0) {
+        property.units.forEach(unit => {
+          const unitPrice = unit.price || 0;
+          propertyIncome += unitPrice;
 
-      // Store income for each property by property name or ID
+          if (unit.status?.toLowerCase() === 'pending' || unit.status?.toLowerCase() === 'unpaid') {
+            totalPending += unitPrice;
+          }
+        });
+      }
+
       this.propertiesIncome[property.name] = propertyIncome;
-
-      // Add property income to total income
       totalIncome += propertyIncome;
     });
 
-    // Update total expected income
     this.totalExpectedIncome = totalIncome;
+    this.pendingBills = totalPending;
   }
 
+  /** === NAVIGATION ACTIONS === */
   goToEditUnit(propId: number): void {
     this.router.navigate(['payment/', propId]);
   }
 
+  goToManageUnits(propertyId: number): void {
+    this.router.navigate([`/manage/${propertyId}/units`]);
+  }
+
+  navigateToProperties(): void {
+    this.router.navigate(['/admin/property']);
+  }
+
+  navigateToIncome(): void {
+    this.router.navigate(['/income']);
+  }
+
+  navigateToPending(): void {
+    this.router.navigate(['/pending-bills']);
+  }
 }
