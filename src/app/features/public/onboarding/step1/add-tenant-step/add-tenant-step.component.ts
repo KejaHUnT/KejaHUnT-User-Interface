@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UnitService } from 'src/app/features/unit/services/unit.service';
 import { CreateUnitRequest } from 'src/app/features/property/models/create-unit-request.model';
 import { TenantService } from 'src/app/features/tenant/services/tenant.service';
+import { TenantFlowService } from 'src/app/features/tenant/services/tenant-flow.service';
 
 @Component({
   selector: 'app-add-tenant-step',
@@ -21,8 +22,9 @@ export class AddTenantStepComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private unitService: UnitService,
-    private tenantService: TenantService
-  ) { }
+    private tenantService: TenantService,
+    private tenantFlowService: TenantFlowService
+  ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -56,6 +58,9 @@ export class AddTenantStepComponent implements OnInit {
       next: tenant => {
         if (tenant) {
           this.tenantId = tenant.id;
+
+          this.tenantFlowService.setTenant(tenant);
+
           this.form.patchValue({
             fullName: tenant.fullName,
             phoneNumber: tenant.phoneNumber,
@@ -65,12 +70,16 @@ export class AddTenantStepComponent implements OnInit {
             unitId: tenant.unitId || this.unitId
           });
         }
+
         this.form.enable();
       },
       error: err => {
         console.warn('No tenant found for email:', this.loggedInUserEmail, err);
         this.form.reset();
-        this.form.patchValue({ email: this.loggedInUserEmail, unitId: this.unitId });
+        this.form.patchValue({
+          email: this.loggedInUserEmail,
+          unitId: this.unitId
+        });
         this.form.enable();
       }
     });
@@ -89,7 +98,12 @@ export class AddTenantStepComponent implements OnInit {
 
     const afterSuccess = (tenant: any) => {
       this.tenantId = tenant.id;
-      // Do NOT disable the form here permanently
+
+      this.tenantFlowService.setTenant({
+        ...payload,
+        id: tenant.id
+      });
+
       if (callback) callback();
     };
 
@@ -105,5 +119,4 @@ export class AddTenantStepComponent implements OnInit {
       });
     }
   }
-
 }

@@ -31,19 +31,21 @@
 
   <!-- STEP 3 -->
   <mat-step>
-    <ng-template matStepLabel>Payment</ng-template>
+  <ng-template matStepLabel>Payment</ng-template>
 
-    <app-payment-step
-      #paymentStep
-      [amount]="paymentAmount">
-    </app-payment-step>
+  <app-payment-step
+    #paymentStep
+    [paymentAmount]="paymentAmount"
+    [unitId]="unitId">
+  </app-payment-step>
 
-    <div class="form-actions">
-      <button mat-raised-button color="primary"
-              (click)="submitPaymentStep()">
-        Pay
-      </button>
-    </div>
-  </mat-step>
+  <div class="form-actions">
+    <button mat-raised-button
+            color="primary"
+            (click)="submitPaymentStep()">
+      Pay
+    </button>
+  </div>
+</mat-step>
 
 </mat-horizontal-stepper>
