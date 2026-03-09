@@ -38,6 +38,9 @@ import { PaymentStepComponent } from './features/public/onboarding/step3/create-
 import { FooterComponent } from './core/features/footer/footer/footer.component';
 import { ManagePropertyUnitsComponent } from './features/unit/manage-property-units/manage-property-units.component';
 import { AddUnitComponent } from './features/unit/add-unit/add-unit.component';
+import { PaymentWidgetComponent } from './features/tenant/dashboard/widgets/payment-widget/payment-widget.component';
+import { PaymentHistoryWidgetComponent } from './features/tenant/dashboard/widgets/payment-history-widget/payment-history-widget.component';
+import { DashboardModule } from './features/property/dashboard/dashboard/dashboard.module';
 
 
 
@@ -51,7 +54,6 @@ import { AddUnitComponent } from './features/unit/add-unit/add-unit.component';
     HomeComponent,
     TenantListComponent,
     AddTenantComponent,
-    PropertyDetailsComponent,
     EditTenentComponent,
     PropertyDetailsComponent,
     ManagerPortalComponent,
@@ -67,7 +69,9 @@ import { AddUnitComponent } from './features/unit/add-unit/add-unit.component';
     PaymentStepComponent,
     FooterComponent,
     ManagePropertyUnitsComponent,
-    AddUnitComponent
+    AddUnitComponent,
+    PaymentWidgetComponent,
+    PaymentHistoryWidgetComponent,
   ],
   imports: [
     BrowserModule,
@@ -83,6 +87,7 @@ import { AddUnitComponent } from './features/unit/add-unit/add-unit.component';
     MatInputModule,
     MatProgressSpinnerModule,
     MatCardModule,
+    DashboardModule,
   ],
   providers: [
     {

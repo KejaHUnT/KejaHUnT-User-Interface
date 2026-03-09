@@ -1,0 +1,121 @@
+/* Backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+}
+
+/* Modal Container */
+.modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  width: 90%;
+  max-width: 500px;
+}
+
+/* Card inside Modal */
+.modal-card {
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  background-color: #fff;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Modal Header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Inputs and Buttons */
+.full-width-input {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.full-width-btn {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  background-color: #4A90E2;
+  color: #fff;
+  font-size: 15px;
+  transition: background-color 0.2s;
+}
+
+.full-width-btn:hover {
+  background-color: #357ABD;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Month Row */
+.month-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Remove button in month row */
+.remove-btn {
+  background: #E74C3C;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+
+/* Total */
+.total-amount {
+  font-weight: bold;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+/* Error / Success */
+.error {
+  color: #E74C3C;
+  margin-top: 5px;
+}
+
+.success {
+  color: #27AE60;
+  margin-top: 5px;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {opacity: 0; transform: translate(-50%, -48%);}
+  to {opacity: 1; transform: translate(-50%, -50%);}
+}
+@media (max-width: 400px) {
+  .month-row {
+    flex-direction: column;
+  }
+}

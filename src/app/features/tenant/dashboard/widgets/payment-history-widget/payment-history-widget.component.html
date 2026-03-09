@@ -1,0 +1,56 @@
+<div class="card payment-history-widget">
+  <h4>Payment History</h4>
+  <p><strong>Total Paid:</strong> KES {{ totalPaid | number:'1.0-0' }}</p>
+
+  <div *ngIf="monthlyLedgers.length">
+    <div *ngFor="let ledger of monthlyLedgers" class="ledger-month">
+      <!-- Month Header (clickable) -->
+      <h5 class="ledger-header" (click)="toggleLedger(ledger)">
+        {{ formatMonthYear(ledger.periodMonth, ledger.periodYear) }} - Status: 
+        <span [ngClass]="{
+          'status-paid': ledger.status === 'Paid',
+          'status-partial': ledger.status === 'Partial',
+          'status-unpaid': ledger.status === 'Unpaid',
+          'status-overpaid': ledger.status === 'Overpaid'
+        }">{{ ledger.status }}</span>
+        <span class="toggle-icon">{{ isLedgerExpanded(ledger) ? '▲' : '▼' }}</span>
+      </h5>
+
+      <!-- Ledger Details -->
+      <div class="ledger-details" *ngIf="isLedgerExpanded(ledger)">
+        <p><strong>Expected Rent:</strong> KES {{ ledger.expectedRent | number:'1.0-0' }}</p>
+        <p><strong>Total Paid:</strong> KES {{ ledger.totalPaid | number:'1.0-0' }}</p>
+        <p><strong>Balance:</strong> KES {{ ledger.balance | number:'1.0-0' }}</p>
+
+        <table class="table table-payments" *ngIf="ledger.payments.length">
+          <thead>
+            <tr>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Method</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of ledger.payments">
+              <td>KES {{ p.amount | number:'1.0-0' }}</td>
+              <td>
+                <span [ngClass]="{
+                  'status-success': getPaymentStatusLabel(p.status) === 'Success',
+                  'status-pending': getPaymentStatusLabel(p.status) === 'Pending',
+                  'status-failed': getPaymentStatusLabel(p.status) === 'Failed'
+                }">
+                  {{ getPaymentStatusLabel(p.status) }}
+                </span>
+              </td>
+              <td>{{ p.paymentMethod }}</td>
+              <td>{{ p.createdAt | date:'short' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <p *ngIf="!monthlyLedgers.length">No payments found for this unit.</p>
+</div>

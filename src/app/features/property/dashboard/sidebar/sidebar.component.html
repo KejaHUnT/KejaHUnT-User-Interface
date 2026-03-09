@@ -1,0 +1,34 @@
+<div class="sidebar" [class.open]="isOpen">
+
+  <!-- Property Header -->
+  <div class="property-header" *ngIf="property">
+    <h2>{{ property.name }}</h2>
+    <p>{{ property.location }}</p>
+  </div>
+
+  <ul>
+    <li 
+      [class.active]="selectedTab === 'overview'" 
+      (click)="selectTab('overview')">
+      Overview
+    </li>
+
+    <li 
+      [class.active]="selectedTab === 'units'" 
+      (click)="selectTab('units')">
+      Units
+    </li>
+
+    <li 
+      [class.active]="selectedTab === 'tenants'" 
+      (click)="selectTab('tenants')">
+      Tenants
+    </li>
+
+    <li 
+      [class.active]="selectedTab === 'payments'" 
+      (click)="selectTab('payments')">
+      Payments
+    </li>
+  </ul>
+</div>

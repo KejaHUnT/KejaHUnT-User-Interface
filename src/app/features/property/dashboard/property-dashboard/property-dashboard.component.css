@@ -1,0 +1,105 @@
+/* =====================================================
+   DASHBOARD ROOT
+===================================================== */
+
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background: #f8fafc;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  position: relative;
+}
+
+/* =====================================================
+   DESKTOP CONTENT LAYOUT
+===================================================== */
+
+.dashboard-content {
+  flex: 1;
+  padding: 40px;
+  margin-left: 260px; /* Sidebar width */
+  transition: all 0.35s ease;
+  overflow-y: auto;
+  min-height: 100vh;
+}
+
+/* =====================================================
+   MOBILE TOP BAR
+===================================================== */
+
+.mobile-topbar {
+  display: none;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 64px;
+
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+
+  z-index: 1600;
+
+  padding: 0 20px;
+
+  align-items: center;
+  gap: 16px;
+}
+
+.mobile-topbar h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0;
+}
+
+.menu-btn {
+  background: transparent;
+  border: none;
+  font-size: 26px;
+  cursor: pointer;
+  color: #0f172a;
+}
+
+/* =====================================================
+   SIDEBAR OVERLAY (MOBILE ONLY)
+===================================================== */
+
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(15,23,42,.6);
+  backdrop-filter: blur(3px);
+
+  z-index: 1400;
+}
+
+/* =====================================================
+   RESPONSIVE BEHAVIOR
+===================================================== */
+
+/* Tablet + Mobile */
+@media (max-width: 992px) {
+
+  /* Show mobile topbar */
+  .mobile-topbar {
+    display: flex;
+  }
+
+  /* Remove desktop sidebar spacing */
+  .dashboard-content {
+    margin-left: 0;
+    padding: 90px 24px 30px;
+  }
+}
+
+/* Small Phones */
+@media (max-width: 600px) {
+
+  .dashboard-content {
+    padding: 80px 16px 20px;
+  }
+}

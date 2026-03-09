@@ -1,0 +1,27 @@
+<div class="overview-card" *ngIf="property">
+
+  <h2>Property Overview</h2>
+
+  <div class="overview-grid">
+    <div>
+      <strong>Name:</strong>
+      <p>{{ property.name }}</p>
+    </div>
+
+    <div>
+      <strong>Address:</strong>
+      <p>{{ property.location }}</p>
+    </div>
+
+    <div>
+      <strong>City:</strong>
+      <p>{{ property.description }}</p>
+    </div>
+
+    <div>
+      <strong>Total Units:</strong>
+      <p>{{ property.units }}</p>
+    </div>
+  </div>
+
+</div>

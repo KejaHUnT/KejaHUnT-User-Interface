@@ -21,6 +21,10 @@ export class TenantService {
     return this.http.get<Tenant[]>(`${environment.tenantApiBaseUrl}/api/tenant`);
   }
 
+  getAllTenantsByPropertyId(propertyId: string): Observable<Tenant[]> {
+    return this.http.get<Tenant[]>(`${environment.tenantApiBaseUrl}/api/tenant/property/${propertyId}`);
+  }
+
   getTenantById(id: string): Observable<Tenant> {
     return this.http.get<Tenant>(`${environment.tenantApiBaseUrl}/api/tenant/${id}`);
   }

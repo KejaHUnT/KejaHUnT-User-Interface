@@ -1,0 +1,179 @@
+/* General Card Styling */
+.payment-history-widget {
+  background-color: #ffffff; 
+  border-radius: 12px;       
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
+  padding: 20px;
+  max-width: 100%;
+  margin: 20px auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.payment-history-widget:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+/* Heading */
+.payment-history-widget h4 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #333333;
+}
+
+/* Total Paid Paragraph */
+.payment-history-widget p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  color: #555555;
+}
+
+.payment-history-widget p strong {
+  color: #222222;
+}
+
+/* Monthly Ledger Section */
+.ledger-month {
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+}
+
+.ledger-month h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Ledger Status Badges */
+.status-paid {
+  color: #155724;
+  background-color: #d4edda;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.status-partial {
+  color: #856404;
+  background-color: #fff3cd;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.status-unpaid {
+  color: #721c24;
+  background-color: #f8d7da;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.status-overpaid {
+  color: #0c5460;
+  background-color: #d1ecf1;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+/* Ledger Info Paragraphs */
+.ledger-month p {
+  margin: 3px 0;
+  font-size: 0.95rem;
+  color: #444444;
+}
+
+.ledger-month p strong {
+  color: #222222;
+}
+
+/* Table Styling */
+.payment-history-widget .table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+.payment-history-widget th,
+.payment-history-widget td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 0.92rem;
+  color: #444444;
+}
+
+.payment-history-widget th {
+  background-color: #f8f8f8;
+  font-weight: 600;
+  color: #333333;
+  border-bottom: 2px solid #ddd;
+}
+
+/* Table Row Hover Effect */
+.payment-history-widget tbody tr:hover {
+  background-color: #f1f1f1;
+  transition: background-color 0.2s ease;
+}
+
+/* Payment Status Badges in Table */
+.status-success {
+  color: #155724;
+  background-color: #d4edda;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+.status-pending {
+  color: #856404;
+  background-color: #fff3cd;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+.status-failed {
+  color: #721c24;
+  background-color: #f8d7da;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+/* Responsive Table & Ledger */
+@media (max-width: 768px) {
+  .payment-history-widget .table th,
+  .payment-history-widget .table td {
+    padding: 8px 6px;
+    font-size: 0.8rem;
+  }
+
+  .ledger-month h5 {
+    font-size: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ledger-month p {
+    font-size: 0.85rem;
+  }
+
+  .payment-history-widget h4 {
+    font-size: 1.2rem;
+  }
+}

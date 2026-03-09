@@ -20,6 +20,10 @@ export class UnitService {
     return this.http.get<Unit[]>(`${environment.apiBaseUrl}/api/Unit`);
   }
 
+  getAllUnitsByPropertyId(propertyId: string): Observable<Unit[]> {
+    return this.http.get<Unit[]>(`${environment.apiBaseUrl}/api/Unit/property/${propertyId}`);
+  }
+
   getUnitById(id: string): Observable<Unit> {
     return this.http.get<Unit>(`${environment.apiBaseUrl}/api/Unit/${id}`);
   }

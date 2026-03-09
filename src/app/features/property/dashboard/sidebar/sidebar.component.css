@@ -1,0 +1,154 @@
+
+/* =====================================================
+   SIDEBAR BASE (Elite SaaS Pattern)
+===================================================== */
+
+.sidebar {
+  width: 260px;
+
+  height: 100vh;
+
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+  color: #ffffff;
+
+  display: flex;
+  flex-direction: column;
+
+  position: fixed;
+  left: 0;
+  top: 0;
+
+  z-index: 1500;
+
+  overflow-y: auto;
+
+  transform: translateX(0);
+  transition: transform 0.35s ease;
+}
+
+/* Scrollbar */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(148,163,184,.4);
+  border-radius: 20px;
+}
+
+/* =====================================================
+   PROPERTY HEADER
+===================================================== */
+
+.property-header {
+  padding: 30px 24px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.property-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.property-header p {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+/* =====================================================
+   NAVIGATION ITEMS
+===================================================== */
+
+.sidebar ul {
+  list-style: none;
+  margin: 18px 0;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 14px 24px;
+  margin: 6px 14px;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  color: #cbd5e1;
+
+  display: flex;
+  align-items: center;
+
+  position: relative;
+
+  transition: all .25s ease;
+}
+
+/* Hover */
+.sidebar li:hover {
+  background: rgba(59,130,246,.15);
+  color: white;
+  transform: translateX(4px);
+}
+
+/* Active */
+.sidebar li.active {
+  background: #3b82f6;
+  color: white;
+  box-shadow: 0 8px 24px rgba(59,130,246,.35);
+}
+
+.sidebar li.active::before {
+  content: "";
+
+  position: absolute;
+  left: -14px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 4px;
+  height: 65%;
+
+  border-radius: 6px;
+
+  background: #3b82f6;
+}
+
+/* =====================================================
+   MOBILE DRAWER UX
+===================================================== */
+
+@media (max-width: 992px) {
+
+  .sidebar {
+    transform: translateX(-100%);
+    width: 280px;
+
+    box-shadow: 20px 0 60px rgba(0,0,0,.35);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 600px) {
+
+  .sidebar {
+    width: 85%;
+  }
+
+  .sidebar li {
+    margin: 6px 12px;
+    padding: 13px 18px;
+  }
+
+  .property-header {
+    padding: 24px 20px;
+  }
+}

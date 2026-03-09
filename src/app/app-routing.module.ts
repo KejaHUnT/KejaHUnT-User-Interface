@@ -19,6 +19,7 @@ import { StepperComponent } from './features/public/onboarding/stepper/stepper/s
 import { authGuard } from './features/auth/guard/auth.guard';
 import { ManagePropertyUnitsComponent } from './features/unit/manage-property-units/manage-property-units.component';
 import { AddUnitComponent } from './features/unit/add-unit/add-unit.component';
+import { PropertyDashboardComponent } from './features/property/dashboard/property-dashboard/property-dashboard.component';
 
 const routes: Routes = [
   {
@@ -68,6 +69,10 @@ const routes: Routes = [
     path: 'portal/manage',
     component: ManagerPortalComponent,
     canActivate: [authGuard]
+  },
+  {
+    path: 'property/dashboard/:id',
+    component: PropertyDashboardComponent,
   },
   {
     path: 'preview-booking/:unitId',

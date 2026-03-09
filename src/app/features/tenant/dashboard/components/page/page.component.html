@@ -1,177 +1,66 @@
-<div class="dashboard-grid" *ngIf="unitDetails && propertyDetails && tenant">
-  <!-- WELCOME SECTION -->
-  <div class="dashboard-welcome">
-    <div class="welcome-text">
-      <h2>Welcome back, {{ tenant.fullName }}</h2>
-      <p class="muted">{{ tenant.email }}</p>
-      <p class="muted">{{ getGreetingMessage() }}</p>
-    </div>
+<!-- Top Header: Tenant Greeting -->
+<div class="dashboard-header" *ngIf="tenant">
+  <h2>{{ greetingMessage }}, {{ tenant!.fullName }}</h2>
+  <p class="muted">Welcome to your tenant dashboard</p>
+</div>
 
-    <div class="welcome-kpi">
-      <div class="kpi positive">
-        <h3>KES {{ totalPaid | number:'1.0-0' }}</h3>
-        <p>Total Paid</p>
-      </div>
-      <div class="kpi negative">
-        <h3 *ngIf="overdueBalance !== null && overdueBalance > 0; else noDebt">
-          KES {{ overdueBalance | number:'1.0-0' }}
-        </h3>
-        <ng-template #noDebt>
-          <h3 class="positive">KES 0</h3>
-        </ng-template>
-        <p>Outstanding Balance</p>
-      </div>
-      <div class="kpi">
-        <h3>KES {{ unitDetails.price | number:'1.0-0' }}</h3>
-        <p>Monthly Rent</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- LEFT COLUMN -->
+<div class="dashboard-grid" *ngIf="tenant && unitDetails && propertyDetails">
+  <!-- LEFT COLUMN: Unit + Property Details -->
   <div class="dashboard-left">
+    <!-- Unit Details Card -->
     <div class="card">
       <h4>Unit Details</h4>
-      <div class="details-grid">
-        <p><strong>Door No:</strong> {{ unitDetails.doorNumber }}</p>
-        <p><strong>Rent:</strong> KES {{ unitDetails.price | number:'1.0-0' }}</p>
-        <p><strong>Status:</strong> {{ unitDetails.status }}</p>
-        <p><strong>Size:</strong> {{ unitDetails.size }} m²</p>
-        <p><strong>Floor:</strong> {{ unitDetails.floor }}</p>
-        <p><strong>Bathrooms:</strong> {{ unitDetails.bathrooms }}</p>
-        <p><strong>Unit Type:</strong> {{ unitDetails.type }}</p>
-      </div>
+      <p><strong>Door No:</strong> {{ unitDetails!.doorNumber }}</p>
+      <p><strong>Rent:</strong> KES {{ unitDetails!.price | number:'1.0-0' }}</p>
+      <p><strong>Status:</strong> {{ unitDetails!.status }}</p>
+      <p><strong>Size:</strong> {{ unitDetails!.size }} m²</p>
+      <p><strong>Floor:</strong> {{ unitDetails!.floor }}</p>
+      <p><strong>Bathrooms:</strong> {{ unitDetails!.bathrooms }}</p>
+      <p><strong>Unit Type:</strong> {{ unitDetails!.type }}</p>
     </div>
 
+    <!-- Property Details Card -->
     <div class="card">
       <div class="property-summary" (click)="togglePropertyDetails()">
-        <h4>{{ propertyDetails.name }}</h4>
-        <p class="muted">
-          Click to {{ showPropertyDetails ? 'hide' : 'view' }} property details
-        </p>
+        <h4>{{ propertyDetails!.name }}</h4>
+        <p class="muted">Click to {{ showPropertyDetails ? 'hide' : 'view' }} property details</p>
       </div>
-
       <div class="property-details" [class.show]="showPropertyDetails">
         <ul>
-          <li><strong>Location:</strong> {{ propertyDetails.location }}</li>
-          <li><strong>Type:</strong> {{ propertyDetails.type }}</li>
-          <li><strong>Description:</strong> {{ propertyDetails.description }}</li>
-
-          <li *ngIf="propertyDetails.generalFeatures.length">
-            <strong>General Features:</strong>
-            <ul>
-              <li *ngFor="let feature of propertyDetails.generalFeatures">{{ feature.name }}</li>
-            </ul>
-          </li>
-
-          <li *ngIf="propertyDetails.indoorFeatures.length">
-            <strong>Indoor Features:</strong>
-            <ul>
-              <li *ngFor="let feature of propertyDetails.indoorFeatures">{{ feature.name }}</li>
-            </ul>
-          </li>
-
-          <li *ngIf="propertyDetails.outDoorFeatures.length">
-            <strong>Outdoor Features:</strong>
-            <ul>
-              <li *ngFor="let feature of propertyDetails.outDoorFeatures">{{ feature.name }}</li>
-            </ul>
-          </li>
-
-          <li *ngIf="propertyDetails.policyDescriptions.length">
-            <strong>Policies:</strong>
-            <ul>
-              <li *ngFor="let policy of propertyDetails.policyDescriptions">{{ policy.name }}</li>
-            </ul>
-          </li>
+          <li><strong>Location:</strong> {{ propertyDetails!.location }}</li>
+          <li><strong>Type:</strong> {{ propertyDetails!.type }}</li>
+          <li><strong>Description:</strong> {{ propertyDetails!.description }}</li>
         </ul>
       </div>
     </div>
   </div>
 
-  <!-- CENTER COLUMN -->
+  <!-- CENTER COLUMN: Payment History Only -->
   <div class="dashboard-center">
-    <div class="card">
-      <h4>Payment Summary</h4>
-      <p><strong>Total Paid:</strong> KES {{ totalPaid | number:'1.0-0' }}</p>
-
-      <ng-container *ngIf="overdueBalance !== null; else normalBalance">
-        <p>
-          <strong>Balance (Overpay):</strong>
-          <span
-            [class.overdue-negative]="overdueBalance > 0"
-            [class.overdue-positive]="overdueBalance < 0">
-            KES {{ overdueBalance | number:'1.0-0' }}
-          </span>
-        </p>
-      </ng-container>
-
-      <ng-template #normalBalance>
-        <p>
-          <strong>Balance:</strong>
-          <span [class.overdue-negative]="unitDetails.price - totalPaid > 0">
-            KES {{ unitDetails.price - totalPaid | number:'1.0-0' }}
-          </span>
-        </p>
-      </ng-template>
-
-      <div class="bar-placeholder">[ Rent Trend Chart ]</div>
-    </div>
-
-    <div class="card" *ngIf="payments.length">
-      <h4>Payment History</h4>
-      <div class="table-wrapper">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Unit</th>
-              <th>Amount</th>
-              <th>Status</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let payment of payments">
-              <td>{{ payment.unitId }}</td>
-              <td>KES {{ payment.amount | number:'1.0-0' }}</td>
-              <td>{{ payment.status }}</td>
-              <td>{{ payment.createdAt | date }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <app-payment-history-widget *ngIf="unitDetails" [unitId]="unitDetails.id" [expectedRent]="unitDetails.price">
+    </app-payment-history-widget>
   </div>
 
-  <!-- RIGHT COLUMN -->
+  <!-- RIGHT COLUMN: Announcements + Quick Actions -->
   <div class="dashboard-right">
-    <div class="card">
-      <h4>Quick Actions</h4>
-      <button class="btn" (click)="openPaymentModal()">Pay Rent</button>
-    </div>
-
+    <!-- Announcements Card -->
     <div class="card">
       <h4>Announcements</h4>
       <p><strong>Reminder:</strong> Ensure rent is paid before 5th of every month.</p>
       <p><strong>Notice:</strong> Power maintenance on Sunday from 9AM to 1PM.</p>
     </div>
+
+    <!-- Quick Actions Card -->
+    <div class="card quick-actions">
+      <h4>Quick Actions</h4>
+      <button type="button" class="btn-pay" (click)="openPaymentModal()">
+        Pay Rent
+      </button>
+    </div>
   </div>
 </div>
 
-<!-- MPESA-STYLE PAYMENT MODAL -->
-<div class="modal-backdrop" *ngIf="showPaymentModal" (click)="closePaymentModal()"></div>
-<div class="mpesa-modal" *ngIf="showPaymentModal">
-  <div class="modal-header">
-    <h4>Confirm Payment</h4>
-    <span class="close" (click)="closePaymentModal()">×</span>
-  </div>
-  <div class="modal-body">
-    <p><strong>Tenant:</strong> {{ tenant?.fullName }}</p>
-    <p><strong>Phone:</strong> {{ paymentForm.value.phoneNumber }}</p>
-    <p><strong>Amount:</strong> KES {{ paymentForm.value.amount | number:'1.0-0' }}</p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" [disabled]="isSubmittingPayment" (click)="submitPayment()">Pay with M-PESA</button>
-    <button class="btn btn-outline" (click)="closePaymentModal()">Cancel</button>
-  </div>
-</div>
+<!-- Payment Modal -->
+<app-payment-widget *ngIf="showPaymentModal" [tenant]="tenant!" [unitDetails]="unitDetails!"
+  [propertyDetails]="propertyDetails!" (close)="closePaymentModal()">
+</app-payment-widget>

@@ -1,0 +1,39 @@
+<!-- Modal Backdrop -->
+<div class="modal-backdrop" (click)="closeModal()" *ngIf="true"></div>
+
+<!-- Modal Container -->
+<div class="modal-container" *ngIf="true">
+  <div class="card payment-widget modal-card">
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <h4>Pay Rent</h4>
+      <button class="close-btn" (click)="closeModal()">✕</button>
+    </div>
+
+    <!-- Payment Form -->
+    <form [formGroup]="paymentForm" class="modal-form">
+      <div formArrayName="months">
+        <div *ngFor="let m of monthsControls; let i = index" [formGroupName]="i" class="month-row">
+          <select formControlName="month" class="full-width-input">
+            <option value="">Select Month</option>
+            <option *ngFor="let month of allMonths" [value]="month.value">{{ month.label }}</option>
+          </select>
+
+          <input type="number" formControlName="year" min="2024" placeholder="Year" class="full-width-input"/>
+          <input type="number" formControlName="amount" placeholder="Amount" class="full-width-input"/>
+          <button type="button" class="remove-btn" (click)="removeMonth(i)">✕</button>
+        </div>
+      </div>
+
+      <button type="button" class="add-month-btn full-width-btn" (click)="addMonth()">+ Add Month</button>
+
+      <div class="total-amount">Total: KES {{ totalAmount | number:'1.0-0' }}</div>
+      <div *ngIf="paymentErrorMessage" class="error">{{ paymentErrorMessage }}</div>
+      <div *ngIf="paymentSuccessMessage" class="success">{{ paymentSuccessMessage }}</div>
+
+      <button type="button" class="submit-btn full-width-btn" [disabled]="isSubmittingPayment" (click)="submitPayment()">
+        {{ isSubmittingPayment ? 'Processing...' : 'Pay Now' }}
+      </button>
+    </form>
+  </div>
+</div>
