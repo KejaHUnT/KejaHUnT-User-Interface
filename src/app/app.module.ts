@@ -41,6 +41,8 @@ import { AddUnitComponent } from './features/unit/add-unit/add-unit.component';
 import { PaymentWidgetComponent } from './features/tenant/dashboard/widgets/payment-widget/payment-widget.component';
 import { PaymentHistoryWidgetComponent } from './features/tenant/dashboard/widgets/payment-history-widget/payment-history-widget.component';
 import { DashboardModule } from './features/property/dashboard/dashboard/dashboard.module';
+import { GetStartedComponent } from './core/features/navbar/get-started/get-started.component';
+import { DashboardRedirectComponent } from './core/features/dashboard-redirect/dashboard-redirect.component';
 
 
 
@@ -72,6 +74,8 @@ import { DashboardModule } from './features/property/dashboard/dashboard/dashboa
     AddUnitComponent,
     PaymentWidgetComponent,
     PaymentHistoryWidgetComponent,
+    GetStartedComponent,
+    DashboardRedirectComponent,
   ],
   imports: [
     BrowserModule,

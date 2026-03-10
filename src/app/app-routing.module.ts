@@ -20,6 +20,8 @@ import { authGuard } from './features/auth/guard/auth.guard';
 import { ManagePropertyUnitsComponent } from './features/unit/manage-property-units/manage-property-units.component';
 import { AddUnitComponent } from './features/unit/add-unit/add-unit.component';
 import { PropertyDashboardComponent } from './features/property/dashboard/property-dashboard/property-dashboard.component';
+import { GetStartedComponent } from './core/features/navbar/get-started/get-started.component';
+import { DashboardRedirectComponent } from './core/features/dashboard-redirect/dashboard-redirect.component';
 
 const routes: Routes = [
   {
@@ -73,6 +75,7 @@ const routes: Routes = [
   {
     path: 'property/dashboard/:id',
     component: PropertyDashboardComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'preview-booking/:unitId',
@@ -115,6 +118,14 @@ const routes: Routes = [
   {
     path: 'register',
     component: LoginComponent
+  },
+  {
+    path: 'get-started',
+    component: GetStartedComponent
+  },
+  {
+    path: 'dashboard',
+    component: DashboardRedirectComponent
   }
 
 ];
