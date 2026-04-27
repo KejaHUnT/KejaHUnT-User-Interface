@@ -1,179 +1,203 @@
-<div class="content-container">
+<!-- ══════════════════════════════════════════
+  ADMIN DASHBOARD
+══════════════════════════════════════════ -->
+<div class="ad-shell">
 
-  <!-- ================= WELCOME HEADER ================= -->
-  <div class="welcome-section">
-    <div class="welcome-card">
-
-      <div class="welcome-left">
-        <h2>
-          Welcome back,
-          <span class="user-name">{{ loggedInUser?.email }}</span> 👋
-        </h2>
-        <p>Your portfolio overview and performance insights.</p>
+  <!-- ══ WELCOME HEADER ══ -->
+  <div class="ad-welcome" *ngIf="loggedInUser">
+    <div class="ad-welcome-left">
+      <div class="ad-badge">
+        <span class="ad-dot"></span>
+        Admin Portal
       </div>
+      <h1 class="ad-welcome-title">
+        Welcome back,
+        <span class="ad-email">{{ loggedInUser?.email }}</span>
+      </h1>
+      <p class="ad-welcome-sub">Your portfolio overview and performance insights</p>
+    </div>
 
-      <div class="welcome-right">
-        <div class="date">{{ today | date:'fullDate' }}</div>
-        <div class="status-badge">
-          <span class="status-dot"></span>
-          Active Session
+    <div class="ad-welcome-right">
+      <div class="ad-date">{{ today | date:'EEEE, d MMMM y' }}</div>
+      <div class="ad-session">
+        <span class="ad-session-dot"></span>
+        Active Session
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ KPI CARDS ══ -->
+  <div class="ad-kpi-grid">
+
+    <div class="ad-kpi" (click)="navigateToProperties()">
+      <div class="ad-kpi-icon ad-kpi-icon--blue">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
+      </div>
+      <div class="ad-kpi-body">
+        <span class="ad-kpi-label">Registered Properties</span>
+        <span class="ad-kpi-value">{{ (Property$ | async)?.length || 0 }}</span>
+      </div>
+      <svg class="ad-kpi-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </div>
+
+    <div class="ad-kpi" (click)="navigateToIncome()">
+      <div class="ad-kpi-icon ad-kpi-icon--gold">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <line x1="12" y1="1" x2="12" y2="23"/>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+      </div>
+      <div class="ad-kpi-body">
+        <span class="ad-kpi-label">Expected Monthly Income</span>
+        <span class="ad-kpi-value ad-kpi-value--gold">KES {{ totalExpectedIncome | number:'1.0-0' }}</span>
+      </div>
+      <svg class="ad-kpi-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </div>
+
+    <div class="ad-kpi" (click)="navigateToPending()">
+      <div class="ad-kpi-icon ad-kpi-icon--red">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+      </div>
+      <div class="ad-kpi-body">
+        <span class="ad-kpi-label">Pending Bills</span>
+        <span class="ad-kpi-value ad-kpi-value--red">KES {{ pendingBills | number:'1.0-0' }}</span>
+      </div>
+      <svg class="ad-kpi-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </div>
+
+  </div>
+
+  <!-- ══ MAIN GRID ══ -->
+  <div class="ad-grid">
+
+    <!-- ── LEFT: Properties ── -->
+    <div class="ad-left">
+
+      <div class="ad-section-header">
+        <div>
+          <h3 class="ad-section-title">Registered Properties</h3>
+          <p class="ad-section-sub">Click a property to expand details</p>
         </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- ================= KPI SECTION ================= -->
-  <div class="kpi-section">
-    <div class="kpi-card" (click)="navigateToProperties()">
-      <div class="kpi-icon bg-primary-light">
-        <i class="bi bi-buildings"></i>
-      </div>
-      <div>
-        <h3>{{ (Property$ | async)?.length || 0 }}</h3>
-        <p>Registered Properties</p>
-      </div>
-    </div>
-
-    <div class="kpi-card" (click)="navigateToIncome()">
-      <div class="kpi-icon bg-success-light">
-        <i class="bi bi-cash-stack"></i>
-      </div>
-      <div>
-        <h3>KES {{ totalExpectedIncome | number:'1.0-0' }}</h3>
-        <p>Total Expected Income</p>
-      </div>
-    </div>
-
-    <div class="kpi-card" (click)="navigateToPending()">
-      <div class="kpi-icon bg-danger-light">
-        <i class="bi bi-clock-history"></i>
-      </div>
-      <div>
-        <h3>KES {{ pendingBills | number:'1.0-0' }}</h3>
-        <p>Pending Bills</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= MAIN GRID ================= -->
-  <div class="dashboard-grid">
-
-    <!-- LEFT SIDE -->
-    <div class="left-panel">
-
-      <div class="section-header">
-        <h3>Registered Properties</h3>
-        <button class="btn btn-outline-primary"
-                (click)="navigateToProperties()">
-          <i class="bi bi-gear"></i>
+        <button class="ad-manage-btn" (click)="navigateToProperties()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
+          </svg>
           Manage All
         </button>
       </div>
 
-      <div class="units-wrapper">
-
-        <div *ngIf="Property$ | async as properties"
-             class="units-grid">
-
+      <div class="ad-props-grid">
+        <ng-container *ngIf="Property$ | async as properties">
           <div *ngFor="let property of properties"
-               class="unit-card"
-               [class.expanded]="property.expanded"
+               class="ad-prop-card"
+               [class.ad-prop-card--open]="property.expanded"
                (click)="property.expanded = !property.expanded">
 
-            <div class="unit-header">
-              <h4>{{ property.name }}</h4>
-              <i class="bi"
-                 [ngClass]="{
-                    'bi-chevron-down': !property.expanded,
-                    'bi-chevron-up': property.expanded
-                  }">
-              </i>
+            <div class="ad-prop-header">
+              <div class="ad-prop-header-left">
+                <div class="ad-prop-initial">{{ property.name[0] }}</div>
+                <div>
+                  <h4 class="ad-prop-name">{{ property.name }}</h4>
+                  <span class="ad-prop-loc">{{ property.location }}</span>
+                </div>
+              </div>
+              <svg class="ad-prop-chevron" [class.ad-prop-chevron--open]="property.expanded"
+                   width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
             </div>
 
-            <div class="unit-body"
-                 [class.expanded]="property.expanded">
-
-              <p><strong>Location:</strong> {{ property.location }}</p>
-              <p><strong>Type:</strong> {{ property.type }}</p>
-              <p><strong>Description:</strong> {{ property.description }}</p>
-
-              <div class="card-actions">
-                <button class="btn btn-outline-success"
+            <div class="ad-prop-body" *ngIf="property.expanded">
+              <div class="ad-prop-detail">
+                <span class="ad-prop-detail-label">Type</span>
+                <span class="ad-prop-detail-value">{{ property.type }}</span>
+              </div>
+              <div class="ad-prop-detail">
+                <span class="ad-prop-detail-label">Description</span>
+                <span class="ad-prop-detail-value">{{ property.description }}</span>
+              </div>
+              <div class="ad-prop-actions">
+                <button class="ad-action-btn ad-action-btn--green"
                         (click)="goToEditUnit(property.id); $event.stopPropagation()">
-                  <i class="bi bi-house-door"></i>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                  </svg>
                   Manage Property
                 </button>
-
-                <button class="btn btn-outline-primary"
+                <button class="ad-action-btn ad-action-btn--blue"
                         (click)="goToManageUnits(property.id); $event.stopPropagation()">
-                  <i class="bi bi-grid-3x3-gap"></i>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                    <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                  </svg>
                   Manage Units
                 </button>
               </div>
-
             </div>
-          </div>
 
-        </div>
+          </div>
+        </ng-container>
       </div>
+
     </div>
 
-    <!-- RIGHT SIDE -->
-    <div class="right-panel">
+    <!-- ── RIGHT: Financials ── -->
+    <div class="ad-right">
 
-      <div class="glass-card">
+      <!-- Income summary -->
+      <div class="ad-fin-card">
+        <div class="ad-fin-total">
+          <span class="ad-fin-total-label">Expected Monthly Income</span>
+          <span class="ad-fin-total-value">KES {{ totalExpectedIncome | number:'1.0-0' }}</span>
+        </div>
 
-        <div class="income-summary-container">
+        <div class="ad-fin-divider"></div>
 
-          <div class="expected-income">
-            <h6>Expected Monthly Income</h6>
-            <p class="expected-income-amount">
-              KES {{ totalExpectedIncome | number:'1.0-0' }}
-            </p>
+        <p class="ad-fin-breakdown-label">Breakdown by Property</p>
+
+        <div class="ad-fin-list">
+          <div *ngFor="let property of Property$ | async" class="ad-fin-item">
+            <span class="ad-fin-prop-name">{{ property.name }}</span>
+            <span class="ad-fin-amount"
+                  [class.ad-fin-amount--positive]="propertiesIncome[property.name] > 0"
+                  [class.ad-fin-amount--zero]="!propertiesIncome[property.name]">
+              KES {{ propertiesIncome[property.name] | number:'1.0-0' }}
+            </span>
           </div>
-
-          <h6 class="income-summary-title">
-            Property Income Summary
-          </h6>
-
-          <ul class="income-summary-list">
-            <li *ngFor="let property of Property$ | async"
-                class="income-summary-item">
-
-              <strong>{{ property.name }}</strong>
-
-              <span class="income-amount"
-                    [ngStyle]="{
-                      'color': propertiesIncome[property.name] > 0 
-                        ? 'var(--success)' 
-                        : 'var(--danger)'
-                    }">
-                {{ propertiesIncome[property.name] | number:'1.0-0' }}
-              </span>
-            </li>
-          </ul>
-
         </div>
       </div>
 
-      <div class="glass-card text-center">
-        <h6 class="pending-title">
-          <i class="bi bi-exclamation-circle"></i>
-          Pending Bills
-        </h6>
-
-        <p>
-          Review unpaid rents and take quick action
-          to keep your portfolio balanced.
+      <!-- Pending bills -->
+      <div class="ad-pending-card">
+        <div class="ad-pending-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <h4 class="ad-pending-title">Pending Bills</h4>
+        <p class="ad-pending-sub">
+          Review unpaid rents and take quick action to keep your portfolio balanced.
         </p>
-
-        <button class="btn btn-outline-danger w-100"
-                (click)="navigateToPending()">
+        <button class="ad-pending-btn" (click)="navigateToPending()">
           View Pending Bills
+          <span class="ad-btn-shine"></span>
         </button>
       </div>
 
     </div>
+
   </div>
 </div>

@@ -16,7 +16,6 @@ import { BookingRequest } from 'src/app/features/unit/booking-preview/models/boo
   styleUrls: ['./create-booking-step.component.css']
 })
 export class CreateBookingStepComponent {
-
   @Input() unitId!: number;
   @Input() tenantId!: number;
   @Input() stepper!: MatStepper;
@@ -35,69 +34,86 @@ export class CreateBookingStepComponent {
     private router: Router
   ) {}
 
+  /** Called by the stepper wrapper after tenant is persisted */
   initialize(unitId: number, tenantId: number): void {
     this.unitId = unitId;
     this.tenantId = tenantId;
+    this.errorMessage = '';
     this.fetchUnitDetails(unitId);
   }
 
   private fetchUnitDetails(unitId: number): void {
-    this.unitService.getUnitById(unitId.toString()).subscribe(unit => {
-      this.unit = unit;
+    this.unitService.getUnitById(unitId.toString()).subscribe({
+      next: unit => {
+        this.unit = unit;
 
-      if (unit.documentId) {
-        this.imageService.getFileByDocumentId(unit.documentId).subscribe(
-          (file: FileResponse) =>
-            this.unitImageUrl =
-              `data:image/${file.extension.replace('.', '')};base64,${file.base64}`
-        );
-      }
+        if (unit.documentId) {
+          this.imageService.getFileByDocumentId(unit.documentId).subscribe({
+            next: (file: FileResponse) => {
+              const ext = file.extension.replace('.', '');
+              this.unitImageUrl = `data:image/${ext};base64,${file.base64}`;
+            },
+            error: () => { /* Image not critical — fail silently */ }
+          });
+        }
 
-      if (unit.propertyId) {
-        this.propertyService
-          .getPopertyById(unit.propertyId.toString())
-          .subscribe(property => this.property = property);
-      }
+        if (unit.propertyId) {
+          this.propertyService.getPopertyById(unit.propertyId.toString()).subscribe({
+            next: property => (this.property = property),
+            error: () => (this.errorMessage = 'Could not load property details.')
+          });
+        }
+      },
+      error: () => (this.errorMessage = 'Could not load unit details.')
     });
   }
 
-  reserveLater(): void {
-    const request: BookingRequest = {
+  private buildBookingRequest(notes: string): BookingRequest {
+    return {
       unitId: this.unitId,
-      tenentId: this.tenantId,
-      notes: 'Reserved for later payment'
+      tenentId: this.tenantId,  // preserving existing typo to match model
+      notes
     };
+  }
 
+  reserveLater(): void {
+    if (!this.tenantId || !this.unitId) {
+      this.errorMessage = 'Missing booking details. Please restart the flow.';
+      return;
+    }
     this.isSubmitting = true;
+    this.errorMessage = '';
 
-    this.bookingService.createBooking(request).subscribe({
+    this.bookingService.createBooking(this.buildBookingRequest('Reserved for later payment')).subscribe({
       next: () => {
         this.isSubmitting = false;
-       this.router.navigate(['/portal/tenant', this.tenantId]);
+        this.router.navigate(['/portal/tenant', this.tenantId]);
       },
       error: () => {
-        this.errorMessage = 'Reservation failed';
+        this.errorMessage = 'Reservation failed. Please try again.';
         this.isSubmitting = false;
       }
     });
   }
 
   payNow(): void {
-    const request: BookingRequest = {
-      unitId: this.unitId,
-      tenentId: this.tenantId,
-      notes: 'Immediate payment booking'
-    };
-
+    if (!this.tenantId || !this.unitId) {
+      this.errorMessage = 'Missing booking details. Please restart the flow.';
+      return;
+    }
     this.isSubmitting = true;
+    this.errorMessage = '';
 
-    this.bookingService.createBooking(request).subscribe({
+    this.bookingService.createBooking(this.buildBookingRequest('Immediate payment booking')).subscribe({
       next: () => {
         this.isSubmitting = false;
-        this.stepper.next(); 
+        // FIX: guard stepper reference before advancing
+        if (this.stepper) {
+          setTimeout(() => this.stepper.next(), 0);
+        }
       },
       error: () => {
-        this.errorMessage = 'Booking failed';
+        this.errorMessage = 'Booking failed. Please try again.';
         this.isSubmitting = false;
       }
     });

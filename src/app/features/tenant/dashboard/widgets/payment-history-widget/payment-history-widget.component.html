@@ -1,56 +1,188 @@
-<div class="card payment-history-widget">
-  <h4>Payment History</h4>
-  <p><strong>Total Paid:</strong> KES {{ totalPaid | number:'1.0-0' }}</p>
+<div class="phw-shell">
 
-  <div *ngIf="monthlyLedgers.length">
-    <div *ngFor="let ledger of monthlyLedgers" class="ledger-month">
-      <!-- Month Header (clickable) -->
-      <h5 class="ledger-header" (click)="toggleLedger(ledger)">
-        {{ formatMonthYear(ledger.periodMonth, ledger.periodYear) }} - Status: 
-        <span [ngClass]="{
-          'status-paid': ledger.status === 'Paid',
-          'status-partial': ledger.status === 'Partial',
-          'status-unpaid': ledger.status === 'Unpaid',
-          'status-overpaid': ledger.status === 'Overpaid'
-        }">{{ ledger.status }}</span>
-        <span class="toggle-icon">{{ isLedgerExpanded(ledger) ? '▲' : '▼' }}</span>
-      </h5>
+  <!-- Header -->
+  <div class="phw-header">
+    <div class="phw-header-left">
+      <div class="phw-card-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="5" width="20" height="14" rx="2" />
+          <line x1="2" y1="10" x2="22" y2="10" />
+        </svg>
+      </div>
+      <div>
+        <h4 class="phw-title">Payment History</h4>
+        <p class="phw-sub">Monthly rent ledger</p>
+      </div>
+    </div>
 
-      <!-- Ledger Details -->
-      <div class="ledger-details" *ngIf="isLedgerExpanded(ledger)">
-        <p><strong>Expected Rent:</strong> KES {{ ledger.expectedRent | number:'1.0-0' }}</p>
-        <p><strong>Total Paid:</strong> KES {{ ledger.totalPaid | number:'1.0-0' }}</p>
-        <p><strong>Balance:</strong> KES {{ ledger.balance | number:'1.0-0' }}</p>
+    <div class="phw-total-pill" *ngIf="!isLoading && !loadError">
+      <span class="phw-total-label">Total Paid</span>
+      <span class="phw-total-value">KES {{ totalPaid | number:'1.0-0' }}</span>
+    </div>
+  </div>
 
-        <table class="table table-payments" *ngIf="ledger.payments.length">
-          <thead>
-            <tr>
-              <th>Amount</th>
-              <th>Status</th>
-              <th>Method</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let p of ledger.payments">
-              <td>KES {{ p.amount | number:'1.0-0' }}</td>
-              <td>
-                <span [ngClass]="{
-                  'status-success': getPaymentStatusLabel(p.status) === 'Success',
-                  'status-pending': getPaymentStatusLabel(p.status) === 'Pending',
-                  'status-failed': getPaymentStatusLabel(p.status) === 'Failed'
-                }">
-                  {{ getPaymentStatusLabel(p.status) }}
-                </span>
-              </td>
-              <td>{{ p.paymentMethod }}</td>
-              <td>{{ p.createdAt | date:'short' }}</td>
-            </tr>
-          </tbody>
-        </table>
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="phw-loading">
+    <div class="phw-spinner"></div>
+    <p>Loading payment history…</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="loadError && !isLoading" class="phw-empty">
+    <div class="phw-empty-icon phw-empty-icon--error">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="12" />
+        <line x1="12" y1="16" x2="12.01" y2="16" />
+      </svg>
+    </div>
+    <p class="phw-empty-title">Failed to load payments</p>
+    <p class="phw-empty-sub">Please refresh the page or contact support</p>
+  </div>
+
+  <!-- Empty -->
+  <div *ngIf="!isLoading && !loadError && !monthlyLedgers.length" class="phw-empty">
+    <div class="phw-empty-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="2" y="5" width="20" height="14" rx="2" />
+        <line x1="2" y1="10" x2="22" y2="10" />
+        <line x1="8" y1="15" x2="12" y2="15" />
+      </svg>
+    </div>
+    <p class="phw-empty-title">No payments yet</p>
+    <p class="phw-empty-sub">Payment records for this unit will appear here</p>
+  </div>
+
+  <!-- LEDGERS -->
+  <div class="phw-ledgers" *ngIf="!isLoading && !loadError && monthlyLedgers.length">
+
+    <div *ngFor="let ledger of monthlyLedgers; let i = index"
+         class="phw-ledger"
+         [class.phw-ledger--open]="isLedgerExpanded(ledger)">
+
+      <div class="phw-ledger-row" (click)="toggleLedger(ledger)">
+
+        <div class="phw-ledger-left">
+          <div class="phw-ledger-index">{{ i + 1 }}</div>
+          <div class="phw-ledger-meta">
+            <span class="phw-ledger-period">
+              {{ formatMonthYear(ledger.periodMonth, ledger.periodYear) }}
+            </span>
+
+            <span class="phw-ledger-amount">
+              KES {{ ledger.totalPaid | number:'1.0-0' }}
+              <span class="phw-ledger-of">/ {{ ledger.expectedRent | number:'1.0-0' }}</span>
+              <!-- Inline progress percentage -->
+              <span class="phw-ledger-pct">({{ getProgressLabel(ledger) }})</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="phw-ledger-right">
+
+          <!-- Status badge -->
+          <span class="phw-status-badge"
+                [class.phw-status--paid]="ledger.status === UnitPaymentStatus.Paid"
+                [class.phw-status--partial]="ledger.status === UnitPaymentStatus.Partial"
+                [class.phw-status--pending]="ledger.status === UnitPaymentStatus.Pending"
+                [class.phw-status--overpaid]="ledger.status === UnitPaymentStatus.Overpaid"
+                [class.phw-status--failed]="ledger.status === UnitPaymentStatus.Failed"
+                [class.phw-status--cancelled]="ledger.status === UnitPaymentStatus.Cancelled"
+                [class.phw-status--refunded]="ledger.status === UnitPaymentStatus.Refunded"
+                [class.phw-status--disputed]="ledger.status === UnitPaymentStatus.Disputed">
+            {{ getUnitPaymentStatusLabel(ledger.status) }}
+          </span>
+
+          <!-- Transaction count — show even when some are failed -->
+          <span class="phw-tx-count" *ngIf="ledger.payments.length">
+            {{ ledger.payments.length }} tx
+          </span>
+
+        </div>
+      </div>
+
+      <!-- BODY -->
+      <div class="phw-ledger-body" *ngIf="isLedgerExpanded(ledger)">
+
+        <!-- Stats row -->
+        <div class="phw-ledger-stats">
+          <div class="phw-stat">
+            <span class="phw-stat-label">Expected</span>
+            <span class="phw-stat-value">KES {{ ledger.expectedRent | number:'1.0-0' }}</span>
+          </div>
+
+          <div class="phw-stat">
+            <span class="phw-stat-label">Total Paid</span>
+            <span class="phw-stat-value phw-stat-value--gold">
+              KES {{ ledger.totalPaid | number:'1.0-0' }}
+            </span>
+          </div>
+
+          <div class="phw-stat">
+            <span class="phw-stat-label">Balance</span>
+            <!-- Positive = still owed (red); zero/negative = cleared/overpaid (green) -->
+            <span class="phw-stat-value"
+                  [class.phw-stat-value--red]="ledger.balance > 0"
+                  [class.phw-stat-value--green]="ledger.balance <= 0">
+              KES {{ ledger.balance | number:'1.0-0' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Progress bar + percentage label -->
+        <div class="phw-progress-wrap">
+          <div class="phw-progress-bar">
+            <div class="phw-progress-fill"
+                 [style.width.%]="getProgressPercent(ledger)"
+                 [class.phw-progress-fill--full]="
+                   ledger.status === UnitPaymentStatus.Paid ||
+                   ledger.status === UnitPaymentStatus.Overpaid">
+            </div>
+          </div>
+          <span class="phw-progress-label">{{ getProgressLabel(ledger) }}</span>
+        </div>
+
+        <!-- TRANSACTIONS TABLE — all transactions regardless of status -->
+        <div class="phw-table-wrap" *ngIf="ledger.payments.length; else noTx">
+          <table class="phw-table">
+            <thead>
+              <tr>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Reference</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of ledger.payments"
+                  [class.phw-tx--success]="p.status === PaymentTransactionStatus.Success"
+                  [class.phw-tx--failed]="p.status === PaymentTransactionStatus.Failed || p.status === PaymentTransactionStatus.Timeout"
+                  [class.phw-tx--pending]="p.status === PaymentTransactionStatus.Pending || p.status === PaymentTransactionStatus.Processing || p.status === PaymentTransactionStatus.Initialized"
+                  [class.phw-tx--cancelled]="p.status === PaymentTransactionStatus.Cancelled || p.status === PaymentTransactionStatus.Reversed || p.status === PaymentTransactionStatus.Refunded">
+
+                <td>KES {{ p.amount | number:'1.0-0' }}</td>
+
+                <td>
+                  <span class="phw-payment-status">
+                    <span class="phw-ps-dot" [ngClass]="getTransactionStatusClass(p.status)"></span>
+                    {{ getTransactionStatusLabel(p.status) }}
+                  </span>
+                </td>
+
+                <td class="phw-tx-ref">{{ p.reference || '—' }}</td>
+                <td>{{ p.createdAt | date:'dd MMM y, HH:mm' }}</td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <ng-template #noTx>
+          <p class="phw-no-transactions">No transactions recorded for this period.</p>
+        </ng-template>
+
       </div>
     </div>
   </div>
 
-  <p *ngIf="!monthlyLedgers.length">No payments found for this unit.</p>
 </div>

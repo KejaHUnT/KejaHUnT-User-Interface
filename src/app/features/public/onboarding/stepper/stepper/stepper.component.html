@@ -1,51 +1,110 @@
-<mat-horizontal-stepper linear>
+<div class="stepper-shell">
 
-  <!-- STEP 1 -->
-  <mat-step [stepControl]="addTenantForm">
-    <ng-template matStepLabel>Tenant Profile</ng-template>
-
-    <app-add-tenant-step
-      #addTenant
-      [unitId]="unitId">
-    </app-add-tenant-step>
-
-    <div class="form-actions">
-      <button mat-raised-button color="primary"
-              (click)="submitTenantAndContinue()">
-        Continue
-      </button>
+  <!-- ── Page Hero ── -->
+  <div class="stepper-hero">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      <span>New Tenancy</span>
     </div>
-  </mat-step>
-
-  <!-- STEP 2 -->
-  <mat-step>
-    <ng-template matStepLabel>Booking</ng-template>
-
-    <app-create-booking-step
-      #createBooking
-      [unitId]="unitId"
-      [tenantId]="tenantId"
-      [stepper]="stepper">
-    </app-create-booking-step>
-  </mat-step>
-
-  <!-- STEP 3 -->
-  <mat-step>
-  <ng-template matStepLabel>Payment</ng-template>
-
-  <app-payment-step
-    #paymentStep
-    [paymentAmount]="paymentAmount"
-    [unitId]="unitId">
-  </app-payment-step>
-
-  <div class="form-actions">
-    <button mat-raised-button
-            color="primary"
-            (click)="submitPaymentStep()">
-      Pay
-    </button>
+    <h1 class="hero-title">Tenant Onboarding</h1>
+    <p class="hero-subtitle">Complete each step to finalise the booking</p>
   </div>
-</mat-step>
 
-</mat-horizontal-stepper>
+  <!-- ── Custom Step Indicator ── -->
+  <div class="custom-steps">
+    <div class="custom-step" [class.cs-active]="stepper.selectedIndex >= 0" [class.cs-done]="stepper.selectedIndex > 0">
+      <div class="cs-circle">
+        <span *ngIf="stepper.selectedIndex <= 0">01</span>
+        <svg *ngIf="stepper.selectedIndex > 0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="cs-meta">
+        <span class="cs-label">Step 1</span>
+        <span class="cs-name">Tenant Profile</span>
+      </div>
+    </div>
+    <div class="cs-track" [class.cs-track-done]="stepper.selectedIndex > 0"></div>
+
+    <div class="custom-step" [class.cs-active]="stepper.selectedIndex >= 1" [class.cs-done]="stepper.selectedIndex > 1">
+      <div class="cs-circle">
+        <span *ngIf="stepper.selectedIndex <= 1">02</span>
+        <svg *ngIf="stepper.selectedIndex > 1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="cs-meta">
+        <span class="cs-label">Step 2</span>
+        <span class="cs-name">Booking</span>
+      </div>
+    </div>
+    <div class="cs-track" [class.cs-track-done]="stepper.selectedIndex > 1"></div>
+
+    <div class="custom-step" [class.cs-active]="stepper.selectedIndex >= 2">
+      <div class="cs-circle"><span>03</span></div>
+      <div class="cs-meta">
+        <span class="cs-label">Step 3</span>
+        <span class="cs-name">Payment</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Hidden Material Stepper (logic only) ── -->
+  <mat-horizontal-stepper #stepper linear class="hidden-stepper">
+
+    <!-- STEP 1 -->
+    <mat-step [stepControl]="addTenantForm">
+      <ng-template matStepLabel>Tenant Profile</ng-template>
+
+      <div class="step-panel reveal">
+        <app-add-tenant-step
+          #addTenant
+          [unitId]="unitId">
+        </app-add-tenant-step>
+
+        <div class="step-actions step-actions--right">
+          <button class="action-btn action-btn--primary" (click)="submitTenantAndContinue()">
+            <span>Continue to Booking</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+      </div>
+    </mat-step>
+
+    <!-- STEP 2 -->
+    <mat-step>
+      <ng-template matStepLabel>Booking</ng-template>
+
+      <div class="step-panel reveal">
+        <app-create-booking-step
+          #createBooking
+          [unitId]="unitId"
+          [tenantId]="tenantId"
+          [stepper]="stepper">
+        </app-create-booking-step>
+      </div>
+    </mat-step>
+
+    <!-- STEP 3 -->
+    <mat-step>
+      <ng-template matStepLabel>Payment</ng-template>
+
+      <div class="step-panel reveal">
+        <app-payment-step
+          #paymentStep
+          [paymentAmount]="paymentAmount"
+          [unitId]="unitId">
+        </app-payment-step>
+
+        <div class="step-actions step-actions--right">
+          <button class="action-btn action-btn--ghost" (click)="resetToEdit()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.7"/></svg>
+            <span>Start Over</span>
+          </button>
+          <button class="action-btn action-btn--gold" (click)="submitPaymentStep()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            <span>Confirm Payment</span>
+          </button>
+        </div>
+      </div>
+    </mat-step>
+
+  </mat-horizontal-stepper>
+
+</div>

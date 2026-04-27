@@ -5,4 +5,5 @@ export const environment = {
   bookingApiBaseUrl: (window as any)._env?.BOOKING_API_BASE_URL || 'https://localhost:7102/booking',
   paymentApiBaseUrl: (window as any)._env?.PAYMENT_API_BASE_URL || 'https://localhost:7299',
   accessApiBaseUrl: (window as any)._env?.ACCESS_API_BASE_URL || 'https://localhost:7102/access',
+  paymentCallbackUrl: (window as any)._env?.PAYMENT_CALLBACK_URL || 'http://localhost:5000/api/payments/callback',
 };

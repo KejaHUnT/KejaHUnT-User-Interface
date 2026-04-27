@@ -1,39 +1,128 @@
-<!-- Modal Backdrop -->
-<div class="modal-backdrop" (click)="closeModal()" *ngIf="true"></div>
+<!-- Backdrop -->
+<div class="pw-backdrop" (click)="closeModal()"></div>
 
-<!-- Modal Container -->
-<div class="modal-container" *ngIf="true">
-  <div class="card payment-widget modal-card">
-    <!-- Modal Header -->
-    <div class="modal-header">
-      <h4>Pay Rent</h4>
-      <button class="close-btn" (click)="closeModal()">✕</button>
+<!-- Modal -->
+<div class="pw-modal" role="dialog" aria-modal="true">
+
+  <!-- Close -->
+  <button class="pw-close" (click)="closeModal()" aria-label="Close">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+
+  <!-- Header -->
+  <div class="pw-header">
+    <div class="pw-badge">
+      <span class="pw-dot"></span>
+      Rent Payment
+    </div>
+    <h2 class="pw-title">Pay Rent</h2>
+    <p class="pw-subtitle" *ngIf="propertyDetails">
+      {{ propertyDetails.name }} &nbsp;·&nbsp; Unit {{ unitDetails.doorNumber }}
+    </p>
+  </div>
+
+  <!-- Gateway chip -->
+  <div class="pw-gateway-row" *ngIf="selectedGatewayConfig">
+    <div class="pw-gateway-chip">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+      </svg>
+      {{ selectedGatewayConfig.gateway }}
+    </div>
+    <span class="pw-gateway-label">Active gateway</span>
+  </div>
+
+  <!-- Alerts -->
+  <div *ngIf="paymentErrorMessage" class="pw-alert pw-alert--error">
+    {{ paymentErrorMessage }}
+  </div>
+
+  <div *ngIf="paymentSuccessMessage" class="pw-alert pw-alert--success">
+    {{ paymentSuccessMessage }}
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="paymentForm" class="pw-form" autocomplete="off">
+
+    <!-- ❌ Phone section completely removed -->
+
+    <!-- Month rows -->
+    <div class="pw-months-label">
+      <span class="pw-label">Payment Period(s)</span>
+      <button type="button" class="pw-add-btn" (click)="addMonth()">
+        Add Month
+      </button>
     </div>
 
-    <!-- Payment Form -->
-    <form [formGroup]="paymentForm" class="modal-form">
-      <div formArrayName="months">
-        <div *ngFor="let m of monthsControls; let i = index" [formGroupName]="i" class="month-row">
-          <select formControlName="month" class="full-width-input">
-            <option value="">Select Month</option>
-            <option *ngFor="let month of allMonths" [value]="month.value">{{ month.label }}</option>
-          </select>
+    <div formArrayName="months" class="pw-months">
+      <div *ngFor="let m of monthsControls; let i = index"
+           [formGroupName]="i"
+           class="pw-month-card">
 
-          <input type="number" formControlName="year" min="2024" placeholder="Year" class="full-width-input"/>
-          <input type="number" formControlName="amount" placeholder="Amount" class="full-width-input"/>
-          <button type="button" class="remove-btn" (click)="removeMonth(i)">✕</button>
+        <div class="pw-month-fields">
+
+          <!-- Month -->
+          <div class="pw-input-shell pw-select-shell">
+            <select formControlName="month">
+              <option value="">Month</option>
+              <option *ngFor="let mo of allMonths" [value]="mo.value">{{ mo.label }}</option>
+            </select>
+          </div>
+
+          <!-- Year -->
+          <div class="pw-input-shell">
+            <input type="number" formControlName="year" />
+          </div>
+
+          <!-- Amount -->
+          <div class="pw-input-shell pw-amount-shell">
+            <span class="pw-prefix">KES</span>
+            <input type="number" formControlName="amount" />
+          </div>
+
         </div>
+
+        <button type="button"
+                class="pw-remove-btn"
+                (click)="removeMonth(i)"
+                [disabled]="monthsControls.length === 1">
+          ✕
+        </button>
+
       </div>
+    </div>
 
-      <button type="button" class="add-month-btn full-width-btn" (click)="addMonth()">+ Add Month</button>
+    <!-- Expected Amount -->
+<div class="pw-total pw-expected">
+  <span class="pw-total-label">Expected Amount</span>
+  <span class="pw-total-amount"> KES {{ expectedTotal | number:'1.0-0' }}</span>
+</div>
 
-      <div class="total-amount">Total: KES {{ totalAmount | number:'1.0-0' }}</div>
-      <div *ngIf="paymentErrorMessage" class="error">{{ paymentErrorMessage }}</div>
-      <div *ngIf="paymentSuccessMessage" class="success">{{ paymentSuccessMessage }}</div>
+<!-- Total (now Amount Paying) -->
+<div class="pw-total">
+  <span class="pw-total-label">Amount Paying</span>
+  <span class="pw-total-amount">KES {{ totalAmount | number:'1.0-0' }}</span>
+</div>
 
-      <button type="button" class="submit-btn full-width-btn" [disabled]="isSubmittingPayment" (click)="submitPayment()">
-        {{ isSubmittingPayment ? 'Processing...' : 'Pay Now' }}
-      </button>
-    </form>
-  </div>
+    <!-- Submit -->
+    <button type="button"
+            class="pw-submit"
+            [disabled]="isSubmittingPayment || paymentForm.invalid || !selectedGatewayConfig"
+            (click)="submitPayment()">
+
+      <span *ngIf="isSubmittingPayment" class="pw-spinner"></span>
+
+      <svg *ngIf="!isSubmittingPayment" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+      </svg>
+
+      {{ isSubmittingPayment ? 'Processing…' : 'Pay Now' }}
+
+      <span class="pw-shine"></span>
+    </button>
+
+  </form>
+
 </div>

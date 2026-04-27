@@ -1,34 +1,47 @@
-<nav class="navbar navbar-expand-lg custom-navbar">
-  <div class="container-fluid d-flex justify-content-between align-items-center">
+<nav class="kh-nav" [class.kh-nav--scrolled]="isScrolled">
+  <div class="kh-nav-inner">
 
-    <!-- LEFT SIDE: Brand Logo -->
-    <div class="navbar-left d-flex align-items-center">
-      <a class="navbar-brand d-flex align-items-center text-white text-decoration-none" [routerLink]="['/']">
-        <i class="fas fa-home me-2" style="color: #ffa500; font-size: 24px;"></i>
-        <span class="fw-bold fs-4">kejaHUnT</span>
-      </a>
-    </div>
+    <!-- Brand -->
+    <a class="kh-brand" [routerLink]="['/']">
+      <div class="kh-brand-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
+      <span class="kh-brand-text">Keja<em>HUnT</em></span>
+    </a>
 
-    <!-- MOBILE TOGGLE -->
-    <button class="navbar-toggler d-lg-none text-white border-0" type="button" (click)="toggleMobileMenu()">
-      <i class="fas" [ngClass]="isMobileMenuOpen ? 'fa-times' : 'fa-bars'" style="font-size: 24px;"></i>
-    </button>
-
-    <!-- DESKTOP BUTTON -->
-    <div class="navbar-right d-none d-lg-flex align-items-center">
-      <button class="btn btn-outline-light px-3 py-2 fw-medium" (click)="goToAccount()">
+    <!-- Desktop CTA -->
+    <div class="kh-nav-right">
+      <button class="kh-dashboard-btn" (click)="goToAccount()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
         Dashboard
+        <span class="kh-nav-shine"></span>
+      </button>
+
+      <!-- Mobile toggle -->
+      <button class="kh-toggle" (click)="toggleMobileMenu()" [attr.aria-expanded]="isMobileMenuOpen" aria-label="Toggle menu">
+        <span class="kh-toggle-bar" [class.open]="isMobileMenuOpen"></span>
+        <span class="kh-toggle-bar" [class.open]="isMobileMenuOpen"></span>
+        <span class="kh-toggle-bar" [class.open]="isMobileMenuOpen"></span>
       </button>
     </div>
 
   </div>
 
-  <!-- MOBILE MENU -->
-  <div class="mobile-menu d-lg-none mt-2" *ngIf="isMobileMenuOpen">
-    <div class="px-3 mb-3">
-      <button class="btn btn-outline-light w-100 py-2 fw-medium"
-              (click)="goToAccount(); toggleMobileMenu()">
-        Dashboard
+  <!-- Mobile drawer -->
+  <div class="kh-mobile-drawer" [class.kh-mobile-drawer--open]="isMobileMenuOpen">
+    <div class="kh-mobile-inner">
+      <button class="kh-mobile-btn" (click)="goToAccount(); closeMobileMenu()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
+        Go to Dashboard
       </button>
     </div>
   </div>

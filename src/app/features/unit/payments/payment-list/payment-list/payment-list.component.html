@@ -1,93 +1,234 @@
-<div class="payment-dashboard mt-3" *ngIf="!isLoading; else loadingTemplate">
+<div class="pd-shell" *ngIf="!isLoading; else loadingTemplate">
 
-  <!-- Header Summary Section -->
-  <div class="dashboard-header">
-    <h2>{{ property?.name }} Rent Collection 💰</h2>
-    <div class="summary-cards">
-      <div class="card">
-        <p>Total Rent Collected</p>
-        <h3>KSH {{ getTotalRentCollected() | number:'1.0-0' }}</h3>
+  <!-- ══ HEADER ══ -->
+  <div class="pd-header">
+    <div class="pd-header-left">
+      <div class="pd-badge">
+        <span class="pd-dot"></span>
+        Rent Analytics
       </div>
-      <div class="card">
-        <p>Pending Payments</p>
-        <h3>KSH {{ getPendingPaymentsTotal() | number:'1.0-0' }}</h3>
-      </div>
-      <div class="card">
-        <p>Units Paid</p>
-        <h3>{{ getUnitsPaidCount() }}</h3>
-      </div>
+      <h1 class="pd-title">{{ property?.name }}</h1>
+      <p class="pd-subtitle">Monitor rent collection, payments and unit performance</p>
     </div>
+    <button class="pd-config-btn" type="button" (click)="openPaymentModal()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
+      </svg>
+      Configure Payment
+      <span class="pd-btn-shine"></span>
+    </button>
   </div>
 
-  <!-- Payment Summary Grid Per Unit -->
-  <div *ngIf="units.length > 0" class="unit-payments-grid">
-    <div
-      class="unit-summary-card"
-      *ngFor="let unit of units"
-      (click)="goToUnitPayments(unit.id)"
-      [ngClass]="{
-        'status-paid': ledgerByUnit[unit.id]?.status === 'Paid',
-        'status-partial': ledgerByUnit[unit.id]?.status === 'Partial',
-        'status-overpaid': ledgerByUnit[unit.id]?.status === 'Overpaid',
-        'status-unpaid': ledgerByUnit[unit.id]?.status === 'Unpaid'
-      }"
-    >
-      <h3>Unit {{ unit.doorNumber || unit.id }}</h3>
-      <p><strong>Unit ID:</strong> {{ unit.id }}</p>
-      <p><strong>Price:</strong> KSH {{ unit.price | number:'1.0-0' }}</p>
-      <p><strong>Last Status:</strong> {{ getLastPaymentStatus(unit.id) || 'N/A' }}</p>
+  <!-- ══ SUMMARY CARDS ══ -->
+  <div class="pd-summary">
+
+    <div class="pd-stat-card">
+      <div class="pd-stat-icon pd-stat-icon--gold">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="1" x2="12" y2="23"/>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+      </div>
+      <div class="pd-stat-body">
+        <span class="pd-stat-label">Total Collected</span>
+        <span class="pd-stat-value">KES {{ getTotalRentCollected() | number:'1.0-0' }}</span>
+      </div>
     </div>
+
+    <div class="pd-stat-card">
+      <div class="pd-stat-icon pd-stat-icon--amber">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+      </div>
+      <div class="pd-stat-body">
+        <span class="pd-stat-label">Pending This Month</span>
+        <span class="pd-stat-value pd-stat-value--amber">KES {{ getPendingPaymentsTotal() | number:'1.0-0' }}</span>
+      </div>
+    </div>
+
+    <div class="pd-stat-card">
+      <div class="pd-stat-icon pd-stat-icon--green">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 11 12 14 22 4"/>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+        </svg>
+      </div>
+      <div class="pd-stat-body">
+        <span class="pd-stat-label">Units Paid</span>
+        <span class="pd-stat-value pd-stat-value--green">
+          {{ getUnitsPaidCount() }}
+          <span class="pd-stat-sub">/ {{ units.length }}</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="pd-stat-card">
+      <div class="pd-stat-icon pd-stat-icon--blue">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="7" width="20" height="14" rx="2"/>
+          <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+        </svg>
+      </div>
+      <div class="pd-stat-body">
+        <span class="pd-stat-label">Total Units</span>
+        <span class="pd-stat-value">{{ units.length }}</span>
+      </div>
+    </div>
+
   </div>
 
-  <!-- Payment Table Section -->
-  <div *ngIf="units.length > 0" class="payment-table-section">
-    <table class="payment-table">
-      <thead>
-        <tr>
-          <th>Unit</th>
-          <th>Door No</th>
-          <th>Amount</th>
-          <th>Status</th>
-          <th>Date Paid</th>
-        </tr>
-      </thead>
-      <tbody>
-        <ng-container *ngFor="let unit of units">
-          <ng-container *ngIf="getPaymentsForUnit(unit.id).length > 0; else noPaymentRow">
-            <tr *ngFor="let payment of getPaymentsForUnit(unit.id)" [ngClass]="{
-              'status-paid': payment.status === PaymentStatus.Success,
-              'status-pending': payment.status === PaymentStatus.Pending,
-              'status-cancelled': payment.status === PaymentStatus.Failed
-            }">
-              <td>{{ unit.id }}</td>
-              <td>{{ unit.doorNumber || 'N/A' }}</td>
-              <td>KSH {{ payment.amount | number:'1.0-0' }}</td>
-              <td>{{ PaymentStatus[payment.status] }}</td>
-              <td>{{ payment.createdAt | date: 'shortDate' }}</td>
-            </tr>
+  <!-- ══ UNIT GRID ══ -->
+  <ng-container *ngIf="units.length > 0">
+
+    <div class="pd-section-header">
+      <h3 class="pd-section-title">Unit Overview</h3>
+      <p class="pd-section-sub">Current month status · click a unit to view full history</p>
+    </div>
+
+    <div class="pd-unit-grid">
+      <div class="pd-unit-card"
+           *ngFor="let unit of units"
+           (click)="goToUnitPayments(unit.id)"
+           [ngClass]="getUnitStatusClass(unit.id)">
+
+        <div class="pd-unit-top">
+          <span class="pd-unit-door">Unit {{ unit.doorNumber || unit.id }}</span>
+          <span class="pd-unit-status-badge" [ngClass]="getUnitBadgeClass(unit.id)">
+            {{ getUnitStatusLabel(unit.id) }}
+          </span>
+        </div>
+
+        <div class="pd-unit-meta">
+          <div class="pd-unit-row">
+            <span class="pd-unit-label">Rent</span>
+            <span class="pd-unit-value pd-unit-value--gold">KES {{ unit.price | number:'1.0-0' }}</span>
+          </div>
+          <div class="pd-unit-row">
+            <span class="pd-unit-label">Paid This Month</span>
+            <span class="pd-unit-value">KES {{ (ledgerByUnit[unit.id]?.totalPaid ?? 0) | number:'1.0-0' }}</span>
+          </div>
+          <div class="pd-unit-row">
+            <span class="pd-unit-label">Last Transaction</span>
+            <span class="pd-unit-value">{{ getLastPaymentStatus(unit.id) || '—' }}</span>
+          </div>
+        </div>
+
+        <div class="pd-unit-arrow">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+
+      </div>
+    </div>
+
+  </ng-container>
+
+  <!-- ══ TRANSACTIONS TABLE ══ -->
+  <ng-container *ngIf="units.length > 0">
+
+    <div class="pd-section-header pd-table-section">
+      <h3 class="pd-section-title">All Transactions</h3>
+      <p class="pd-section-sub">Full payment log across all units and periods</p>
+    </div>
+
+    <div class="pd-table-wrap">
+      <table class="pd-table">
+        <thead>
+          <tr>
+            <th>Unit</th>
+            <th>Door</th>
+            <th>Period</th>
+            <th>Tx Amount</th>
+            <th>Tx Status</th>
+            <th>Reference</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let unit of units">
+
+            <ng-container *ngIf="getPaymentsForUnit(unit.id).length > 0; else noPaymentRow">
+              <ng-container *ngFor="let up of getPaymentsForUnit(unit.id)">
+
+                <ng-container *ngIf="up.transactions && up.transactions.length > 0; else noTxRow">
+                  <tr *ngFor="let tx of up.transactions"
+                      [class.pd-row--paid]="tx.status === PaymentTransactionStatus.Success"
+                      [class.pd-row--pending]="tx.status === PaymentTransactionStatus.Pending ||
+                                               tx.status === PaymentTransactionStatus.Processing ||
+                                               tx.status === PaymentTransactionStatus.Initialized"
+                      [class.pd-row--failed]="tx.status === PaymentTransactionStatus.Failed ||
+                                              tx.status === PaymentTransactionStatus.Timeout">
+                    <td class="pd-td-id">#{{ unit.id }}</td>
+                    <td>{{ unit.doorNumber || '—' }}</td>
+                    <td class="pd-td-period">{{ formatMonthYear(up.periodMonth, up.periodYear) }}</td>
+                    <td class="pd-td-amount">KES {{ tx.amount | number:'1.0-0' }}</td>
+                    <td>
+                      <span class="pd-tx-badge" [ngClass]="getTransactionStatusClass(tx.status)">
+                        <span class="pd-tx-dot"></span>
+                        {{ getTransactionStatusLabel(tx.status) }}
+                      </span>
+                    </td>
+                    <td class="pd-td-ref">{{ tx.reference || '—' }}</td>
+                    <td class="pd-td-date">{{ tx.createdAt | date:'dd MMM y' }}</td>
+                  </tr>
+                </ng-container>
+
+                <ng-template #noTxRow>
+                  <tr class="pd-row--empty">
+                    <td class="pd-td-id">#{{ unit.id }}</td>
+                    <td>{{ unit.doorNumber || '—' }}</td>
+                    <td class="pd-td-period">{{ formatMonthYear(up.periodMonth, up.periodYear) }}</td>
+                    <td colspan="4" class="pd-td-none">Payment initialised — no transactions yet</td>
+                  </tr>
+                </ng-template>
+
+              </ng-container>
+            </ng-container>
+
+            <ng-template #noPaymentRow>
+              <tr class="pd-row--empty">
+                <td class="pd-td-id">#{{ unit.id }}</td>
+                <td>{{ unit.doorNumber || '—' }}</td>
+                <td colspan="5" class="pd-td-none">No payments recorded</td>
+              </tr>
+            </ng-template>
+
           </ng-container>
-          <ng-template #noPaymentRow>
-            <tr>
-              <td>{{ unit.id }}</td>
-              <td>{{ unit.doorNumber || 'N/A' }}</td>
-              <td colspan="3" class="no-payments">No payments found</td>
-            </tr>
-          </ng-template>
-        </ng-container>
-      </tbody>
-    </table>
-  </div>
+        </tbody>
+      </table>
+    </div>
 
-  <!-- No Units Fallback -->
-  <div *ngIf="units.length === 0" class="no-units">
-    <p>No units found for this property.</p>
+  </ng-container>
+
+  <!-- ══ NO UNITS ══ -->
+  <div *ngIf="units.length === 0" class="pd-empty">
+    <div class="pd-empty-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="2" y="7" width="20" height="14" rx="2"/>
+        <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+      </svg>
+    </div>
+    <p class="pd-empty-title">No units found</p>
+    <p class="pd-empty-sub">Add units to this property to start tracking payments</p>
   </div>
 
 </div>
 
-<!-- Loading Template -->
+<!-- ══ LOADING ══ -->
 <ng-template #loadingTemplate>
-  <div class="loading-spinner">
-    <p>Loading property and payments...</p>
+  <div class="pd-loading">
+    <div class="pd-spinner"></div>
+    <p>Loading payment data…</p>
   </div>
 </ng-template>
+
+<!-- ══ PAYMENT CONFIG MODAL ══ -->
+<app-property-payment-modal
+  [isOpen]="isPaymentModalOpen"
+  [propertyId]="propertyIdNumber"
+  (close)="closePaymentModal()"
+  (saved)="onPaymentSaved()">
+</app-property-payment-modal>

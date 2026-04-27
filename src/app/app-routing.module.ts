@@ -22,6 +22,7 @@ import { AddUnitComponent } from './features/unit/add-unit/add-unit.component';
 import { PropertyDashboardComponent } from './features/property/dashboard/property-dashboard/property-dashboard.component';
 import { GetStartedComponent } from './core/features/navbar/get-started/get-started.component';
 import { DashboardRedirectComponent } from './core/features/dashboard-redirect/dashboard-redirect.component';
+import { PropertiesListComponent } from './features/public/properties-list/properties-list/properties-list.component';
 
 const routes: Routes = [
   {
@@ -122,6 +123,10 @@ const routes: Routes = [
   {
     path: 'get-started',
     component: GetStartedComponent
+  },
+  {
+    path: 'properties',
+    component: PropertiesListComponent
   },
   {
     path: 'dashboard',

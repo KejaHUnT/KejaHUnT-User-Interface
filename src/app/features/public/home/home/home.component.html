@@ -1,158 +1,269 @@
-<section class="hero-section text-white py-5" style="background: linear-gradient(to right, rgba(0,0,0,0.6), rgba(0,128,128,0.6)), url('assets/hero.png') center/cover no-repeat;">
-    <div class="container text-center py-5">
-        <h1 class="display-4 fw-bold">Find Your <span class="text-warning">Dream Home</span></h1>
-        <p class="lead mt-3">Discover exceptional properties in prime locations. Your perfect home awaits with our curated collection of luxury real estate.</p>
+<!-- ══════════════════════════════════════════
+  LANDING PAGE — KejaHunt
+══════════════════════════════════════════ -->
 
-        <div class="d-flex flex-column flex-md-row justify-content-center align-items-center bg-white rounded-4 shadow p-3 mt-4 gap-2">
-            <div class="input-group me-md-3">
-                <span class="input-group-text bg-white border-0">
-                    <i class="bi bi-geo-alt"></i>
-                </span>
-                <input type="text" class="form-control border-0" placeholder="Enter location, city, or neighborhood">
-            </div>
+<!-- ── HERO ── -->
+<section class="kh-hero">
+  <div class="kh-hero-bg"></div>
+  <div class="kh-hero-noise"></div>
 
-            <select class="form-select border-0 me-md-3" style="max-width: 200px;">
-                <option selected>Property Type</option>
-                <option>House</option>
-                <option>Apartment</option>
-                <option>Villa</option>
-            </select>
-
-            <button class="btn btn-primary px-4">
-                <i class="bi bi-search me-2"></i> Search
-            </button>
-        </div>
+  <div class="kh-hero-inner">
+    <div class="kh-hero-label">
+      <span class="kh-dot"></span>
+      Kenya's Premier Property Platform
     </div>
+
+    <h1 class="kh-hero-title">
+      Find Your<br>
+      <em class="kh-hero-em">Dream Home</em>
+    </h1>
+
+    <p class="kh-hero-sub">
+      Discover exceptional properties in prime locations. Your perfect home
+      awaits with our curated collection of luxury real estate.
+    </p>
+
+    <!-- Search bar -->
+    <div class="kh-search">
+      <div class="kh-search-field">
+        <svg class="kh-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+        </svg>
+        <input type="text" placeholder="Location, city, or neighbourhood…" />
+      </div>
+
+      <div class="kh-search-divider"></div>
+
+      <div class="kh-search-select">
+        <svg class="kh-search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        </svg>
+        <select>
+          <option>Property Type</option>
+          <option>House</option>
+          <option>Apartment</option>
+          <option>Villa</option>
+        </select>
+      </div>
+
+      <button class="kh-search-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        Search
+        <span class="kh-btn-shine"></span>
+      </button>
+    </div>
+
+    <!-- Trust chips -->
+    <div class="kh-trust">
+      <div class="kh-trust-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        5,000+ Verified Listings
+      </div>
+      <div class="kh-trust-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Trusted by 12,000+ Tenants
+      </div>
+      <div class="kh-trust-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Zero Agent Fees
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll cue -->
+  <div class="kh-scroll-cue">
+    <span>Scroll</span>
+    <div class="kh-scroll-line"></div>
+  </div>
 </section>
 
-<section class="why-choose-us py-5 text-center">
-    <div class="container">
-        <h2 class="fw-bold mb-4">Why Choose <span class="text-primary">KejaHunt?</span></h2>
-        <p class="mb-5 listings-subtitle">We simplify your property journey with tools and services that put you in control.</p>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card border-0 h-100 shadow-sm rounded-4">
-                    <div class="card-body">
-                        <i class="bi bi-shield-check fs-1 mb-3"></i>
-                        <h5 class="fw-semibold mb-2">Verified Listings</h5>
-                        <p>We ensure all our listings are verified and up-to-date for a trustworthy experience.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card border-0 h-100 shadow-sm rounded-4">
-                    <div class="card-body">
-                        <i class="bi bi-lightning fs-1 mb-3"></i>
-                        <h5 class="fw-semibold mb-2">Fast & Easy Search</h5>
-                        <p>Find homes quickly with our intuitive filters and powerful search engine.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card border-0 h-100 shadow-sm rounded-4">
-                    <div class="card-body">
-                        <i class="bi bi-people fs-1 mb-3"></i>
-                        <h5 class="fw-semibold mb-2">Trusted by Landlords</h5>
-                        <p>Thousands of landlords list with us daily — join a network you can trust.</p>
-                    </div>
-                </div>
-            </div>
+<!-- ── WHY KEJAHUNT ── -->
+<section class="kh-why">
+  <div class="kh-container">
+    <div class="kh-section-label">Why us</div>
+    <h2 class="kh-section-title">Why Choose <span class="kh-gold">KejaHunt?</span></h2>
+    <p class="kh-section-sub">We simplify your property journey with tools and services that put you in control.</p>
+
+    <div class="kh-why-grid">
+      <div class="kh-why-card">
+        <div class="kh-why-icon kh-icon--gold">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
         </div>
+        <h3>Verified Listings</h3>
+        <p>All our listings are thoroughly verified and up-to-date for a trustworthy experience.</p>
+      </div>
+
+      <div class="kh-why-card">
+        <div class="kh-why-icon kh-icon--blue">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </div>
+        <h3>Fast &amp; Easy Search</h3>
+        <p>Find homes quickly with our intuitive filters and powerful intelligent search engine.</p>
+      </div>
+
+      <div class="kh-why-card">
+        <div class="kh-why-icon kh-icon--green">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <h3>Trusted by Landlords</h3>
+        <p>Thousands of landlords list with us daily — join a network built on mutual trust.</p>
+      </div>
     </div>
+  </div>
 </section>
 
-<section class="how-it-works py-5 text-center">
-    <div class="container">
-        <h2 class="fw-bold mb-4">How It Works</h2>
-        <p class="mb-5 listings-subtitle">Get started in just a few easy steps</p>
-        <div class="row g-4">
-            <div class="col-md-3">
-                <div class="card border-0 h-100 shadow-sm rounded-4">
-                    <div class="card-body">
-                        <i class="bi bi-search fs-2 mb-2"></i>
-                        <h6 class="fw-semibold">1. Search</h6>
-                        <p class="small">Enter your preferred location and browse properties.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card border-0 h-100 shadow-sm rounded-4">
-                    <div class="card-body">
-                        <i class="bi bi-house-door fs-2 mb-2"></i>
-                        <h6 class="fw-semibold">2. Explore</h6>
-                        <p class="small">View photos, specs, and amenities for each property.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card border-0 h-100 shadow-sm rounded-4">
-                    <div class="card-body">
-                        <i class="bi bi-calendar-check fs-2 mb-2"></i>
-                        <h6 class="fw-semibold">3. Book</h6>
-                        <p class="small">Schedule a viewing or book directly online.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card border-0 h-100 shadow-sm rounded-4">
-                    <div class="card-body">
-                        <i class="bi bi-emoji-smile fs-2 mb-2"></i>
-                        <h6 class="fw-semibold">4. Move In</h6>
-                        <p class="small">Move into your new home with confidence and ease.</p>
-                    </div>
-                </div>
-            </div>
+<!-- ── HOW IT WORKS ── -->
+<section class="kh-how">
+  <div class="kh-container">
+    <div class="kh-section-label">Process</div>
+    <h2 class="kh-section-title">How It Works</h2>
+    <p class="kh-section-sub">Get started in just four easy steps</p>
+
+    <div class="kh-steps">
+      <div class="kh-step">
+        <div class="kh-step-num">01</div>
+        <div class="kh-step-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
         </div>
+        <h4>Search</h4>
+        <p>Enter your preferred location and browse available properties instantly.</p>
+      </div>
+
+      <div class="kh-step-connector"></div>
+
+      <div class="kh-step">
+        <div class="kh-step-num">02</div>
+        <div class="kh-step-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </div>
+        <h4>Explore</h4>
+        <p>View photos, specs, and full amenities for each property on your shortlist.</p>
+      </div>
+
+      <div class="kh-step-connector"></div>
+
+      <div class="kh-step">
+        <div class="kh-step-num">03</div>
+        <div class="kh-step-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+        <h4>Book</h4>
+        <p>Schedule a viewing or book your unit directly online with zero agent fees.</p>
+      </div>
+
+      <div class="kh-step-connector"></div>
+
+      <div class="kh-step">
+        <div class="kh-step-num">04</div>
+        <div class="kh-step-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <h4>Move In</h4>
+        <p>Move into your new home with confidence and our ongoing tenant support.</p>
+      </div>
     </div>
+  </div>
 </section>
 
-<section class="py-5 text-white" style="background-color:#0d1b2a;">
-  <div class="container">
-    <div class="text-center mb-5">
-      <h2 class="fw-bold">Featured Properties</h2>
-      <p class="listings-subtitle">Browse our most popular listings curated just for you</p>
+<!-- ── FEATURED PROPERTIES ── -->
+<section class="kh-listings">
+  <div class="kh-container">
+    <div class="kh-listings-header">
+      <div>
+        <div class="kh-section-label">Curated for you</div>
+        <h2 class="kh-section-title">Featured Properties</h2>
+        <p class="kh-section-sub">Browse our most popular listings handpicked for you</p>
+      </div>
     </div>
 
-    <div class="row g-4">
+    <div class="kh-properties-grid">
       <ng-container *ngIf="Property$ | async as properties">
-        <div class="col-12 col-md-6 col-xl-4" *ngFor="let property of properties">
-          <a [routerLink]="['/property/details', property.id]" class="text-decoration-none">
-            <div class="card property-card h-100 border-0 rounded-4">
-              <div class="property-image-container position-relative">
-                <img *ngIf="imageUrls[property.id]" [src]="imageUrls[property.id]" alt="{{ property.name }}" class="card-img-top rounded-top-4" />
-                <div *ngIf="!imageUrls[property.id]" class="no-image-placeholder rounded-top-4 d-flex flex-column justify-content-center align-items-center text-muted">
-                  <i class="bi bi-building fs-1"></i>
-                  <span>No Image</span>
-                </div>
+        <a *ngFor="let property of properties"
+           [routerLink]="['/property/details', property.id]"
+           class="kh-prop-card">
 
-                <div class="property-type-badge position-absolute top-0 start-0 m-2">
-                  <span class="badge">{{ property.type }}</span>
-                </div>
+          <div class="kh-prop-image">
+            <img *ngIf="imageUrls[property.id]"
+                 [src]="imageUrls[property.id]"
+                 [alt]="property.name" />
+            <div *ngIf="!imageUrls[property.id]" class="kh-prop-placeholder">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+              <span>No Image</span>
+            </div>
+
+            <div class="kh-prop-type">{{ property.type }}</div>
+            <div class="kh-prop-overlay"></div>
+          </div>
+
+          <div class="kh-prop-body">
+            <div class="kh-prop-location">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+              </svg>
+              {{ property.location }}
+            </div>
+
+            <h3 class="kh-prop-name">{{ property.name }}</h3>
+
+            <div class="kh-prop-specs" *ngIf="property.units && property.units.length > 0">
+              <span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                </svg>
+                {{ property.units[0].type || 'Unit' }}
+              </span>
+              <span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 3H2v7a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V3z"/><path d="M6 15v4"/><path d="M18 15v4"/>
+                </svg>
+                {{ property.units[0].bathrooms || 2 }} Baths
+              </span>
+              <span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
+                  <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+                </svg>
+                {{ property.units[0].size || '—' }} m²
+              </span>
+            </div>
+
+            <div class="kh-prop-footer">
+              <div class="kh-prop-price">
+                Ksh {{ getMinPrice(property.units) | number:'1.0-0' }}
+                <span class="kh-prop-per">/mo</span>
               </div>
-
-              <div class="property-card-body p-3 d-flex flex-column justify-content-between flex-grow-1">
-                <div>
-                  <div class="property-location small mb-1">
-                    <i class="bi bi-geo-alt-fill me-1"></i> {{ property.location }}
-                  </div>
-                  <h5 class="property-title fw-semibold mb-2">{{ property.name }}</h5>
-
-                  <div class="property-specs d-flex flex-wrap gap-3 small mb-3" *ngIf="property.units && property.units.length > 0">
-                    <span><i class="bi bi-house-door me-1"></i>{{ property.units[0].type || 'Unit' }}</span>
-                    <span><i class="bi bi-bathtub me-1"></i>{{ property.units[0].bathrooms || 2 }} Baths</span>
-                    <span><i class="bi bi-arrows-fullscreen me-1"></i>{{ property.units[0].size || '2,100' }} sq ft</span>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="price-amount h5 fw-bold mb-0">
-                    Ksh {{ getMinPrice(property.units) | number:'1.0-0' }}
-                  </div>
-                  <button class="btn btn-primary px-4">View Details</button>
-                </div>
+              <div class="kh-prop-cta">
+                View
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                </svg>
               </div>
             </div>
-          </a>
-        </div>
+          </div>
+
+        </a>
       </ng-container>
     </div>
   </div>

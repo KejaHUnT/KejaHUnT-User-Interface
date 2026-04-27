@@ -1,0 +1,109 @@
+<section class="kh-marketplace">
+
+  <div class="kh-container kh-marketplace-layout">
+
+    <!-- 🔥 FILTER SIDEBAR -->
+    <aside class="kh-filters">
+
+      <h3 class="kh-filter-title">Filters</h3>
+
+      <!-- Location -->
+      <div class="kh-filter-group">
+        <label>Location</label>
+        <input type="text"
+               [(ngModel)]="filters.location"
+               placeholder="e.g. Nairobi" />
+      </div>
+
+      <!-- Type -->
+      <div class="kh-filter-group">
+        <label>Property Type</label>
+        <select [(ngModel)]="filters.type">
+          <option value="">All</option>
+          <option>Apartment</option>
+          <option>House</option>
+          <option>Villa</option>
+        </select>
+      </div>
+
+      <!-- Price -->
+      <div class="kh-filter-group">
+        <label>Min Price</label>
+        <input type="number" [(ngModel)]="filters.minPrice" />
+      </div>
+
+      <div class="kh-filter-group">
+        <label>Max Price</label>
+        <input type="number" [(ngModel)]="filters.maxPrice" />
+      </div>
+
+      <button class="kh-filter-btn" (click)="applyFilters()">
+        Apply Filters
+      </button>
+
+    </aside>
+
+    <!-- 🔥 PROPERTIES -->
+    <div class="kh-marketplace-content">
+
+      <div class="kh-listings-header">
+        <div>
+          <div class="kh-section-label">Marketplace</div>
+          <h2 class="kh-section-title">Available Properties</h2>
+        </div>
+      </div>
+
+      <div class="kh-properties-grid">
+
+        <ng-container *ngIf="properties$ | async as properties">
+
+          <a *ngFor="let property of properties"
+             [routerLink]="['/property/details', property.id]"
+             class="kh-prop-card">
+
+            <div class="kh-prop-image">
+              <img *ngIf="imageUrls[property.id]"
+                   [src]="imageUrls[property.id]" />
+
+              <div *ngIf="!imageUrls[property.id]" class="kh-prop-placeholder">
+                No Image
+              </div>
+
+              <div class="kh-prop-type">{{ property.type }}</div>
+              <div class="kh-prop-overlay"></div>
+            </div>
+
+            <div class="kh-prop-body">
+
+              <div class="kh-prop-location">
+                {{ property.location }}
+              </div>
+
+              <h3 class="kh-prop-name">{{ property.name }}</h3>
+
+              <div class="kh-prop-specs">
+                <span>{{ property.units[0].type }}</span>
+                <span>{{ property.units[0].bathrooms }} Baths</span>
+                <span>{{ property.units[0].size }} m²</span>
+              </div>
+
+              <div class="kh-prop-footer">
+                <div class="kh-prop-price">
+                  Ksh {{ getMinPrice(property.units) | number }}
+                </div>
+                <div class="kh-prop-cta">View →</div>
+              </div>
+
+            </div>
+
+          </a>
+
+        </ng-container>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

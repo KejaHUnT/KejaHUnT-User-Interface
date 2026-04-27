@@ -10,8 +10,21 @@ import { LoginRequest } from '../../models/login-request.model';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+
+  // Mode
   isLoginMode = true;
 
+  // UI State
+  isLoading = false;
+  errorMessage: string | null = null;
+  successMessage: string | null = null;
+
+  // Input UI states
+  emailFocused = false;
+  passwordFocused = false;
+  showPassword = false;
+
+  // Models
   loginModel: LoginRequest = {
     email: '',
     password: ''
@@ -32,34 +45,42 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Detect login/register mode from URL
     this.route.url.subscribe(segments => {
       const currentPath = segments.map(s => s.path).join('/');
       this.isLoginMode = currentPath === 'signin';
 
-      // Get returnUrl from query params
       this.route.queryParams.subscribe(params => {
         this.returnUrl = params['returnUrl'] || '/';
       });
     });
   }
 
+  // Dynamic model binding (used in template)
   get model(): LoginRequest {
     return this.isLoginMode ? this.loginModel : this.registerModel;
   }
 
   toggleMode(): void {
     this.isLoginMode = !this.isLoginMode;
+
+    // Reset messages when switching
+    this.errorMessage = null;
+    this.successMessage = null;
+
     const targetRoute = this.isLoginMode ? '/signin' : '/register';
+
     this.router.navigate([targetRoute], {
       queryParams: { returnUrl: this.returnUrl }
     });
   }
 
   onLoginSubmit(): void {
+    this.isLoading = true;
+    this.errorMessage = null;
+    this.successMessage = null;
+
     this.authService.login(this.loginModel).subscribe({
       next: (response) => {
-        console.log('Login success:', response);
 
         this.cookieService.set(
           'Authorization',
@@ -71,28 +92,50 @@ export class LoginComponent implements OnInit {
           'Strict'
         );
 
-        // This is already called inside AuthService.login() tap()
-        this.router.navigateByUrl(this.returnUrl);
+        this.successMessage = 'Login successful! Redirecting...';
+
+        setTimeout(() => {
+          this.router.navigateByUrl(this.returnUrl);
+        }, 800);
       },
       error: (err) => {
         console.error('Login failed:', err);
-        alert('Invalid credentials. Please try again.');
+
+        this.errorMessage = 'Invalid email or password. Please try again.';
+        this.isLoading = false;
+      },
+      complete: () => {
+        this.isLoading = false;
       }
     });
   }
 
   onRegisterSubmit(): void {
+    this.isLoading = true;
+    this.errorMessage = null;
+    this.successMessage = null;
+
     this.authService.register(this.registerModel).subscribe({
       next: () => {
-        alert('Registration successful! You can now log in.');
-        this.isLoginMode = true;
-        this.router.navigate(['/signin'], {
-          queryParams: { returnUrl: this.returnUrl }
-        });
+
+        this.successMessage = 'Account created successfully! You can now sign in.';
+
+        // Switch to login after short delay
+        setTimeout(() => {
+          this.isLoginMode = true;
+          this.router.navigate(['/signin'], {
+            queryParams: { returnUrl: this.returnUrl }
+          });
+        }, 1000);
       },
       error: (err) => {
         console.error('Registration failed:', err);
-        alert('Failed to register. Please try again.');
+
+        this.errorMessage = 'Failed to create account. Try again.';
+        this.isLoading = false;
+      },
+      complete: () => {
+        this.isLoading = false;
       }
     });
   }

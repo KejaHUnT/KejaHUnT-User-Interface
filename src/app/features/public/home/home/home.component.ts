@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { map, Observable, Subscription } from 'rxjs';
 import { Property } from 'src/app/features/property/models/property.model';
 import { Unit } from 'src/app/features/property/models/unit.model';
 import { PropertyService } from 'src/app/features/property/services/property.service';
@@ -24,7 +24,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Fetch all properties
-    this.Property$ = this.propertyService.getAllProperties();
+    this.Property$ = this.propertyService.getAllProperties().pipe(
+    map((properties) =>
+      properties.filter(p => p.units && p.units.length > 0)
+    )
+  );
 
     // Subscribe to the property observable and fetch images for each property
     this.Property$.subscribe({

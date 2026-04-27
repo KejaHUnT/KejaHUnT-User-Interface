@@ -43,6 +43,8 @@ import { PaymentHistoryWidgetComponent } from './features/tenant/dashboard/widge
 import { DashboardModule } from './features/property/dashboard/dashboard/dashboard.module';
 import { GetStartedComponent } from './core/features/navbar/get-started/get-started.component';
 import { DashboardRedirectComponent } from './core/features/dashboard-redirect/dashboard-redirect.component';
+import { PropertyPaymentModalComponent } from './features/unit/payments/payment-details/property-payment-modal/property-payment-modal.component';
+import { PropertiesListComponent } from './features/public/properties-list/properties-list/properties-list.component';
 
 
 
@@ -76,6 +78,8 @@ import { DashboardRedirectComponent } from './core/features/dashboard-redirect/d
     PaymentHistoryWidgetComponent,
     GetStartedComponent,
     DashboardRedirectComponent,
+    PropertyPaymentModalComponent,
+    PropertiesListComponent,
   ],
   imports: [
     BrowserModule,

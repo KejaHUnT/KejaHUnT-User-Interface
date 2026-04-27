@@ -1,165 +1,175 @@
-<div class="ledger-container">
+<div class="pd-shell">
 
-    <!-- TENANT CARD -->
-    <div *ngIf="tenant" class="tenant-card">
+  <!-- ═════ HEADER ═════ -->
+  <div class="pd-header">
+    <div>
+      <div class="pd-badge">
+        <span class="pd-dot"></span>
+        Tenant Ledger
+      </div>
+      <h1 class="pd-title">{{ tenant?.fullName || 'Tenant Overview' }}</h1>
+      <p class="pd-subtitle">
+        {{ tenant?.email || 'No email' }} • {{ tenant?.phoneNumber || 'No phone' }}
+      </p>
+    </div>
 
-        <div class="avatar">
-            {{ getTenantInitials() }}
+    <div class="pd-stat-icon pd-stat-icon--gold" style="width:50px;height:50px;font-size:1rem;">
+      {{ getTenantInitials() }}
+    </div>
+  </div>
+
+  <!-- ═════ ERROR ═════ -->
+  <div *ngIf="hasError" class="pd-empty">
+    <div class="pd-empty-icon">!</div>
+    <h3 class="pd-empty-title">{{ errorMessage }}</h3>
+    <p class="pd-empty-sub">Failed to load ledger</p>
+  </div>
+
+  <!-- ═════ LOADING ═════ -->
+  <div *ngIf="loading" class="pd-loading">
+    <div class="pd-spinner"></div>
+    Loading financial ledger...
+  </div>
+
+  <!-- ═════ MAIN ═════ -->
+  <div *ngIf="!loading && hasLedger">
+
+    <!-- ═════ SUMMARY ═════ -->
+    <div class="pd-summary">
+
+      <div class="pd-stat-card">
+        <div class="pd-stat-icon pd-stat-icon--gold">K</div>
+        <div class="pd-stat-body">
+          <span class="pd-stat-label">Monthly Rent</span>
+          <span class="pd-stat-value">{{ monthlyRent | currency:'KES' }}</span>
         </div>
+      </div>
 
-        <div class="tenant-info">
-            <h2>{{ tenant.fullName }}</h2>
-
-            <div class="tenant-meta">
-                <span class="chip">{{ tenant.email }}</span>
-                <span class="chip">{{ tenant.phoneNumber }}</span>
-            </div>
+      <div class="pd-stat-card">
+        <div class="pd-stat-icon pd-stat-icon--amber">~</div>
+        <div class="pd-stat-body">
+          <span class="pd-stat-label">Total Balance</span>
+          <span class="pd-stat-value pd-stat-value--amber">{{ totalBalance | currency:'KES' }}</span>
         </div>
+      </div>
 
-        <div class="occupancy-badge">
-            Active Tenant
+      <div class="pd-stat-card">
+        <div class="pd-stat-icon pd-stat-icon--blue">#</div>
+        <div class="pd-stat-body">
+          <span class="pd-stat-label">Months</span>
+          <span class="pd-stat-value">{{ ledger.length }}</span>
         </div>
+      </div>
+
+      <div class="pd-stat-card">
+        <div class="pd-stat-icon pd-stat-icon--green">✔</div>
+        <div class="pd-stat-body">
+          <span class="pd-stat-label">Unit</span>
+          <span class="pd-stat-value">{{ unit?.doorNumber || '-' }}</span>
+        </div>
+      </div>
 
     </div>
 
+    <!-- ═════ TABLE ═════ -->
+    <div class="pd-table-section">
 
-    <!-- ERROR -->
-    <div *ngIf="hasError" class="state-card error">
-        {{ errorMessage }}
-    </div>
+      <div class="pd-section-header">
+        <h2 class="pd-section-title">Monthly Rent Ledger</h2>
+        <p class="pd-section-sub">Breakdown of payments per period — all transactions shown</p>
+      </div>
 
-    <!-- LOADING -->
-    <div *ngIf="loading" class="state-card loading">
-        <div class="spinner"></div>
-        Loading financial ledger...
-    </div>
+      <div class="pd-table-wrap">
+        <table class="pd-table">
+          <thead>
+            <tr>
+              <th>Period</th>
+              <th>Expected</th>
+              <th>Paid</th>
+              <th>Balance</th>
+              <th>Status</th>
+            </tr>
+          </thead>
 
+          <tbody>
+            <tr *ngFor="let month of ledger; trackBy: trackByLedger">
 
-    <!-- MAIN -->
-    <div *ngIf="!loading && hasLedger">
+              <!-- PERIOD + ALL TRANSACTIONS -->
+              <td class="pd-td-period">
 
-        <div class="ledger-header">
+                <strong>{{ getMonthLabel(month.periodMonth, month.periodYear) }}</strong>
 
-            <div>
-                <h2>
-                    Monthly Rent Ledger
-                     <span class="unit-badge" *ngIf="unit?.doorNumber">
-                        Unit {{ unit?.doorNumber }}
+                <div *ngIf="month.payments.length; else noPayments">
+                  <div *ngFor="let payment of month.payments; trackBy: trackByPayment"
+                       class="pd-tx-entry">
+
+                    <div class="pd-td-amount">
+                      {{ payment.amount | currency:'KES' }}
+                    </div>
+
+                    <!-- Status badge driven entirely by enum -->
+                    <span class="pd-tx-badge"
+                          [ngClass]="getTransactionStatusClass(payment.status)">
+                      <span class="pd-tx-dot"></span>
+                      {{ getTransactionStatusLabel(payment.status) }}
                     </span>
-                </h2>
-                <p class="subtitle">Financial overview of this unit</p>
-            </div>
 
-            <div class="balance-card" [ngClass]="{
-                  'positive': totalBalance >= 0,
-                  'negative': totalBalance < 0
-               }">
+                    <div class="pd-td-ref">
+                      Ref: {{ payment.reference || 'N/A' }}
+                    </div>
 
-                <span>Total Balance</span>
-                <h2>{{ totalBalance | currency:'KES' }}</h2>
+                    <div class="pd-td-date">
+                      {{ payment.createdAt | date:'MMM d, y • h:mm a' }}
+                    </div>
 
-            </div>
+                    <hr style="border-color: rgba(255,255,255,0.05);" />
 
-        </div>
+                  </div>
+                </div>
 
-        <div class="table-wrapper">
+                <ng-template #noPayments>
+                  <div class="pd-td-none">No transactions recorded</div>
+                </ng-template>
 
-            <table class="payment-table">
+              </td>
 
-                <thead>
-                    <tr>
-                        <th>Period</th>
-                        <th>Expected</th>
-                        <th>Paid</th>
-                        <th>Balance</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
+              <!-- EXPECTED -->
+              <td class="pd-td-amount">{{ month.expectedRent | currency:'KES' }}</td>
 
-                <tbody>
+              <!-- PAID (successful transactions only) -->
+              <td class="pd-td-amount">{{ month.totalPaid | currency:'KES' }}</td>
 
-                    <tr *ngFor="let month of ledger; trackBy: trackByLedger"
-                        [ngClass]="getRowClass(month.status)">
+              <!-- BALANCE -->
+              <td class="pd-td-amount"
+                  [class.pd-stat-value--red]="month.balance > 0"
+                  [class.pd-stat-value--green]="month.balance <= 0">
+                {{ month.balance | currency:'KES' }}
+              </td>
 
-                        <!-- PERIOD + PAYMENTS COLUMN -->
-                        <td class="period-cell">
+              <!-- PERIOD STATUS — enum comparison -->
+              <td>
+                <span class="pd-tx-badge"
+                      [class.pd-tx--paid]="month.status === UnitPaymentStatus.Paid"
+                      [class.pd-tx--pending]="month.status === UnitPaymentStatus.Partial ||
+                                              month.status === UnitPaymentStatus.Pending"
+                      [class.pd-tx--failed]="month.status === UnitPaymentStatus.Failed ||
+                                             month.status === UnitPaymentStatus.Cancelled ||
+                                             month.status === UnitPaymentStatus.Disputed"
+                      [class.pd-tx--initialized]="month.status === UnitPaymentStatus.Overpaid ||
+                                                   month.status === UnitPaymentStatus.Refunded">
+                  <span class="pd-tx-dot"></span>
+                  {{ getUnitPaymentStatusLabel(month.status) }}
+                </span>
+              </td>
 
-                            <strong class="month-label">
-                                {{ getMonthLabel(month.periodMonth, month.periodYear) }}
-                            </strong>
+            </tr>
+          </tbody>
 
-                            <!-- PAYMENTS -->
-                            <div class="payments-column"
-                                 *ngIf="month.payments.length; else noPayments">
-
-                                <div class="payment-row"
-                                     *ngFor="let payment of month.payments; trackBy: trackByPayment">
-
-                                    <div class="payment-main">
-                                        <span class="amount">
-                                            {{ payment.amount | currency:payment.currency }}
-                                        </span>
-
-                                        <span class="payment-status"
-                                              [ngClass]="{
-                                                'success': payment.status === 1,
-                                                'pending': payment.status === 0,
-                                                'failed': payment.status === 2
-                                              }">
-
-                                            {{ payment.status === 1 ? 'Success'
-                                               : payment.status === 0 ? 'Pending'
-                                               : 'Failed' }}
-
-                                        </span>
-                                    </div>
-
-                                    <div class="payment-details">
-                                        <span><b>Ref:</b> {{ payment.reference }}</span>
-                                        <span><b>Method:</b> {{ payment.paymentMethod }}</span>
-                                        <span>{{ payment.createdAt | date:'MMM d, y • h:mm a' }}</span>
-                                        <span>{{ payment.userEmail }}</span>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <ng-template #noPayments>
-                                <div class="no-payment">
-                                    No payments recorded for this period
-                                </div>
-                            </ng-template>
-
-                        </td>
-
-                        <td>
-                            {{ month.expectedRent | currency:'KES' }}
-                        </td>
-
-                        <td>
-                            {{ month.totalPaid | currency:'KES' }}
-                        </td>
-
-                        <td>
-                            {{ month.balance | currency:'KES' }}
-                        </td>
-
-                        <td>
-                            <span class="status-pill"
-                                  [ngClass]="month.status.toLowerCase()">
-                                {{ month.status }}
-                            </span>
-                        </td>
-
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
+        </table>
+      </div>
 
     </div>
+
+  </div>
 
 </div>

@@ -1,7 +1,24 @@
-export interface PaymentDetails {
-  unitId: number;
-  amount: number;
-  tenantId: number;
-  phoneNumber: string;
-  timestamp: Date; // or string if coming as ISO string from the backend
+export interface AddGatewayConfigDto {
+  accountId: string;
+  gateway: string;
+  configJson: string;
+}
+
+export interface ApiMessageResponse {
+  message: string;
+}
+
+export interface PaystackConfig {
+  publicKey: string;
+  secretKey: string;
+  callbackUrl: string;
+}
+
+export interface GatewayConfigDetailsResponse {
+  accountId: string;
+  gateway: string;
+  config: PaystackConfig;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt?: string | null;
 }

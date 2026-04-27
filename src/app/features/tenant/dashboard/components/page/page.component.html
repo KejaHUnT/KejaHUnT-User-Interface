@@ -1,66 +1,198 @@
-<!-- Top Header: Tenant Greeting -->
-<div class="dashboard-header" *ngIf="tenant">
-  <h2>{{ greetingMessage }}, {{ tenant!.fullName }}</h2>
-  <p class="muted">Welcome to your tenant dashboard</p>
-</div>
+<div class="td-shell">
 
-<div class="dashboard-grid" *ngIf="tenant && unitDetails && propertyDetails">
-  <!-- LEFT COLUMN: Unit + Property Details -->
-  <div class="dashboard-left">
-    <!-- Unit Details Card -->
-    <div class="card">
-      <h4>Unit Details</h4>
-      <p><strong>Door No:</strong> {{ unitDetails!.doorNumber }}</p>
-      <p><strong>Rent:</strong> KES {{ unitDetails!.price | number:'1.0-0' }}</p>
-      <p><strong>Status:</strong> {{ unitDetails!.status }}</p>
-      <p><strong>Size:</strong> {{ unitDetails!.size }} m²</p>
-      <p><strong>Floor:</strong> {{ unitDetails!.floor }}</p>
-      <p><strong>Bathrooms:</strong> {{ unitDetails!.bathrooms }}</p>
-      <p><strong>Unit Type:</strong> {{ unitDetails!.type }}</p>
-    </div>
-
-    <!-- Property Details Card -->
-    <div class="card">
-      <div class="property-summary" (click)="togglePropertyDetails()">
-        <h4>{{ propertyDetails!.name }}</h4>
-        <p class="muted">Click to {{ showPropertyDetails ? 'hide' : 'view' }} property details</p>
+  <!-- ══ GREETING HEADER ══ -->
+  <div class="td-header" *ngIf="tenant">
+    <div class="td-header-left">
+      <div class="td-badge">
+        <span class="td-dot"></span>
+        Tenant Portal
       </div>
-      <div class="property-details" [class.show]="showPropertyDetails">
-        <ul>
-          <li><strong>Location:</strong> {{ propertyDetails!.location }}</li>
-          <li><strong>Type:</strong> {{ propertyDetails!.type }}</li>
-          <li><strong>Description:</strong> {{ propertyDetails!.description }}</li>
-        </ul>
+      <h1 class="td-greeting">{{ greetingMessage }},<br><span class="td-name">{{ tenant!.fullName }}</span></h1>
+      <p class="td-sub">Welcome to your personal dashboard</p>
+    </div>
+    <div class="td-header-right">
+      <div class="td-stat-pill">
+        <span class="td-stat-label">Rent Due</span>
+        <span class="td-stat-value">KES {{ unitDetails?.price | number:'1.0-0' }}</span>
+      </div>
+      <div class="td-stat-pill td-stat-pill--status">
+        <span class="td-stat-label">Unit Status</span>
+        <span class="td-stat-value">{{ unitDetails?.status }}</span>
       </div>
     </div>
   </div>
 
-  <!-- CENTER COLUMN: Payment History Only -->
-  <div class="dashboard-center">
-    <app-payment-history-widget *ngIf="unitDetails" [unitId]="unitDetails.id" [expectedRent]="unitDetails.price">
-    </app-payment-history-widget>
-  </div>
+  <!-- ══ DASHBOARD GRID ══ -->
+  <div class="td-grid" *ngIf="tenant && unitDetails && propertyDetails">
 
-  <!-- RIGHT COLUMN: Announcements + Quick Actions -->
-  <div class="dashboard-right">
-    <!-- Announcements Card -->
-    <div class="card">
-      <h4>Announcements</h4>
-      <p><strong>Reminder:</strong> Ensure rent is paid before 5th of every month.</p>
-      <p><strong>Notice:</strong> Power maintenance on Sunday from 9AM to 1PM.</p>
+    <!-- ── LEFT COLUMN ── -->
+    <div class="td-col td-col--left">
+
+      <!-- Unit Details -->
+      <div class="td-card">
+        <div class="td-card-header">
+          <div class="td-card-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
+          <div>
+            <h4 class="td-card-title">Unit Details</h4>
+            <p class="td-card-sub">Your current unit</p>
+          </div>
+        </div>
+
+        <div class="td-detail-grid">
+          <div class="td-detail-item">
+            <span class="td-detail-label">Door No.</span>
+            <span class="td-detail-value">{{ unitDetails!.doorNumber }}</span>
+          </div>
+          <div class="td-detail-item">
+            <span class="td-detail-label">Monthly Rent</span>
+            <span class="td-detail-value td-detail-value--gold">KES {{ unitDetails!.price | number:'1.0-0' }}</span>
+          </div>
+          <div class="td-detail-item">
+            <span class="td-detail-label">Status</span>
+            <span class="td-status-badge">{{ unitDetails!.status }}</span>
+          </div>
+          <div class="td-detail-item">
+            <span class="td-detail-label">Size</span>
+            <span class="td-detail-value">{{ unitDetails!.size }} m²</span>
+          </div>
+          <div class="td-detail-item">
+            <span class="td-detail-label">Floor</span>
+            <span class="td-detail-value">{{ unitDetails!.floor }}</span>
+          </div>
+          <div class="td-detail-item">
+            <span class="td-detail-label">Bathrooms</span>
+            <span class="td-detail-value">{{ unitDetails!.bathrooms }}</span>
+          </div>
+          <div class="td-detail-item td-detail-item--full">
+            <span class="td-detail-label">Unit Type</span>
+            <span class="td-detail-value">{{ unitDetails!.type }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Property Details -->
+      <div class="td-card td-card--property">
+        <div class="td-property-trigger" (click)="togglePropertyDetails()">
+          <div class="td-card-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="7" width="20" height="14" rx="2"/>
+              <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+            </svg>
+          </div>
+          <div class="td-property-trigger-text">
+            <h4 class="td-card-title">{{ propertyDetails!.name }}</h4>
+            <p class="td-card-sub">{{ showPropertyDetails ? 'Hide' : 'Show' }} property details</p>
+          </div>
+          <svg class="td-chevron" [class.td-chevron--open]="showPropertyDetails"
+               width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+
+        <div class="td-property-body" [class.td-property-body--open]="showPropertyDetails">
+          <div class="td-property-inner">
+            <div class="td-detail-item td-detail-item--full">
+              <span class="td-detail-label">Location</span>
+              <span class="td-detail-value">{{ propertyDetails!.location }}</span>
+            </div>
+            <div class="td-detail-item td-detail-item--full">
+              <span class="td-detail-label">Type</span>
+              <span class="td-detail-value">{{ propertyDetails!.type }}</span>
+            </div>
+            <div class="td-detail-item td-detail-item--full">
+              <span class="td-detail-label">Description</span>
+              <span class="td-detail-value td-detail-value--desc">{{ propertyDetails!.description }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <!-- Quick Actions Card -->
-    <div class="card quick-actions">
-      <h4>Quick Actions</h4>
-      <button type="button" class="btn-pay" (click)="openPaymentModal()">
-        Pay Rent
-      </button>
+    <!-- ── CENTER COLUMN ── -->
+    <div class="td-col td-col--center">
+      <app-payment-history-widget
+        *ngIf="unitDetails"
+        [unitId]="unitDetails.id"
+        [expectedRent]="unitDetails.price">
+      </app-payment-history-widget>
+    </div>
+
+    <!-- ── RIGHT COLUMN ── -->
+    <div class="td-col td-col--right">
+
+      <!-- Announcements -->
+      <div class="td-card">
+        <div class="td-card-header">
+          <div class="td-card-icon td-card-icon--amber">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/>
+            </svg>
+          </div>
+          <div>
+            <h4 class="td-card-title">Announcements</h4>
+            <p class="td-card-sub">Property notices</p>
+          </div>
+        </div>
+
+        <div class="td-announcements">
+          <div class="td-announce-item td-announce-item--warn">
+            <div class="td-announce-dot"></div>
+            <div>
+              <p class="td-announce-label">Rent Reminder</p>
+              <p class="td-announce-text">Ensure rent is paid before the 5th of every month.</p>
+            </div>
+          </div>
+          <div class="td-announce-item td-announce-item--info">
+            <div class="td-announce-dot td-announce-dot--blue"></div>
+            <div>
+              <p class="td-announce-label">Maintenance Notice</p>
+              <p class="td-announce-text">Power maintenance on Sunday from 9 AM to 1 PM.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="td-card td-card--actions">
+        <div class="td-card-header">
+          <div class="td-card-icon td-card-icon--green">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+            </svg>
+          </div>
+          <div>
+            <h4 class="td-card-title">Quick Actions</h4>
+            <p class="td-card-sub">Manage your tenancy</p>
+          </div>
+        </div>
+
+        <div class="td-actions-list">
+          <button class="td-action-btn td-action-btn--primary" type="button" (click)="openPaymentModal()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+            </svg>
+            Pay Rent
+            <span class="td-btn-shine"></span>
+          </button>
+        </div>
+      </div>
+
     </div>
   </div>
+
 </div>
 
-<!-- Payment Modal -->
-<app-payment-widget *ngIf="showPaymentModal" [tenant]="tenant!" [unitDetails]="unitDetails!"
-  [propertyDetails]="propertyDetails!" (close)="closePaymentModal()">
+<!-- Payment Widget Modal -->
+<app-payment-widget
+  *ngIf="showPaymentModal"
+  [tenant]="tenant!"
+  [unitDetails]="unitDetails!"
+  [propertyDetails]="propertyDetails!"
+  (close)="closePaymentModal()">
 </app-payment-widget>

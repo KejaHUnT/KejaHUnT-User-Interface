@@ -1,5 +1,310 @@
-.step-buttons {
-  margin-top: 20px;
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+/* ══════════════════════════════════════════════
+   CSS VARIABLES
+══════════════════════════════════════════════ */
+:host {
+  --bg-deep:      #080c14;
+  --bg-card:      #0d1424;
+  --bg-input:     #0a1020;
+  --bg-hover:     #111a2e;
+  --border:       rgba(255,255,255,0.07);
+  --gold:         #a8956b;
+  --gold-light:   #c9b07d;
+  --gold-pale:    rgba(168,149,107,0.12);
+  --text-primary: #eef0f4;
+  --text-muted:   #4e5870;
+  --text-secondary: #8a94a8;
+  --shadow:       0 20px 60px rgba(0,0,0,0.6);
+  --radius:       16px;
+  --ease:         0.25s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ══════════════════════════════════════════════
+   SHELL
+══════════════════════════════════════════════ */
+.stepper-shell {
+  min-height: 100vh;
+  background: var(--bg-deep);
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text-primary);
+
+  /* ✅ FULL WIDTH FIX */
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+
+  padding: 0; /* remove side spacing */
+  position: relative;
+}
+
+.stepper-shell::before {
+  content: '';
+  position: fixed;
+  top: -150px; left: -150px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(168,149,107,0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ══════════════════════════════════════════════
+   HERO
+══════════════════════════════════════════════ */
+.stepper-hero {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--gold-pale);
+  border: 1px solid rgba(168,149,107,0.25);
+  border-radius: 999px;
+  padding: 0.35rem 1rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.25rem;
+}
+
+.badge-dot {
+  width: 6px; height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+  animation: blink 2s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(0.6); }
+}
+
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.25rem, 4vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0 0 0.75rem;
+}
+
+.hero-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════
+   CUSTOM STEP INDICATOR
+══════════════════════════════════════════════ */
+.custom-steps {
   display: flex;
-  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 2.5rem 0 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.custom-step {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.cs-circle {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  display: grid;
+  place-items: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  transition: var(--ease);
+  flex-shrink: 0;
+}
+
+.cs-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.cs-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: var(--ease);
+}
+
+.cs-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: var(--ease);
+}
+
+.custom-step.cs-active .cs-circle {
+  border-color: var(--gold);
+  background: var(--gold-pale);
+  color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(168,149,107,0.1);
+}
+
+.custom-step.cs-active .cs-label,
+.custom-step.cs-active .cs-name {
+  color: var(--gold);
+}
+
+.custom-step.cs-done .cs-circle {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #080c14;
+}
+
+.cs-track {
+  width: 60px;
+  height: 1px;
+  background: var(--border);
+  margin: 0 0.75rem;
+  margin-bottom: 1rem;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.cs-track::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s ease;
+}
+
+.cs-track.cs-track-done::after {
+  transform: scaleX(1);
+}
+
+/* ══════════════════════════════════════════════
+   HIDE MATERIAL STEPPER CHROME
+══════════════════════════════════════════════ */
+.hidden-stepper {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.hidden-stepper ::ng-deep .mat-horizontal-stepper-header-container {
+  display: none !important;
+}
+
+.hidden-stepper ::ng-deep .mat-horizontal-content-container {
+  padding: 0 !important;
+}
+
+/* ══════════════════════════════════════════════
+   STEP PANEL
+══════════════════════════════════════════════ */
+.step-panel {
+  position: relative;
+  z-index: 1;
+}
+
+.reveal {
+  animation: revealUp 0.4s ease both;
+}
+
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══════════════════════════════════════════════
+   STEP ACTION BUTTONS
+══════════════════════════════════════════════ */
+.step-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.step-actions--right {
+  justify-content: flex-end;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 999px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  border: none;
+  transition: all var(--ease);
+}
+
+.action-btn--primary {
+  background: var(--bg-hover);
+  border: 1px solid rgba(168,149,107,0.3);
+  color: var(--gold);
+}
+
+.action-btn--primary:hover {
+  background: var(--gold-pale);
+  border-color: var(--gold);
+  transform: translateX(2px);
+}
+
+.action-btn--gold {
+  position: relative;
+  background: linear-gradient(135deg, #c9a96e, #a8956b, #8a7450);
+  color: #0d0a05;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(168,149,107,0.3);
+}
+
+.action-btn--gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(168,149,107,0.45);
+}
+
+.action-btn--ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+.action-btn--ghost:hover {
+  border-color: rgba(255,255,255,0.15);
+  color: var(--text-primary);
+}
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  .cs-meta { display: none; }
+  .cs-track { width: 30px; }
+  .step-actions--right { justify-content: stretch; }
+  .action-btn { flex: 1; justify-content: center; }
 }

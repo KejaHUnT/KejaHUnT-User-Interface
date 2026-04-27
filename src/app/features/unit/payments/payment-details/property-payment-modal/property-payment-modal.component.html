@@ -1,0 +1,151 @@
+<div class="modal-overlay" *ngIf="isOpen" (click)="onOverlayClick($event)">
+  <div class="modal-box" role="dialog" aria-modal="true">
+
+    <!-- Close -->
+    <button class="modal-close" (click)="closeModal()" aria-label="Close">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="modal-badge">
+        <span class="badge-dot"></span>
+        Payment Gateway
+      </div>
+      <h2 class="modal-title">Configure Gateway</h2>
+      <p class="modal-subtitle">Connect your payment provider to start accepting rent</p>
+    </div>
+
+    <!-- Alerts -->
+    <div *ngIf="error" class="modal-alert modal-alert--error">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      {{ error }}
+    </div>
+
+    <div *ngIf="success" class="modal-alert modal-alert--success">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+      {{ success }}
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="form" (ngSubmit)="submit()" class="modal-form" autocomplete="off">
+
+      <!-- Gateway selector -->
+      <div class="field-group">
+        <label class="field-label">Payment Gateway <span class="req">*</span></label>
+
+        <div class="gateway-options">
+          <label class="gateway-option" *ngFor="let gw of gateways"
+                 [class.gateway-option--active]="form.get('gateway')?.value === gw.value">
+            <input type="radio" formControlName="gateway" [value]="gw.value" hidden />
+            <div class="gw-icon">{{ gw.icon }}</div>
+            <span class="gw-name">{{ gw.label }}</span>
+
+            <span class="gw-check">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </span>
+          </label>
+        </div>
+
+        <span class="field-error" *ngIf="form.get('gateway')?.invalid && form.get('gateway')?.touched">
+          Please select a gateway
+        </span>
+      </div>
+
+      <div class="form-divider"></div>
+
+      <!-- Credentials -->
+      <div class="credentials-section" [class.credentials-visible]="form.get('gateway')?.value">
+
+        <p class="cred-hint" *ngIf="!form.get('gateway')?.value">
+          ← Select a gateway above to configure credentials
+        </p>
+
+        <ng-container *ngIf="form.get('gateway')?.value">
+
+          <!-- Keys -->
+          <div class="field-row">
+
+            <div class="field-group">
+              <label class="field-label">Public Key <span class="req">*</span></label>
+
+              <div class="input-shell" [class.input-error]="isInvalid('paystackPublicKey')">
+                <svg class="input-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+
+                <input formControlName="paystackPublicKey" placeholder="pk_live_..." />
+              </div>
+
+              <span class="field-error" *ngIf="isInvalid('paystackPublicKey')">
+                Public key is required
+              </span>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Secret Key <span class="req">*</span></label>
+
+              <div class="input-shell" [class.input-error]="isInvalid('paystackSecretKey')">
+                <svg class="input-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
+                </svg>
+
+                <input formControlName="paystackSecretKey"
+                       [type]="showSecret ? 'text' : 'password'"
+                       placeholder="sk_live_..." />
+
+                <button type="button" class="input-eye" (click)="showSecret = !showSecret" tabindex="-1">
+                  <svg *ngIf="!showSecret" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+
+                  <svg *ngIf="showSecret" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                    <line x1="1" y1="1" x2="23" y2="23"/>
+                  </svg>
+                </button>
+              </div>
+
+              <span class="field-error" *ngIf="isInvalid('paystackSecretKey')">
+                Secret key is required
+              </span>
+            </div>
+
+          </div>
+
+        </ng-container>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="closeModal()">Cancel</button>
+
+        <button type="submit" class="btn-submit" [disabled]="loading">
+          <span *ngIf="loading" class="btn-spinner"></span>
+
+          <svg *ngIf="!loading" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+          </svg>
+
+          {{ loading ? 'Saving…' : 'Save Gateway' }}
+          <span class="btn-shine"></span>
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

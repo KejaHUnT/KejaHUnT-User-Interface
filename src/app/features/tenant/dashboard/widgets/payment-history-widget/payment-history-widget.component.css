@@ -1,179 +1,578 @@
-/* General Card Styling */
-.payment-history-widget {
-  background-color: #ffffff; 
-  border-radius: 12px;       
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
-  padding: 20px;
-  max-width: 100%;
-  margin: 20px auto;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:host {
+  --bg-card:       #0d1424;
+  --bg-input:      #0a1020;
+  --bg-hover:      #111a2e;
+  --border:        rgba(255,255,255,0.07);
+  --border-focus:  rgba(168,149,107,0.4);
+  --gold:          #a8956b;
+  --gold-light:    #c9b07d;
+  --gold-pale:     rgba(168,149,107,0.12);
+  --text-primary:  #eef0f4;
+  --text-secondary:#8a94a8;
+  --text-muted:    #4e5870;
+  --green:         #10b981;
+  --green-pale:    rgba(16,185,129,0.1);
+  --amber:         #f59e0b;
+  --amber-pale:    rgba(245,158,11,0.1);
+  --red:           #f87171;
+  --red-pale:      rgba(248,113,113,0.1);
+  --blue:          #3b82f6;
+  --blue-pale:     rgba(59,130,246,0.1);
+  --purple:        #a78bfa;
+  --purple-pale:   rgba(167,139,250,0.1);
+  --radius:        14px;
+  --ease:          0.22s cubic-bezier(0.4,0,0.2,1);
+  display: block;
+  font-family: 'DM Sans', sans-serif;
 }
 
-.payment-history-widget:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+/* ══ SHELL ══ */
+.phw-shell {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.55);
+  overflow: hidden;
+  color: var(--text-primary);
+  position: relative;
 }
 
-/* Heading */
-.payment-history-widget h4 {
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: #333333;
+.phw-shell::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(168,149,107,0.4), transparent);
+  pointer-events: none;
 }
 
-/* Total Paid Paragraph */
-.payment-history-widget p {
-  font-size: 1rem;
-  margin-bottom: 20px;
-  color: #555555;
-}
-
-.payment-history-widget p strong {
-  color: #222222;
-}
-
-/* Monthly Ledger Section */
-.ledger-month {
-  border-bottom: 1px solid #e0e0e0;
-  margin-bottom: 20px;
-  padding-bottom: 15px;
-}
-
-.ledger-month h5 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 8px;
+/* ══ HEADER ══ */
+.phw-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
 }
 
-/* Ledger Status Badges */
-.status-paid {
-  color: #155724;
-  background-color: #d4edda;
-  padding: 4px 12px;
-  border-radius: 15px;
-  font-weight: 500;
-  font-size: 0.85rem;
+.phw-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
 }
 
-.status-partial {
-  color: #856404;
-  background-color: #fff3cd;
-  padding: 4px 12px;
-  border-radius: 15px;
-  font-weight: 500;
-  font-size: 0.85rem;
+.phw-card-icon {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  background: var(--gold-pale);
+  border: 1px solid rgba(168,149,107,0.2);
+  display: grid;
+  place-items: center;
+  color: var(--gold);
+  flex-shrink: 0;
 }
 
-.status-unpaid {
-  color: #721c24;
-  background-color: #f8d7da;
-  padding: 4px 12px;
-  border-radius: 15px;
-  font-weight: 500;
-  font-size: 0.85rem;
+.phw-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.15rem;
+  line-height: 1;
 }
 
-.status-overpaid {
-  color: #0c5460;
-  background-color: #d1ecf1;
-  padding: 4px 12px;
-  border-radius: 15px;
-  font-weight: 500;
-  font-size: 0.85rem;
+.phw-sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin: 0;
+  font-weight: 300;
 }
 
-/* Ledger Info Paragraphs */
-.ledger-month p {
-  margin: 3px 0;
+.phw-total-pill {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  background: var(--gold-pale);
+  border: 1px solid rgba(168,149,107,0.22);
+  border-radius: 12px;
+  padding: 0.65rem 1rem;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.phw-total-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.phw-total-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+
+/* ══ LOADING STATE ══ */
+.phw-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  padding: 3rem 2rem;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 300;
+}
+
+.phw-spinner {
+  width: 32px; height: 32px;
+  border: 2px solid var(--border);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ══ EMPTY / ERROR STATE ══ */
+.phw-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 3.5rem 2rem;
+  text-align: center;
+}
+
+.phw-empty-icon {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  display: grid;
+  place-items: center;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.phw-empty-icon--error {
+  background: var(--red-pale);
+  border-color: rgba(248,113,113,0.2);
+  color: var(--red);
+}
+
+.phw-empty-title {
   font-size: 0.95rem;
-  color: #444444;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0;
 }
 
-.ledger-month p strong {
-  color: #222222;
+.phw-empty-sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin: 0;
+  font-weight: 300;
 }
 
-/* Table Styling */
-.payment-history-widget .table {
+/* ══ LEDGER LIST ══ */
+.phw-ledgers {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ══ LEDGER ROW ══ */
+.phw-ledger {
+  border-bottom: 1px solid var(--border);
+  transition: background var(--ease);
+}
+
+.phw-ledger:last-child { border-bottom: none; }
+.phw-ledger--open { background: rgba(168,149,107,0.03); }
+
+.phw-ledger-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.75rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background var(--ease);
+}
+
+.phw-ledger-row:hover { background: rgba(255,255,255,0.02); }
+
+.phw-ledger-left {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.phw-ledger-index {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.phw-ledger--open .phw-ledger-index {
+  background: var(--gold-pale);
+  border-color: rgba(168,149,107,0.2);
+  color: var(--gold);
+}
+
+.phw-ledger-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.phw-ledger-period {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.phw-ledger-amount {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.phw-ledger-of {
+  opacity: 0.6;
+  margin-left: 2px;
+}
+
+.phw-ledger-right {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+/* ══ TX COUNT CHIP ══ */
+.phw-tx-count {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.18rem 0.55rem;
+}
+
+/* ══ LEDGER STATUS BADGES ══ */
+.phw-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.phw-status--paid {
+  background: var(--green-pale);
+  border: 1px solid rgba(16,185,129,0.25);
+  color: var(--green);
+}
+
+.phw-status--partial {
+  background: var(--amber-pale);
+  border: 1px solid rgba(245,158,11,0.25);
+  color: var(--amber);
+}
+
+.phw-status--unpaid {
+  background: var(--red-pale);
+  border: 1px solid rgba(248,113,113,0.25);
+  color: var(--red);
+}
+
+.phw-status--overpaid {
+  background: var(--blue-pale);
+  border: 1px solid rgba(59,130,246,0.25);
+  color: var(--blue);
+}
+
+/* ══ CHEVRON ══ */
+.phw-chevron {
+  color: var(--text-muted);
+  transition: transform var(--ease);
+  flex-shrink: 0;
+}
+
+.phw-chevron--open { transform: rotate(180deg); }
+
+/* ══ LEDGER BODY ══ */
+.phw-ledger-body {
+  padding: 0 1.75rem 1.5rem;
+  animation: bodyIn 0.2s ease;
+}
+
+@keyframes bodyIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══ SUMMARY STATS ══ */
+.phw-ledger-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.phw-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.8rem 1rem;
+  border-right: 1px solid var(--border);
+}
+
+.phw-stat:last-child { border-right: none; }
+
+.phw-stat-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.phw-stat-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.phw-stat-value--gold  { color: var(--gold); }
+.phw-stat-value--red   { color: var(--red); }
+.phw-stat-value--green { color: var(--green); }
+
+/* ══ PROGRESS BAR ══ */
+.phw-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.phw-progress-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--bg-input);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.phw-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  border-radius: 999px;
+  transition: width 0.6s ease;
+  min-width: 2px;
+}
+
+.phw-progress-fill--full {
+  background: linear-gradient(90deg, var(--green), #34d399);
+}
+
+.phw-progress-pct {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ══ TABLE ══ */
+.phw-table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.phw-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 8px;
 }
 
-.payment-history-widget th,
-.payment-history-widget td {
-  padding: 10px 12px;
+.phw-table thead tr {
+  background: var(--bg-input);
+  border-bottom: 1px solid var(--border);
+}
+
+.phw-table th {
+  padding: 0.65rem 1rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
   text-align: left;
-  border-bottom: 1px solid #e0e0e0;
-  font-size: 0.92rem;
-  color: #444444;
+  white-space: nowrap;
 }
 
-.payment-history-widget th {
-  background-color: #f8f8f8;
+.phw-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background var(--ease);
+}
+
+.phw-table tbody tr:last-child { border-bottom: none; }
+.phw-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+.phw-table td {
+  padding: 0.75rem 1rem;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  vertical-align: middle;
+}
+
+.phw-td-amount {
   font-weight: 600;
-  color: #333333;
-  border-bottom: 2px solid #ddd;
+  color: var(--text-primary);
+  white-space: nowrap;
 }
 
-/* Table Row Hover Effect */
-.payment-history-widget tbody tr:hover {
-  background-color: #f1f1f1;
-  transition: background-color 0.2s ease;
+.phw-td-ref {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.02em;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* Payment Status Badges in Table */
-.status-success {
-  color: #155724;
-  background-color: #d4edda;
-  padding: 3px 8px;
-  border-radius: 12px;
-  font-weight: 500;
+.phw-td-date {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ══ TRANSACTION STATUS BADGES ══ */
+.phw-payment-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.22rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  white-space: nowrap;
+  /* default fallback — grey for unknown statuses */
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.phw-ps-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* Success / Succes (typo) */
+.phw-ps--success {
+  background: var(--green-pale);
+  border: 1px solid rgba(16,185,129,0.2);
+  color: var(--green);
+}
+.phw-ps--success .phw-ps-dot { background: var(--green); }
+
+/* Initialized — purple/violet to indicate "in-flight" */
+.phw-ps--initialized {
+  background: var(--purple-pale);
+  border: 1px solid rgba(167,139,250,0.2);
+  color: var(--purple);
+}
+.phw-ps--initialized .phw-ps-dot {
+  background: var(--purple);
+  animation: blink 2s ease-in-out infinite;
+}
+
+/* Pending */
+.phw-ps--pending {
+  background: var(--amber-pale);
+  border: 1px solid rgba(245,158,11,0.2);
+  color: var(--amber);
+}
+.phw-ps--pending .phw-ps-dot {
+  background: var(--amber);
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+/* Failed */
+.phw-ps--failed {
+  background: var(--red-pale);
+  border: 1px solid rgba(248,113,113,0.2);
+  color: var(--red);
+}
+.phw-ps--failed .phw-ps-dot { background: var(--red); }
+
+@keyframes blink {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0.25; }
+}
+
+/* ══ NO TRANSACTIONS ══ */
+.phw-no-transactions {
   font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 1rem 0 0;
+  margin: 0;
+  font-weight: 300;
 }
 
-.status-pending {
-  color: #856404;
-  background-color: #fff3cd;
-  padding: 3px 8px;
-  border-radius: 12px;
-  font-weight: 500;
-  font-size: 0.8rem;
-}
+/* ══ RESPONSIVE ══ */
+@media (max-width: 640px) {
+  .phw-header      { padding: 1.25rem; }
+  .phw-ledger-row  { padding: 0.85rem 1.25rem; }
+  .phw-ledger-body { padding: 0 1.25rem 1.25rem; }
 
-.status-failed {
-  color: #721c24;
-  background-color: #f8d7da;
-  padding: 3px 8px;
-  border-radius: 12px;
-  font-weight: 500;
-  font-size: 0.8rem;
-}
-
-/* Responsive Table & Ledger */
-@media (max-width: 768px) {
-  .payment-history-widget .table th,
-  .payment-history-widget .table td {
-    padding: 8px 6px;
-    font-size: 0.8rem;
+  .phw-ledger-stats { grid-template-columns: 1fr 1fr; }
+  .phw-stat:nth-child(2) { border-right: none; }
+  .phw-stat:nth-child(3) {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--border);
+    border-right: none;
   }
 
-  .ledger-month h5 {
-    font-size: 1rem;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .ledger-month p {
-    font-size: 0.85rem;
-  }
-
-  .payment-history-widget h4 {
-    font-size: 1.2rem;
-  }
+  .phw-table-wrap { overflow-x: auto; }
+  .phw-table      { min-width: 420px; }
+  .phw-total-pill { display: none; }
+  .phw-tx-count   { display: none; }
 }

@@ -1,160 +1,268 @@
 <div class="property-form-container">
-  <h2 class="page-title">
-    <i class="fas fa-building"></i> Add New Property
-  </h2>
 
-  <!-- Feedback Message -->
-  <div *ngIf="message" class="alert-message">
-    {{ message }}
+  <!-- Hero Header -->
+  <div class="form-hero">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      <span>New Listing</span>
+    </div>
+    <h1 class="hero-title">Add Property</h1>
+    <p class="hero-subtitle">Fill in the details below to publish a new property listing</p>
   </div>
 
-  <!-- Property Form -->
+  <!-- Feedback Message -->
+  <div *ngIf="message" class="alert-message" [class.alert-success]="message.includes('success')">
+    <span class="alert-icon">{{ message.includes('success') ? '✓' : '!' }}</span>
+    <span>{{ message }}</span>
+  </div>
+
+  <!-- Step Progress -->
+  <div class="step-tracker">
+    <div class="step active">
+      <div class="step-num">01</div>
+      <div class="step-label">Details</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step active">
+      <div class="step-num">02</div>
+      <div class="step-label">Features</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step active">
+      <div class="step-num">03</div>
+      <div class="step-label">Policies</div>
+    </div>
+  </div>
+
   <form (ngSubmit)="onFormSubmit()" class="form-wrapper">
-    
-    <!-- Property Details -->
-    <div class="card-section">
-      <h3 class="section-header"><i class="fas fa-info-circle"></i> Property Details</h3>
+
+    <!-- ── SECTION 1: Property Details ── -->
+    <div class="card-section reveal">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="section-title">Property Details</h3>
+          <p class="section-desc">Core information about the listing</p>
+        </div>
+      </div>
+
       <div class="form-grid">
+
         <div class="form-group">
-          <label>Name</label>
-          <input type="text" [(ngModel)]="model.name" name="name" required />
+          <label class="field-label">Property Name <span class="required">*</span></label>
+          <div class="input-wrap">
+            <input type="text" [(ngModel)]="model.name" name="name" required placeholder="e.g. Skyline Residences"
+              autocomplete="off" />
+          </div>
         </div>
+
         <div class="form-group">
-          <label>Location</label>
-          <input type="text" [(ngModel)]="model.location" name="location" required />
+          <label class="field-label">Location <span class="required">*</span></label>
+          <div class="input-wrap">
+            <input type="text" [(ngModel)]="model.location" name="location" required
+              placeholder="e.g. Westlands, Nairobi" autocomplete="off" />
+          </div>
         </div>
+
         <div class="form-group">
-          <label>Type</label>
-          <input type="text" [(ngModel)]="model.type" name="type" required />
-        </div>
-        <div class="form-group">
-          <label>Description</label>
-          <textarea [(ngModel)]="model.description" name="description" required></textarea>
+          <label class="field-label">Property Type <span class="required">*</span></label>
+          <div class="input-wrap">
+            <input type="text" [(ngModel)]="model.type" name="type" required
+              placeholder="e.g. Apartment, Villa, Office" />
+          </div>
         </div>
 
         <div class="form-group full">
-          <label>Property Image</label>
-          <input type="file" (change)="onFileSelected($event)" />
-          <img *ngIf="propertyImagePreview" [src]="propertyImagePreview" alt="Preview" class="image-preview" />
+          <label class="field-label">Description <span class="required">*</span></label>
+          <div class="input-wrap">
+            <textarea [(ngModel)]="model.description" name="description" required
+              placeholder="Describe the property — highlight what makes it exceptional..."></textarea>
+          </div>
         </div>
+
+        <div class="form-group full">
+          <label class="field-label">Cover Image</label>
+          <div class="file-drop-zone" (click)="fileInput.click()">
+            <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display:none" />
+            <ng-container *ngIf="!propertyImagePreview; else previewBlock">
+              <div class="drop-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
+                </svg>
+              </div>
+              <p class="drop-text">Click to upload cover image</p>
+              <p class="drop-hint">PNG, JPG or WEBP · Max 10MB</p>
+            </ng-container>
+            <ng-template #previewBlock>
+              <img [src]="propertyImagePreview" alt="Preview" class="image-preview" />
+              <div class="preview-overlay">
+                <span>Change Image</span>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <!-- Property Features -->
-    <div class="card-section">
-      <h3 class="section-header"><i class="fas fa-cogs"></i> Property Features</h3>
+    <!-- ── SECTION 2: Features ── -->
+    <div class="card-section reveal">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon
+              points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="section-title">Property Features</h3>
+          <p class="section-desc">Select all amenities and features available</p>
+        </div>
+      </div>
+
       <div class="feature-grid">
+
         <div class="feature-card">
-          <h4>General</h4>
+          <div class="feature-card-header">
+            <span class="feature-tag general">General</span>
+          </div>
           <ng-container *ngIf="features$ | async as features">
             <div *ngFor="let feature of features" class="checkbox-item">
-              <input type="checkbox" [checked]="model.generalFeatures.includes(feature.id)"
-                (change)="onGeneralFeatureChange($event, feature.id)" />
-              <label>{{ feature.name }}</label>
+              <label class="custom-checkbox">
+                <input type="checkbox" [checked]="model.generalFeatures.includes(feature.id)"
+                  (change)="onGeneralFeatureChange($event, feature.id)" />
+                <span class="checkmark"></span>
+                <span class="check-label">{{ feature.name }}</span>
+              </label>
             </div>
           </ng-container>
         </div>
 
         <div class="feature-card">
-          <h4>Indoor</h4>
+          <div class="feature-card-header">
+            <span class="feature-tag indoor">Indoor</span>
+          </div>
           <ng-container *ngIf="indoor$ | async as features">
             <div *ngFor="let feature of features" class="checkbox-item">
-              <input type="checkbox" [checked]="model.indoorFeatures.includes(feature.id)"
-                (change)="onIndoorFeatureChange($event, feature.id)" />
-              <label>{{ feature.name }}</label>
+              <label class="custom-checkbox">
+                <input type="checkbox" [checked]="model.indoorFeatures.includes(feature.id)"
+                  (change)="onIndoorFeatureChange($event, feature.id)" />
+                <span class="checkmark"></span>
+                <span class="check-label">{{ feature.name }}</span>
+              </label>
             </div>
           </ng-container>
         </div>
 
         <div class="feature-card">
-          <h4>Outdoor</h4>
+          <div class="feature-card-header">
+            <span class="feature-tag outdoor">Outdoor</span>
+          </div>
           <ng-container *ngIf="outdoor$ | async as features">
             <div *ngFor="let feature of features" class="checkbox-item">
-              <input type="checkbox" [checked]="model.outdoorFeatures.includes(feature.id)"
-                (change)="onOutdoorFeatureChange($event, feature.id)" />
-              <label>{{ feature.name }}</label>
+              <label class="custom-checkbox">
+                <input type="checkbox" [checked]="model.outdoorFeatures.includes(feature.id)"
+                  (change)="onOutdoorFeatureChange($event, feature.id)" />
+                <span class="checkmark"></span>
+                <span class="check-label">{{ feature.name }}</span>
+              </label>
             </div>
           </ng-container>
         </div>
+
       </div>
     </div>
 
-    <!-- Property Policies -->
-    <div class="card-section">
-      <h3 class="section-header"><i class="fas fa-clipboard-list"></i> Property Policies</h3>
-      <div class="policy-masonry">
-        <div *ngFor="let policy of policy$ | async" class="policy-card" (click)="onSelectPolicy(policy)">
-          <h5>{{ policy.name }}</h5>
-          <ul *ngIf="policyDescriptions[policy.id]">
-            <li *ngFor="let desc of policyDescriptions[policy.id]; let j = index">
-              <span>{{ desc }}</span>
-              <button type="button" class="remove-btn" (click)="removePolicyDescription(policy.id, j)">×</button>
-            </li>
-          </ul>
-          <input [(ngModel)]="newPolicyDescriptionInputs[policy.id]" name="desc_{{policy.id}}"
-            placeholder="Add description..." />
-          <button type="button" class="add-btn" (click)="onAddPolicyDescription(policy.id)">Add</button>
+    <!-- ── SECTION 3: Policies ── -->
+    <div class="card-section reveal">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+            <polyline points="10 9 9 9 8 9" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="section-title">Property Policies</h3>
+          <p class="section-desc">Click a policy to expand and add description points</p>
+        </div>
+      </div>
+
+      <div class="policy-grid">
+        <div *ngFor="let policy of policy$ | async" class="policy-card"
+          [class.policy-active]="policyDescriptions[policy.id]">
+          <div class="policy-header" (click)="onSelectPolicy(policy)">
+            <h5 class="policy-title">{{ policy.name }}</h5>
+            <span class="policy-toggle">{{ policyDescriptions[policy.id] ? '−' : '+' }}</span>
+          </div>
+
+          <div class="policy-body" *ngIf="policyDescriptions[policy.id] !== undefined">
+            <ul class="policy-list">
+              <li *ngFor="let desc of policyDescriptions[policy.id]; let j = index" class="policy-list-item">
+                <span class="policy-bullet"></span>
+                <span class="policy-text">{{ desc }}</span>
+                <button type="button" class="policy-remove" (click)="removePolicyDescription(policy.id, j)"
+                  title="Remove">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </li>
+            </ul>
+            <div class="policy-input-row">
+              <input [(ngModel)]="newPolicyDescriptionInputs[policy.id]" name="desc_{{policy.id}}"
+                placeholder="Add a policy point..." (keyup.enter)="onAddPolicyDescription(policy.id)" />
+              <button type="button" class="policy-add-btn" (click)="onAddPolicyDescription(policy.id)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Add
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Property Units -->
-    <div class="card-section">
-      <h3 class="section-header"><i class="fas fa-layer-group"></i> Property Units</h3>
-      <div *ngFor="let unit of model.units; let i = index" class="unit-card">
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Type</label>
-            <input [(ngModel)]="unit.type" name="unit-type-{{i}}" required />
-          </div>
-          <div class="form-group">
-            <label>Price</label>
-            <input type="number" [(ngModel)]="unit.price" name="unit-price-{{i}}" required />
-          </div>
-          <div class="form-group">
-            <label>Bathrooms</label>
-            <input type="number" [(ngModel)]="unit.bathrooms" name="unit-bathrooms-{{i}}" required />
-          </div>
-          <div class="form-group">
-            <label>Size (sq ft)</label>
-            <input type="number" [(ngModel)]="unit.size" name="unit-size-{{i}}" required />
-          </div>
-          <div class="form-group">
-            <label>Floor</label>
-            <input type="number" [(ngModel)]="unit.floor" name="unit-floor-{{i}}" required />
-          </div>
-          <div class="form-group">
-            <label>Door #</label>
-            <input [(ngModel)]="unit.doorNumber" name="unit-door-{{i}}" required />
-          </div>
-          <div class="form-group full">
-            <label>Status</label>
-            <select [(ngModel)]="unit.status" name="unit-status-{{i}}" required>
-              <option value="">Select...</option>
-              <option>Available</option>
-              <option>Booked</option>
-              <option>Reserved</option>
-            </select>
-          </div>
-          <div class="form-group full">
-            <label>Unit Image</label>
-            <input type="file" (change)="onUnitFileSelected($event, i)" />
-            <img *ngIf="unitImageUrls[i]" [src]="unitImageUrls[i]" alt="Unit" class="image-preview" />
-          </div>
-        </div>
-        <div class="text-end">
-          <button type="button" class="remove-btn" (click)="removeUnit(i)">Remove Unit</button>
-        </div>
-      </div>
-
-      <button type="button" class="add-btn mt-3" (click)="addUnit()">+ Add Another Unit</button>
-    </div>
-
-    <!-- Submit -->
+    <!-- ── SUBMIT ── -->
     <div class="form-footer">
-      <button type="submit" class="submit-btn">
-        <i class="fas fa-save"></i> Submit Property
+      <p class="footer-note">Units can be added after the property is successfully created.</p>
+      <button type="submit" class="submit-btn" [disabled]="isSubmitting" [class.loading]="isSubmitting">
+
+        <span class="submit-inner">
+
+          <!-- Icon (hide when loading) -->
+          <svg *ngIf="!isSubmitting" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+            <polyline points="17 21 17 13 7 13 7 21" />
+            <polyline points="7 3 7 8 15 8" />
+          </svg>
+
+          <!-- Text -->
+          <span *ngIf="!isSubmitting">Publish Property</span>
+          <span *ngIf="isSubmitting">Publishing...</span>
+
+          <!-- Spinner -->
+          <span class="spinner" *ngIf="isSubmitting"></span>
+
+        </span>
+
+        <span class="submit-shine"></span>
       </button>
     </div>
+
   </form>
 </div>
