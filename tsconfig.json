@@ -5,9 +5,7 @@
     "outDir": "./dist/out-tsc",
     "rootDir": "./src",
     "paths": {
-      "@app/*": [
-        "src/app/*"
-      ]
+      "@app/*": ["src/app/*"]
     },
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -23,10 +21,7 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
-    "lib": [
-      "ES2022",
-      "dom"
-    ]
+    "lib": ["ES2022", "dom"]
     // Optional temporary fix:
     // "ignoreDeprecations": "6.0"
   },

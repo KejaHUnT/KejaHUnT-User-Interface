@@ -23,120 +23,124 @@ import { PropertyDashboardComponent } from './features/property/dashboard/proper
 import { GetStartedComponent } from './core/features/navbar/get-started/get-started.component';
 import { DashboardRedirectComponent } from './core/features/dashboard-redirect/dashboard-redirect.component';
 import { PropertiesListComponent } from './features/public/properties-list/properties-list/properties-list.component';
+import { HousesComponent } from './features/public/houses/houses/houses.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: HomeComponent,
   },
   {
     path: 'admin/property',
     component: PropertyListComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'admin/property/add',
     component: AddPropertyComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'admin/property/:id',
     component: EditPropertyComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'admin/tenant',
     component: TenantListComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'admin/tenant/add',
     component: AddTenantComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'property/details/:id',
-    component: PropertyDetailsComponent
+    component: PropertyDetailsComponent,
+  },
+  {
+    path: 'houses',
+    component: HousesComponent,
   },
   {
     path: 'admin/tenant/:id',
     component: EditTenentComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'unit/:id',
     component: EditUnitComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'portal/manage',
     component: ManagerPortalComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'property/dashboard/:id',
     component: PropertyDashboardComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'preview-booking/:unitId',
     component: StepperComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'booking/summary',
-    component: BookingSummaryComponent
+    component: BookingSummaryComponent,
   },
   {
     path: 'payment/:id',
     component: PaymentListComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'unit/payment/:id',
     component: UnitPaymentListComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'portal/tenant/:id',
     component: PageComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'manage/:propertyId/units',
     component: ManagePropertyUnitsComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'add-unit',
     component: AddUnitComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'signin',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'register',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'get-started',
-    component: GetStartedComponent
+    component: GetStartedComponent,
   },
   {
     path: 'properties',
-    component: PropertiesListComponent
+    component: PropertiesListComponent,
   },
   {
     path: 'dashboard',
-    component: DashboardRedirectComponent
-  }
-
+    component: DashboardRedirectComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

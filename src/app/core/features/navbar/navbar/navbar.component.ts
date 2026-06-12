@@ -2,14 +2,14 @@ import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
 import { AuthService } from 'src/app/features/auth/services/auth.service';
+import { NavRoutingHelper } from '../nav-routing/nav-routing-helper.service';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit, OnDestroy {
-
   isMobileMenuOpen = false;
   isScrolled = false;
 
@@ -17,13 +17,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    public nav: NavRoutingHelper, // public → accessible in template
   ) {}
 
   ngOnInit(): void {
-    // Auto-close mobile menu on route change
+    // Close mobile drawer on any navigation
     this.routerSub = this.router.events
-      .pipe(filter(e => e instanceof NavigationEnd))
+      .pipe(filter((e) => e instanceof NavigationEnd))
       .subscribe(() => this.closeMobileMenu());
   }
 
@@ -40,10 +41,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.isMobileMenuOpen = false;
   }
 
-  goToAccount(): void {
-    const user = this.authService.getUser();
+  goToPortal(): void {
     this.closeMobileMenu();
-    this.router.navigate(user ? ['/dashboard'] : ['/signin']);
+    this.nav.goToPortal();
+  }
+
+  logout(): void {
+    this.closeMobileMenu();
+    this.authService.logout(); // adjust to your actual logout method/observable
+    this.router.navigate(['/']);
   }
 
   ngOnDestroy(): void {

@@ -45,8 +45,7 @@ import { GetStartedComponent } from './core/features/navbar/get-started/get-star
 import { DashboardRedirectComponent } from './core/features/dashboard-redirect/dashboard-redirect.component';
 import { PropertyPaymentModalComponent } from './features/unit/payments/payment-details/property-payment-modal/property-payment-modal.component';
 import { PropertiesListComponent } from './features/public/properties-list/properties-list/properties-list.component';
-
-
+import { HousesComponent } from './features/public/houses/houses/houses.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +79,7 @@ import { PropertiesListComponent } from './features/public/properties-list/prope
     DashboardRedirectComponent,
     PropertyPaymentModalComponent,
     PropertiesListComponent,
+    HousesComponent,
   ],
   imports: [
     BrowserModule,
@@ -101,9 +101,9 @@ import { PropertiesListComponent } from './features/public/properties-list/prope
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi: true
-    }
+      multi: true,
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

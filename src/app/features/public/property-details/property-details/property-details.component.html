@@ -1,9 +1,14 @@
-<!-- === Property Detail Page as Premium Section Layout === -->
+<!-- === Property Detail Page === -->
 <section class="property-section" *ngIf="model">
   <!-- === Image Header === -->
   <section class="property-image">
     <div class="image-wrapper">
-      <img *ngIf="imageUrl" [src]="imageUrl" alt="{{ model.name }}" class="property-image-img" />
+      <img
+        *ngIf="imageUrl"
+        [src]="imageUrl"
+        [alt]="model.name"
+        class="property-image-img"
+      />
       <div class="overlay">
         <span class="image-text">{{ model.name }}</span>
       </div>
@@ -18,18 +23,24 @@
     </div>
 
     <div class="details-col">
-      <h2 class="detail-heading"><i class="bi bi-geo-alt-fill me-1"></i> Location</h2>
-      <p>{{ model.location }}</p>
+      <h2 class="detail-heading">
+        <i class="bi bi-geo-alt-fill me-1"></i> Location
+      </h2>
+      <p>{{ model.location || "Not provided" }}</p>
     </div>
 
     <div class="details-col">
-      <h2 class="detail-heading"><i class="bi bi-info-circle-fill me-1"></i> About this property</h2>
-      <p>{{ model.description || 'No description available' }}</p>
+      <h2 class="detail-heading">
+        <i class="bi bi-info-circle-fill me-1"></i> About this property
+      </h2>
+      <p>{{ model.description || "No description available" }}</p>
     </div>
 
     <div class="details-col">
-      <h2 class="detail-heading"><i class="bi bi-envelope-fill me-1"></i> Contact Email</h2>
-      <p>{{ model.email || 'Not provided' }}</p>
+      <h2 class="detail-heading">
+        <i class="bi bi-envelope-fill me-1"></i> Contact Email
+      </h2>
+      <p>{{ model.email || "Not provided" }}</p>
     </div>
   </section>
 
@@ -39,7 +50,9 @@
       <div class="info-block">
         <h2><i class="bi bi-house-door-fill me-1"></i> General Features</h2>
         <ul *ngIf="model.generalFeatures.length; else noGeneral">
-          <li *ngFor="let f of model.generalFeatures">{{ f.name }}</li>
+          <li *ngFor="let f of model.generalFeatures; trackBy: trackById">
+            {{ f.name }}
+          </li>
         </ul>
         <ng-template #noGeneral>
           <p class="no-units">None</p>
@@ -49,7 +62,9 @@
       <div class="info-block">
         <h2><i class="bi bi-door-open-fill me-1"></i> Indoor Features</h2>
         <ul *ngIf="model.indoorFeatures.length; else noIndoor">
-          <li *ngFor="let f of model.indoorFeatures">{{ f.name }}</li>
+          <li *ngFor="let f of model.indoorFeatures; trackBy: trackById">
+            {{ f.name }}
+          </li>
         </ul>
         <ng-template #noIndoor>
           <p class="no-units">None</p>
@@ -59,7 +74,9 @@
       <div class="info-block">
         <h2><i class="bi bi-tree-fill me-1"></i> Outdoor Features</h2>
         <ul *ngIf="model.outDoorFeatures.length; else noOutdoor">
-          <li *ngFor="let f of model.outDoorFeatures">{{ f.name }}</li>
+          <li *ngFor="let f of model.outDoorFeatures; trackBy: trackById">
+            {{ f.name }}
+          </li>
         </ul>
         <ng-template #noOutdoor>
           <p class="no-units">None</p>
@@ -68,14 +85,22 @@
     </div>
   </section>
 
-  <!-- === Policies Section (Masonry Style) === -->
-  <section class="policies-section" *ngIf="groupedPolicies && groupedPolicies.length > 0">
+  <!-- === Policies Section === -->
+  <section class="policies-section" *ngIf="groupedPolicies.length > 0">
     <h2 class="section-heading">Policies</h2>
     <div class="policies-masonry">
-      <div *ngFor="let policy of groupedPolicies" class="policy-card">
+      <div
+        *ngFor="let policy of groupedPolicies; trackBy: trackById"
+        class="policy-card"
+      >
         <h3 class="policy-title">{{ policy.name }}</h3>
         <div class="policy-tags">
-          <span *ngFor="let desc of policy.descriptions" class="policy-tag">{{ desc.name }}</span>
+          <span
+            *ngFor="let desc of policy.descriptions; trackBy: trackByIndex"
+            class="policy-tag"
+          >
+            {{ desc.name }}
+          </span>
         </div>
       </div>
     </div>
@@ -84,16 +109,22 @@
   <!-- === Units Section === -->
   <section class="units-section">
     <h2 class="section-heading">Available Units</h2>
-    <div *ngIf="model.units.length > 0; else noUnits" class="units-grid">
-      <div *ngFor="let unit of model.units; let i = index" class="unit-card-modern">
+
+    <div *ngIf="model.units.length; else noUnits" class="units-grid">
+      <div
+        *ngFor="let unit of model.units; let i = index; trackBy: trackById"
+        class="unit-card-modern"
+      >
         <div class="unit-image-wrapper" *ngIf="unitImageUrls[i]">
-          <img [src]="unitImageUrls[i]" alt="{{ unit.type }}" class="unit-image" />
+          <img [src]="unitImageUrls[i]" [alt]="unit.type" class="unit-image" />
         </div>
 
         <div class="unit-content">
           <div class="unit-header-row">
             <span class="unit-type">{{ unit.type }}</span>
-            <span class="unit-price">Ksh {{ unit.price | number:'1.0-0' }}</span>
+            <span class="unit-price"
+              >Ksh {{ unit.price | number: "1.0-0" }}</span
+            >
           </div>
 
           <div class="unit-details-row">
@@ -104,16 +135,20 @@
               <i class="bi bi-layers me-1"></i> Floor {{ unit.floor }}
             </span>
             <span class="unit-feature">
-              <i class="bi bi-droplet-half me-1"></i> {{ unit.bathrooms }} Bathrooms
+              <i class="bi bi-droplet-half me-1"></i>
+              {{ unit.bathrooms }} Bathrooms
             </span>
           </div>
 
           <div class="unit-actions">
-            <button class="apply-button" (click)="onBookNow(unit)">Book Now</button>
+            <button class="apply-button" (click)="onBookNow(unit)">
+              Book Now
+            </button>
           </div>
         </div>
       </div>
     </div>
+
     <ng-template #noUnits>
       <p class="no-units">No units available for this property.</p>
     </ng-template>
@@ -121,6 +156,12 @@
 
   <!-- === Back Button === -->
   <section class="back-button-container">
-    <button [routerLink]="['']" class="back-button">← Back to Properties</button>
+    <button
+      [routerLink]="['/']"
+      class="back-button"
+      aria-label="Back to properties list"
+    >
+      ← Back to Properties
+    </button>
   </section>
 </section>

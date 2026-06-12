@@ -1,48 +1,204 @@
 <nav class="kh-nav" [class.kh-nav--scrolled]="isScrolled">
   <div class="kh-nav-inner">
-
     <!-- Brand -->
-    <a class="kh-brand" [routerLink]="['/']">
+    <a class="kh-brand" href="/">
       <div class="kh-brand-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-          <polyline points="9 22 9 12 15 12 15 22"/>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+        >
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
         </svg>
       </div>
       <span class="kh-brand-text">Keja<em>HUnT</em></span>
     </a>
 
-    <!-- Desktop CTA -->
+    <!-- Desktop nav -->
     <div class="kh-nav-right">
-      <button class="kh-dashboard-btn" (click)="goToAccount()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+      <!-- Explore Houses — visible to everyone -->
+      <a
+        class="kh-nav-link"
+        href="/houses"
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
-        Dashboard
-        <span class="kh-nav-shine"></span>
-      </button>
+        Explore
+      </a>
+
+      <!-- Logged-in state -->
+      <ng-container *ngIf="nav.isLoggedIn(); else guestButtons">
+        <!-- Role badge (optional — remove if too noisy) -->
+        <span class="kh-role-badge" *ngIf="nav.getRoleLabel() as role">{{
+          role
+        }}</span>
+
+        <!-- Portal button: label adapts to role -->
+        <button class="kh-dashboard-btn" (click)="goToPortal()">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+          My Portal
+          <span class="kh-nav-shine"></span>
+        </button>
+
+        <!-- Log out -->
+        <button class="kh-logout-btn" (click)="logout()" aria-label="Log out">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          Log out
+        </button>
+      </ng-container>
+
+      <!-- Guest state -->
+      <ng-template #guestButtons>
+        <a class="kh-dashboard-btn" href="/signin">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+            <polyline points="10 17 15 12 10 7" />
+            <line x1="15" y1="12" x2="3" y2="12" />
+          </svg>
+          Sign in
+          <span class="kh-nav-shine"></span>
+        </a>
+      </ng-template>
 
       <!-- Mobile toggle -->
-      <button class="kh-toggle" (click)="toggleMobileMenu()" [attr.aria-expanded]="isMobileMenuOpen" aria-label="Toggle menu">
+      <button
+        class="kh-toggle"
+        (click)="toggleMobileMenu()"
+        [attr.aria-expanded]="isMobileMenuOpen"
+        aria-label="Toggle menu"
+      >
         <span class="kh-toggle-bar" [class.open]="isMobileMenuOpen"></span>
         <span class="kh-toggle-bar" [class.open]="isMobileMenuOpen"></span>
         <span class="kh-toggle-bar" [class.open]="isMobileMenuOpen"></span>
       </button>
     </div>
-
   </div>
 
   <!-- Mobile drawer -->
-  <div class="kh-mobile-drawer" [class.kh-mobile-drawer--open]="isMobileMenuOpen">
+  <div
+    class="kh-mobile-drawer"
+    [class.kh-mobile-drawer--open]="isMobileMenuOpen"
+  >
     <div class="kh-mobile-inner">
-      <button class="kh-mobile-btn" (click)="goToAccount(); closeMobileMenu()">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+      <!-- Explore (always) -->
+      <a
+        class="kh-mobile-link"
+        href="/houses"
+        (click)="closeMobileMenu()"
+      >
+        <svg
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
-        Go to Dashboard
-      </button>
+        Explore Houses
+      </a>
+
+      <ng-container *ngIf="nav.isLoggedIn(); else mobileGuest">
+        <button class="kh-mobile-btn" (click)="goToPortal()">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+          My Portal
+        </button>
+
+        <button class="kh-mobile-btn kh-mobile-btn--ghost" (click)="logout()">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          Log out
+        </button>
+      </ng-container>
+
+      <ng-template #mobileGuest>
+        <a
+          class="kh-mobile-btn"
+          href="/signin"
+          (click)="closeMobileMenu()"
+        >
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+            <polyline points="10 17 15 12 10 7" />
+            <line x1="15" y1="12" x2="3" y2="12" />
+          </svg>
+          Sign in
+        </a>
+      </ng-template>
     </div>
   </div>
 </nav>
