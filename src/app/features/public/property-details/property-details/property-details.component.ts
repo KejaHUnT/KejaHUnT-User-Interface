@@ -5,8 +5,6 @@ import { Policy } from 'src/app/features/property/models/policy.model';
 import { Property } from 'src/app/features/property/models/property.model';
 import { UpdatePolicyDescription } from 'src/app/features/property/models/update-policy-description.model';
 import { PropertyService } from 'src/app/features/property/services/property.service';
-import { FileResponse } from 'src/app/features/shared/images/models/file-response.model';
-import { ImageService } from 'src/app/features/shared/images/service/image.service';
 
 interface GroupedPolicy {
   id: number;
@@ -22,8 +20,6 @@ interface GroupedPolicy {
 export class PropertyDetailsComponent implements OnInit, OnDestroy {
   id: string | null = null;
   model?: Property;
-  imageUrl = '';
-  unitImageUrls: Record<number, string> = {};
   groupedPolicies: GroupedPolicy[] = [];
 
   private subscriptions = new Subscription();
@@ -31,7 +27,6 @@ export class PropertyDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private propertyService: PropertyService,
-    private imageService: ImageService,
     private router: Router,
   ) {}
 
@@ -78,45 +73,12 @@ export class PropertyDetailsComponent implements OnInit, OnDestroy {
         this.model = response;
         if (!this.model.units) this.model.units = [];
 
-        this.loadPropertyImage(this.model.documentId);
-        this.loadUnitImages(this.model.units);
         this.loadPolicies(this.model.policyDescriptions);
       },
       error: (err) => console.error('Error fetching property details', err),
     });
 
     this.subscriptions.add(propertySub);
-  }
-
-  private loadPropertyImage(documentId?: string): void {
-    if (!documentId) return;
-
-    const sub = this.imageService.getFileByDocumentId(documentId).subscribe({
-      next: (fileResponse: FileResponse) => {
-        this.imageUrl = this.toDataUrl(fileResponse);
-      },
-      error: (err) => console.error('Error fetching property image', err),
-    });
-
-    this.subscriptions.add(sub);
-  }
-
-  private loadUnitImages(units: any[]): void {
-    units.forEach((unit, index) => {
-      if (!unit.documentId) return;
-
-      const sub = this.imageService
-        .getFileByDocumentId(unit.documentId)
-        .subscribe({
-          next: (fileResponse: FileResponse) => {
-            this.unitImageUrls[index] = this.toDataUrl(fileResponse);
-          },
-          error: (err) =>
-            console.error(`Error fetching image for unit ${index}`, err),
-        });
-
-      this.subscriptions.add(sub);
-    });
   }
 
   private loadPolicies(policyDescriptions?: UpdatePolicyDescription[]): void {
@@ -140,11 +102,6 @@ export class PropertyDetailsComponent implements OnInit, OnDestroy {
     });
 
     this.subscriptions.add(sub);
-  }
-
-  private toDataUrl(fileResponse: FileResponse): string {
-    const extension = fileResponse.extension.replace('.', '');
-    return `data:image/${extension};base64,${fileResponse.base64}`;
   }
 
   ngOnDestroy(): void {

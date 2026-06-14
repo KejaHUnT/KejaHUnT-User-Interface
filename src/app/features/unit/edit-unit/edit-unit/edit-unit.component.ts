@@ -3,9 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Unit } from 'src/app/features/property/models/unit.model';
 import { PropertyService } from 'src/app/features/property/services/property.service';
-import { ImageService } from 'src/app/features/shared/images/service/image.service';
 import { UnitService } from '../../services/unit.service';
-import { FileResponse } from 'src/app/features/shared/images/models/file-response.model';
 
 @Component({
   selector: 'app-edit-unit',
@@ -26,7 +24,6 @@ export class EditUnitComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
     private unitService: UnitService,
-    private imageService: ImageService, // Inject ImageService for fetching existing images
     private router: Router
   ) { }
   
@@ -39,15 +36,7 @@ export class EditUnitComponent implements OnInit, OnDestroy {
           this.getUnitByIdSubscription = this.unitService.getUnitById(this.id).subscribe({
             next: (response) => {
               this.model = response;
-              // Fetch the existing unit image (if any)
-              if (this.model.documentId) {
-                this.imageService.getFileByDocumentId(this.model.documentId).subscribe({
-                  next: (fileResponse: FileResponse) => {
-                    this.propertyImageUrl = `data:image/${fileResponse.extension.replace('.', '')};base64,${fileResponse.base64}`;
-                  },
-                  error: (err) => console.error('Failed to fetch property image', err),
-                });
-              }
+              this.propertyImageUrl = this.model.imageUrl;
             },
             error: (err) => console.error('Failed to fetch property', err)
           });
@@ -88,7 +77,6 @@ export class EditUnitComponent implements OnInit, OnDestroy {
         doorNumber: this.model.doorNumber,
         status: this.model.status,
         propertyId: this.model.propertyId,
-        documentId: this.model.documentId // Important: pass this for edit support
       }
     ];
   

@@ -340,11 +340,11 @@
         >
           <div class="kh-prop-image">
             <img
-              *ngIf="imageUrls[property.id]"
-              [src]="imageUrls[property.id]"
+              *ngIf="property.imageUrl"
+              [src]="property.imageUrl"
               [alt]="property.name"
             />
-            <div *ngIf="!imageUrls[property.id]" class="kh-prop-placeholder">
+            <div *ngIf="!property.imageUrl" class="kh-prop-placeholder">
               <svg
                 width="32"
                 height="32"

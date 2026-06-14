@@ -4,8 +4,8 @@
   <section class="property-image">
     <div class="image-wrapper">
       <img
-        *ngIf="imageUrl"
-        [src]="imageUrl"
+        *ngIf="model.imageUrl"
+        [src]="model.imageUrl"
         [alt]="model.name"
         class="property-image-img"
       />
@@ -115,8 +115,8 @@
         *ngFor="let unit of model.units; let i = index; trackBy: trackById"
         class="unit-card-modern"
       >
-        <div class="unit-image-wrapper" *ngIf="unitImageUrls[i]">
-          <img [src]="unitImageUrls[i]" [alt]="unit.type" class="unit-image" />
+        <div class="unit-image-wrapper" *ngIf="unit.imageUrl">
+          <img [src]="unit.imageUrl" [alt]="unit.type" class="unit-image" />
         </div>
 
         <div class="unit-content">

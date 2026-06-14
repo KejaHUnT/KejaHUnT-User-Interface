@@ -9,7 +9,7 @@ export interface Property {
     name: string;
     location: string;
     type: string;
-    documentId: string;
+    imageUrl: string | null;
     description: string;
     email: string;
     generalFeatures: GeneralFeatures[];

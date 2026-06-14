@@ -23,12 +23,12 @@
         <!-- ✅ Unit Image -->
         <div class="unit-image-container">
           <img
-            *ngIf="unitImages[unit.id]"
-            [src]="unitImages[unit.id]"
+            *ngIf="unit.imageUrl"
+            [src]="unit.imageUrl"
             alt="{{ unit.type }}"
             class="unit-image"
           />
-          <div *ngIf="!unitImages[unit.id]" class="image-placeholder">No Image</div>
+          <div *ngIf="!unit.imageUrl" class="image-placeholder">No Image</div>
         </div>
 
         <!-- ✅ Unit Info -->

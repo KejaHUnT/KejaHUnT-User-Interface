@@ -62,10 +62,9 @@
              class="kh-prop-card">
 
             <div class="kh-prop-image">
-              <img *ngIf="imageUrls[property.id]"
-                   [src]="imageUrls[property.id]" />
-
-              <div *ngIf="!imageUrls[property.id]" class="kh-prop-placeholder">
+              <img *ngIf="property.imageUrl"
+                   [src]="property.imageUrl" />
+              <div *ngIf="!property.imageUrl" class="kh-prop-placeholder">
                 No Image
               </div>
 

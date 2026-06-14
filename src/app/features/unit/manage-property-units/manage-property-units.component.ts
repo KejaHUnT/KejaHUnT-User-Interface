@@ -5,8 +5,6 @@ import { UnitService } from '../services/unit.service';
 import { Unit } from '../../property/models/unit.model';
 import { Property } from '../../property/models/property.model';
 import { PropertyService } from '../../property/services/property.service';
-import { ImageService } from 'src/app/features/shared/images/service/image.service';
-import { FileResponse } from 'src/app/features/shared/images/models/file-response.model';
 
 @Component({
   selector: 'app-manage-property-units',
@@ -26,7 +24,6 @@ export class ManagePropertyUnitsComponent implements OnInit, OnDestroy {
   constructor(
     private unitService: UnitService,
     private propertyService: PropertyService,
-    private imageService: ImageService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -58,20 +55,6 @@ export class ManagePropertyUnitsComponent implements OnInit, OnDestroy {
       next: (units) => {
         this.units = units.filter(u => u.propertyId === this.propertyId);
         this.loading = false;
-
-        // Fetch images for each unit
-        this.units.forEach(unit => {
-          if (unit.documentId) {
-            this.imageService.getFileByDocumentId(unit.documentId).subscribe({
-              next: (fileResponse: FileResponse) => {
-                this.unitImages[unit.id] = `data:image/${fileResponse.extension.replace('.', '')};base64,${fileResponse.base64}`;
-              },
-              error: (err) => {
-                console.error(`Failed to fetch image for unit ${unit.id}`, err);
-              }
-            });
-          }
-        });
       },
       error: (err) => {
         console.error('Error loading units', err);
@@ -91,7 +74,6 @@ export class ManagePropertyUnitsComponent implements OnInit, OnDestroy {
       this.unitService.deleteUnit(unit.id.toString()).subscribe({
         next: () => {
           this.units = this.units.filter(u => u.id !== unit.id);
-          delete this.unitImages[unit.id];
         },
         error: (err) => {
           console.error('Error deleting unit', err);

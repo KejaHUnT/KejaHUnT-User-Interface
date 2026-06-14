@@ -4,7 +4,6 @@ import { catchError, forkJoin, Observable, of, Subscription } from 'rxjs';
 
 import { PropertyService } from '../../services/property.service';
 import { UnitService } from 'src/app/features/unit/services/unit.service';
-import { ImageService } from 'src/app/features/shared/images/service/image.service';
 import { AuthService } from 'src/app/features/auth/services/auth.service';
 
 import { Property } from '../../models/property.model';
@@ -12,7 +11,6 @@ import { GeneralFeatures } from '../../models/general-feature.model';
 import { IndoorFeature } from '../../models/indoor-feature.model';
 import { outdoorFeature } from '../../models/outdoor-feature.model';
 import { Policy } from '../../models/policy.model';
-import { FileResponse } from 'src/app/features/shared/images/models/file-response.model';
 
 import { UpdatePropertyRequest } from '../../models/update-property-request.model';
 
@@ -49,7 +47,6 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private unitService: UnitService,
     private propertyService: PropertyService,
-    private imageService: ImageService,
     private authService: AuthService,
     private router: Router
   ) { }
@@ -71,7 +68,7 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
 
               this.model = {
                 id: response.id,
-                documentId: response.documentId,
+                imageUrl: response.imageUrl,
                 name: response.name,
                 location: response.location,
                 type: response.type,
@@ -85,27 +82,12 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
               };
 
               this.initializePolicyDescriptions();
-
               if (!this.model1.units) this.model1.units = [];
 
-              if (this.model1.documentId) {
-                this.imageService.getFileByDocumentId(this.model1.documentId).subscribe({
-                  next: (fileResponse: FileResponse) => {
-                    this.propertyImageUrl = `data:image/${fileResponse.extension.replace('.', '')};base64,${fileResponse.base64}`;
-                  },
-                  error: (err) => console.error('Failed to fetch property image', err)
-                });
-              }
+              this.propertyImageUrl = this.model1.imageUrl;
 
               this.model1.units.forEach((unit, index) => {
-                if (unit.documentId) {
-                  this.imageService.getFileByDocumentId(unit.documentId).subscribe({
-                    next: (fileResponse: FileResponse) => {
-                      this.unitImageUrls[index] = `data:image/${fileResponse.extension.replace('.', '')};base64,${fileResponse.base64}`;
-                    },
-                    error: (err) => console.error(`Failed to fetch unit ${index} image`, err)
-                  });
-                }
+               this.unitImageUrls[index] = unit.imageUrl ?? '';
               });
             },
             error: (err) => console.error('Failed to fetch property', err)
@@ -223,7 +205,7 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
 
     const formData = new FormData();
     formData.append('id', this.model.id.toString());
-    formData.append('documentId', this.model.documentId ?? '');
+    formData.append('imageUrl', this.model.imageUrl ?? '');
     formData.append('name', this.model.name);
     formData.append('location', this.model.location);
     formData.append('type', this.model.type);
@@ -284,7 +266,7 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
         doorNumber: '',
         status: 'Available',
         propertyId: this.model.id || 0,
-        documentId: null
+        imageUrl: null
       });
     }
   }

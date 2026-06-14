@@ -1,5 +1,5 @@
 export interface Unit {
-    id: number; // optional if exists
+    id: number;
     price: number;
     type: string;
     bathrooms: number;
@@ -7,6 +7,6 @@ export interface Unit {
     floor: number;
     doorNumber: string;
     status: string;
-    propertyId: number; // optional if exists
-    documentId: string | null; // optional if exists
+    propertyId: number;
+    imageUrl: string | null;
 }

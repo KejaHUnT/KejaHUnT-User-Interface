@@ -5,8 +5,6 @@ import { Unit } from 'src/app/features/property/models/unit.model';
 import { Property } from 'src/app/features/property/models/property.model';
 import { UnitService } from 'src/app/features/unit/services/unit.service';
 import { PropertyService } from 'src/app/features/property/services/property.service';
-import { ImageService } from 'src/app/features/shared/images/service/image.service';
-import { FileResponse } from 'src/app/features/shared/images/models/file-response.model';
 import { BookingService } from 'src/app/features/unit/booking-preview/services/booking.service';
 import { BookingRequest } from 'src/app/features/unit/booking-preview/models/booking-request.model';
 
@@ -30,7 +28,6 @@ export class CreateBookingStepComponent {
     private unitService: UnitService,
     private propertyService: PropertyService,
     private bookingService: BookingService,
-    private imageService: ImageService,
     private router: Router
   ) {}
 
@@ -46,16 +43,7 @@ export class CreateBookingStepComponent {
     this.unitService.getUnitById(unitId.toString()).subscribe({
       next: unit => {
         this.unit = unit;
-
-        if (unit.documentId) {
-          this.imageService.getFileByDocumentId(unit.documentId).subscribe({
-            next: (file: FileResponse) => {
-              const ext = file.extension.replace('.', '');
-              this.unitImageUrl = `data:image/${ext};base64,${file.base64}`;
-            },
-            error: () => { /* Image not critical — fail silently */ }
-          });
-        }
+                this.unitImageUrl = unit.imageUrl ?? '';
 
         if (unit.propertyId) {
           this.propertyService.getPopertyById(unit.propertyId.toString()).subscribe({

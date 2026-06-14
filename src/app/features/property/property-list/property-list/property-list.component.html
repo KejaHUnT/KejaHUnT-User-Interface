@@ -34,7 +34,7 @@
 
       <!-- Image Section -->
       <div class="property-image">
-        <img *ngIf="imageUrls[property.id]; else noImage" [src]="imageUrls[property.id]" [alt]="property.name"
+        <img *ngIf="property.imageUrl; else noImage" [src]="property.imageUrl" [alt]="property.name"
           loading="lazy">
         <ng-template #noImage>
           <div class="no-image-placeholder">🏢</div>
