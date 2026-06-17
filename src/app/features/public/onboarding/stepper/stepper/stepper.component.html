@@ -90,7 +90,8 @@
           #paymentStep
           [paymentAmount]="paymentAmount"
           [unitId]="unitId"
-          [propertyId]="propertyId">
+          [propertyId]="propertyId"
+          [callbackUrl]="'https://keja.kejahunt.co.ke/booking/summary?reference=' + bookingReference">
         </app-payment-step>
 
         <div class="step-actions step-actions--right">

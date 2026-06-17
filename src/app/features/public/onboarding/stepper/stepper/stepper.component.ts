@@ -16,6 +16,7 @@ export class StepperComponent implements OnInit, OnDestroy {
   tenantId: number = 0;
   paymentAmount: number = 0;
   propertyId: number = 0; 
+  bookingReference: string = '';
 
   @ViewChild(MatStepper) stepper!: MatStepper;
   @ViewChild('addTenant') addTenant?: AddTenantStepComponent;
@@ -62,6 +63,9 @@ export class StepperComponent implements OnInit, OnDestroy {
         this.createBooking.initialize(this.unitId, this.tenantId);
         this.createBooking.stepper = this.stepper;
       }
+      setTimeout(() => {
+        this.bookingReference = this.createBooking?.bookingReference ?? '';
+      }, 200);
 
       // FIX: Use setTimeout(0) to allow Angular CD to wire @ViewChild
       // before calling stepper.next(), preventing ExpressionChangedAfterItHasBeenCheckedError

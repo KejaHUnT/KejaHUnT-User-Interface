@@ -29,6 +29,7 @@ export class PaymentStepComponent implements OnInit, OnChanges, OnDestroy {
   @Input() paymentAmount!: number;
   @Input() unitId!: number;
   @Input() propertyId!: number;
+  @Input() callbackUrl?: string;
 
   form!: FormGroup;
   tenantId!: number;
@@ -182,6 +183,7 @@ export class PaymentStepComponent implements OnInit, OnChanges, OnDestroy {
       periodYear:  new Date().getFullYear(),
       gateway:     this.selectedGatewayConfig.gateway as PaymentGateway,
       accountId:   this.selectedGatewayConfig.accountId
+      callbackUrl: this.callbackUrl
     };
 
     const paymentSub = this.paymentService.initializePayment(dto).subscribe({

@@ -19,6 +19,7 @@ export class CreateBookingStepComponent {
   @Input() stepper!: MatStepper;
 
   unit?: Unit;
+  bookingReference: string = '';
   property?: Property;
   unitImageUrl = '';
   isSubmitting = false;
@@ -93,13 +94,13 @@ export class CreateBookingStepComponent {
     this.errorMessage = '';
 
     this.bookingService.createBooking(this.buildBookingRequest('Immediate payment booking')).subscribe({
-      next: () => {
+      next: (booking) => {
         this.isSubmitting = false;
-        // FIX: guard stepper reference before advancing
+        this.bookingReference = booking.bookingReference;
         if (this.stepper) {
           setTimeout(() => this.stepper.next(), 0);
         }
-      },
+      },    
       error: () => {
         this.errorMessage = 'Booking failed. Please try again.';
         this.isSubmitting = false;
