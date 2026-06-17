@@ -19,7 +19,6 @@ export interface CreateUnitPaymentsDto {
 
   gateway: PaymentGateway;
   accountId: string;
-  callbackUrl?: string;
 }
 
 // ===============================
