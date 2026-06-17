@@ -15,6 +15,7 @@ export class StepperComponent implements OnInit, OnDestroy {
   unitId: number = 0;
   tenantId: number = 0;
   paymentAmount: number = 0;
+  propertyId: number = 0; 
 
   @ViewChild(MatStepper) stepper!: MatStepper;
   @ViewChild('addTenant') addTenant?: AddTenantStepComponent;
@@ -30,6 +31,7 @@ export class StepperComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe(params => {
       this.unitId = +params['unitId'] || 0;
       this.paymentAmount = +params['unitRent'] || 0;
+      this.propertyId = +params['propertyId'] || 0;
     });
   }
 
