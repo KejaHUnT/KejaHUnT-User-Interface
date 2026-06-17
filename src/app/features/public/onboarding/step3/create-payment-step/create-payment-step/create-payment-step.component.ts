@@ -182,7 +182,7 @@ export class PaymentStepComponent implements OnInit, OnChanges, OnDestroy {
       periodMonth: new Date().getMonth() + 1,
       periodYear:  new Date().getFullYear(),
       gateway:     this.selectedGatewayConfig.gateway as PaymentGateway,
-      accountId:   this.selectedGatewayConfig.accountId
+      accountId:   this.selectedGatewayConfig.accountId,
       callbackUrl: this.callbackUrl
     };
 
