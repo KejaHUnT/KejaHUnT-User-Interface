@@ -34,12 +34,11 @@
         <!-- ✅ Unit Info -->
         <div class="unit-info">
           <div class="unit-header">
-            <h3>{{ unit.type }}</h3>
+            <h3>{{ unit.doorNumber }}</h3>
             <span [class]="unit.status.toLowerCase()">{{ unit.status }}</span>
           </div>
-
           <div class="unit-body">
-            <p><strong>Door:</strong> {{ unit.doorNumber }}</p>
+            <p><strong>Bedrooms:</strong> {{ unit.type }}</p>
             <p><strong>Floor:</strong> {{ unit.floor }}</p>
             <p><strong>Size:</strong> {{ unit.size }} m²</p>
             <p><strong>Bathrooms:</strong> {{ unit.bathrooms }}</p>

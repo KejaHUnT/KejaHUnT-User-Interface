@@ -218,4 +218,9 @@
   .unit-image {
     height: 180px;
   }
+  .unit-type-sub {
+    font-size: 0.85rem;
+    color: #888;
+    display: block;
+  }
 }

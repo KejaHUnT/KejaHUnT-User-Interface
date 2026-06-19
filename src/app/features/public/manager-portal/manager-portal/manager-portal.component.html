@@ -215,7 +215,7 @@
         <div *ngFor="let res of reservations" class="reservation-item">
           <div class="res-info">
             <strong>{{ res.tenantName }}</strong> – {{ res.tenantPhone }}<br/>
-            Unit {{ res.unitId }} | {{ res.bookingDate | date:'short' }}
+            {{ res.unitDoorNumber }} | {{ res.bookingDate | date:'short' }}            
           </div>
           <div class="res-actions">
             <button class="ad-action-btn ad-action-btn--green" (click)="approveReservation(res.bookingId)">
