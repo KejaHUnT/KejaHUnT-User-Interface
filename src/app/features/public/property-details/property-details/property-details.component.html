@@ -141,8 +141,10 @@
           </div>
 
           <div class="unit-actions">
-            <button class="apply-button" (click)="onBookNow(unit)">
-              Book Now
+            <button class="apply-button"
+                    [disabled]="unit.status === 'Reserved'"
+                    (click)="onBookNow(unit)">
+              {{ unit.status === 'Reserved' ? 'Reserved' : 'Book Now' }}
             </button>
           </div>
         </div>

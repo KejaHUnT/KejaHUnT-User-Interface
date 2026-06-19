@@ -73,7 +73,7 @@ export class CreateBookingStepComponent {
     this.isSubmitting = true;
     this.errorMessage = '';
 
-    this.bookingService.createBooking(this.buildBookingRequest('Reserved for later payment')).subscribe({
+    this.bookingService.reserveUnit(this.buildBookingRequest('Existing tenant reservation')).subscribe({
       next: () => {
         this.isSubmitting = false;
         this.router.navigate(['/portal/tenant', this.tenantId]);

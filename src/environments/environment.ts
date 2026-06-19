@@ -5,9 +5,7 @@ export const environment = {
   tenantApiBaseUrl:
     (window as any)._env?.TENANT_API_BASE_URL ||
     'https://gateway.kejahunt.co.ke/tenants',
-  fileHandlerApiBaseUrl:
-    (window as any)._env?.FILE_HANDLER_API_BASE_URL ||
-    'https://gateway.kejahunt.co.ke/files',
+
   bookingApiBaseUrl:
     (window as any)._env?.BOOKING_API_BASE_URL ||
     'https://gateway.kejahunt.co.ke/booking',

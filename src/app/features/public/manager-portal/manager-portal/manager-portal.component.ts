@@ -5,6 +5,8 @@ import { Property } from 'src/app/features/property/models/property.model';
 import { PropertyService } from 'src/app/features/property/services/property.service';
 import { AuthService } from 'src/app/features/auth/services/auth.service';
 import { User } from 'src/app/features/auth/models/user.model';
+import { BookingService } from 'src/app/features/unit/booking-preview/services/booking.service';
+import { PendingReservation } from 'src/app/features/unit/booking-preview/models/pending-reservation.model';
 
 @Component({
   selector: 'app-manager-portal',
@@ -17,6 +19,8 @@ export class ManagerPortalComponent implements OnInit {
   propertiesIncome: { [key: string]: number } = {};
   totalExpectedIncome: number = 0;
   pendingBills: number = 0;
+  pendingReservations$?: Observable<PendingReservation[]>;  
+  
 
   // ✅ Logged-in user
   loggedInUser?: User;
@@ -26,7 +30,8 @@ export class ManagerPortalComponent implements OnInit {
     private route: ActivatedRoute,
     private propertyService: PropertyService,
     private router: Router,
-    private authService: AuthService   // ✅ Inject AuthService
+    private authService: AuthService,  // ✅ Inject AuthService  
+    private bookingService: BookingService  
   ) {}
 
   ngOnInit(): void {
@@ -49,6 +54,7 @@ export class ManagerPortalComponent implements OnInit {
         observer.next(propsWithExpand);
       });
     });
+    this.pendingReservations$ = this.bookingService.getPendingReservations();    
   }
 
   calculateIncome(properties: Property[]): void {
@@ -100,4 +106,14 @@ export class ManagerPortalComponent implements OnInit {
   navigateToPending(): void {
     this.router.navigate(['/pending-bills']);
   }
+  approveReservation(bookingId: number): void {
+    this.bookingService.approveReservation(bookingId).subscribe(() => {
+      this.pendingReservations$ = this.bookingService.getPendingReservations();
+    });
+  }
+  rejectReservation(bookingId: number): void {
+    this.bookingService.rejectReservation(bookingId).subscribe(() => {
+      this.pendingReservations$ = this.bookingService.getPendingReservations();
+    });
+  }  
 }

@@ -72,7 +72,8 @@ export class PropertyDetailsComponent implements OnInit, OnDestroy {
       next: (response) => {
         this.model = response;
         if (!this.model.units) this.model.units = [];
-
+        // Hide occupied units from public view
+        this.model.units = this.model.units.filter(u => u.status !== 'Occupied');
         this.loadPolicies(this.model.policyDescriptions);
       },
       error: (err) => console.error('Error fetching property details', err),

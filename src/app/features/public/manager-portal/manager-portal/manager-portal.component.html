@@ -197,6 +197,37 @@
         </button>
       </div>
 
+      <!-- ══ Pending Reservations ══ -->
+      <div class="ad-pending-card" *ngIf="pendingReservations$ | async as reservations">
+        <div class="ad-pending-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <polyline points="16 11 19 14 23 10"/>
+          </svg>
+        </div>
+        <h4 class="ad-pending-title">Pending Reservations</h4>
+
+        <div *ngIf="reservations.length === 0" class="ad-pending-sub">
+          No pending reservations.
+        </div>
+
+        <div *ngFor="let res of reservations" class="reservation-item">
+          <div class="res-info">
+            <strong>{{ res.tenantName }}</strong> – {{ res.tenantPhone }}<br/>
+            Unit {{ res.unitId }} | {{ res.bookingDate | date:'short' }}
+          </div>
+          <div class="res-actions">
+            <button class="ad-action-btn ad-action-btn--green" (click)="approveReservation(res.bookingId)">
+              Approve
+            </button>
+            <button class="ad-action-btn ad-action-btn--red" (click)="rejectReservation(res.bookingId)">
+              Reject
+            </button>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </div>

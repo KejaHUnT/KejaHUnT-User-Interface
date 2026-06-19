@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BookingRequest } from '../models/booking-request.model';
 import { BookingResponse } from '../models/booking-response.model';
+import { PendingReservation } from '../models/pending-reservation.model';
 import { environment } from 'src/environments/environment';
 import { UpdateBookingStatus } from '../models/update-booking-status.model';
 
@@ -15,6 +16,22 @@ export class BookingService {
 
   createBooking(request: BookingRequest): Observable<BookingResponse> {
     return this.http.post<BookingResponse>(`${environment.bookingApiBaseUrl}/api/booking`, request);
+  }
+
+  reserveUnit(request: BookingRequest): Observable<BookingResponse> {
+    return this.http.post<BookingResponse>(`${environment.bookingApiBaseUrl}/api/booking/reserve`, request);
+  }
+
+  getPendingReservations(): Observable<PendingReservation[]> {
+    return this.http.get<PendingReservation[]>(`${environment.bookingApiBaseUrl}/api/booking/manager/pending`);
+  }
+
+  approveReservation(bookingId: number): Observable<BookingResponse> {
+    return this.http.post<BookingResponse>(`${environment.bookingApiBaseUrl}/api/booking/${bookingId}/approve`, {});
+  }
+
+  rejectReservation(bookingId: number): Observable<BookingResponse> {
+    return this.http.post<BookingResponse>(`${environment.bookingApiBaseUrl}/api/booking/${bookingId}/reject`, {});
   }
 
   getAllBookings(): Observable<BookingResponse[]> {
@@ -33,7 +50,6 @@ export class BookingService {
     const url = `${environment.bookingApiBaseUrl}/api/booking/pay/${bookingId}?phoneNumber=${encodeURIComponent(phoneNumber)}`;
     return this.http.get<any>(url);
   }
-
 
   updateBookingStatus(request: UpdateBookingStatus): Observable<BookingResponse> {
     return this.http.patch<BookingResponse>(`${environment.bookingApiBaseUrl}/api/booking/status`, request);

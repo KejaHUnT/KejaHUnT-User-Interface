@@ -31,7 +31,14 @@ export class PropertiesListComponent implements OnInit, OnDestroy {
     this.properties$ = this.propertyService.getAllProperties().pipe(
       map(properties =>
         properties
+          // 1. Hide occupied units
+          .map(p => ({
+            ...p,
+            units: p.units.filter(u => u.status !== 'Occupied')
+          }))
+          // 2. Remove properties with no visible units
           .filter(p => p.units && p.units.length > 0)
+          // 3. Apply location/type/price filters
           .filter(p => {
             const matchesLocation =
               !this.filters.location ||
