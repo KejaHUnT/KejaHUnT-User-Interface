@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { map, Observable, Subscription } from 'rxjs';
+import { Title, Meta } from '@angular/platform-browser';
 import { Property } from 'src/app/features/property/models/property.model';
 import { Unit } from 'src/app/features/property/models/unit.model';
 import { PropertyService } from 'src/app/features/property/services/property.service';
@@ -11,14 +12,20 @@ import { PropertyService } from 'src/app/features/property/services/property.ser
 })
 export class HomeComponent implements OnInit, OnDestroy {
   Property$?: Observable<Property[]>;
-
   private subscriptions = new Subscription();
 
   constructor(
     private propertyService: PropertyService,
+    private title: Title,
+    private meta: Meta
   ) {}
 
   ngOnInit(): void {
+    this.title.setTitle('KejaHUnT | Find Houses & Apartments for Rent in Kenya');
+    this.meta.updateTag({ name: 'description', content: 'Find affordable houses and apartments for rent across Kenya. Search by location, budget and bedrooms on KejaHunt.' });
+    this.meta.updateTag({ property: 'og:title', content: 'KejaHUnT | Find Houses for Rent in Kenya' });
+    this.meta.updateTag({ property: 'og:url', content: 'https://kejahunt.co.ke' });
+
     this.Property$ = this.propertyService
       .getAllProperties()
       .pipe(
