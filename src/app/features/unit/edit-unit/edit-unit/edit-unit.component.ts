@@ -77,6 +77,7 @@ export class EditUnitComponent implements OnInit, OnDestroy {
         doorNumber: this.model.doorNumber,
         status: this.model.status,
         propertyId: this.model.propertyId,
+        showPrice: this.model.showPrice,
       }
     ];
   

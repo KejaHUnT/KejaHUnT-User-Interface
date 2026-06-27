@@ -89,6 +89,21 @@ export class ManagePropertyUnitsComponent implements OnInit, OnDestroy {
     });
   }
 
+/** Toggle price visibility in public listing */
+  toggleShowPrice(): void {
+    if (!this.property) return;
+    this.property.showPrice = !this.property.showPrice;
+
+    this.propertyService.updateShowPrice(this.propertyId, this.property.showPrice).subscribe({
+      next: () => console.log('ShowPrice updated'),
+      error: (err) => {
+        console.error('Failed to update showPrice', err);
+        // Revert on failure
+        this.property!.showPrice = !this.property!.showPrice;
+      }
+    });
+  }
+
   ngOnDestroy(): void {
     if (this.subscription) this.subscription.unsubscribe();
   }

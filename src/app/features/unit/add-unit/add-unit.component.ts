@@ -36,7 +36,8 @@ export class AddUnitComponent implements OnInit {
       size: ['', [Validators.required, Validators.min(1)]],
       floor: ['', [Validators.required, Validators.min(0)]],
       doorNumber: ['', Validators.required],
-      status: ['Available', Validators.required]
+      status: ['Available', Validators.required],
+      showPrice: [true]
     });
   }
 

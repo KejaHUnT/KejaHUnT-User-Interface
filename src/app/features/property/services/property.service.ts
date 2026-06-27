@@ -44,6 +44,12 @@ export class PropertyService {
     return this.http.put<UpdatePropertyRequest>(`${environment.apiBaseUrl}/api/property/${id}`, formData);
   }
 
+  updateShowPrice(propertyId: number, showPrice: boolean): Observable<any> {
+    const formData = new FormData();
+    formData.append('showPrice', showPrice.toString());
+    return this.http.put<any>(`${environment.apiBaseUrl}/api/property/${propertyId}/showprice`, formData);
+  }
+
   deleteProperty(id: string): Observable<Property> {
     return this.http.delete<Property>(`${environment.apiBaseUrl}/api/property/${id}`);
   }

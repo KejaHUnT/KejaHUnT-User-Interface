@@ -4,7 +4,17 @@
       <h2 *ngIf="property">Manage Units for <span class="property-name">{{ property.name }}</span></h2>
       <h2 *ngIf="!property">Manage Units</h2>
     </div>
-    <button class="btn add-btn" (click)="onAddUnit()">+ Add New Unit</button>
+    <div class="header-actions">
+      <div class="form-check form-switch" *ngIf="property">
+        <input class="form-check-input" type="checkbox" id="showPriceToggle"
+               [checked]="property.showPrice"
+               (change)="toggleShowPrice()" />
+        <label class="form-check-label" for="showPriceToggle">
+          Show price in public listing
+        </label>
+      </div>
+      <button class="btn add-btn" (click)="onAddUnit()">+ Add New Unit</button>
+    </div>
   </div>
 
   <div *ngIf="loading" class="loading">

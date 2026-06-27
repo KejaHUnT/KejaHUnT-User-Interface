@@ -9,4 +9,5 @@ export interface Unit {
     status: string;
     propertyId: number;
     imageUrl: string | null;
+    showPrice: boolean;
 }

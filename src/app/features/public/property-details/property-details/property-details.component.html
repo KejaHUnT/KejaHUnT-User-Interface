@@ -122,9 +122,8 @@
         <div class="unit-content">
           <div class="unit-header-row">
             <span class="unit-type">{{ unit.type }} Bedrooms</span>
-            <span class="unit-price"
-              >Ksh {{ unit.price | number: "1.0-0" }}</span
-            >
+            <span class="unit-price" *ngIf="model.showPrice">Ksh {{ unit.price | number: "1.0-0" }}</span>
+            <span class="unit-price" *ngIf="!model.showPrice">Price on request</span>
           </div>
 
           <div class="unit-details-row">

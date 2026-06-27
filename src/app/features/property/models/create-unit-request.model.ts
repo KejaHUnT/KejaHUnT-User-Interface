@@ -1,5 +1,5 @@
 export interface CreateUnitRequest {
-    id?: number; // Optional, if exists
+    id?: number;
     price: number;
     type: string;
     bathrooms: number;
@@ -7,7 +7,8 @@ export interface CreateUnitRequest {
     floor: number;
     doorNumber: string;
     status: string;
-    imageFile?: File; // Optional, only if you want to upload an image for the unit
+    imageFile?: File;
     imageUrl?: string | null;
-    propertyId: number; // Optional, only if you want to associate the unit with a property
+    propertyId: number;
+    showPrice: boolean;
 }

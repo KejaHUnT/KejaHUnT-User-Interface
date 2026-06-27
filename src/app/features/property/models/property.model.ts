@@ -12,6 +12,7 @@ export interface Property {
     imageUrl: string | null;
     description: string;
     email: string;
+    showPrice: boolean;
     generalFeatures: GeneralFeatures[];
     outDoorFeatures: outdoorFeature[];
     indoorFeatures: IndoorFeature[];

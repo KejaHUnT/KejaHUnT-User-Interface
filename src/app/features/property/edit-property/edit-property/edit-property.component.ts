@@ -266,7 +266,8 @@ export class EditPropertyComponent implements OnInit, OnDestroy {
         doorNumber: '',
         status: 'Available',
         propertyId: this.model.id || 0,
-        imageUrl: null
+        imageUrl: null,
+        showPrice: true
       });
     }
   }
