@@ -168,8 +168,13 @@
 
           <div class="kh-prop-footer">
             <div class="kh-prop-price">
-              Ksh {{ getMinPrice(property.units) | number: "1.0-0" }}
-              <span class="kh-prop-per">/mo</span>
+              <ng-container *ngIf="property.showPrice">
+                Ksh {{ getMinPrice(property.units) | number: "1.0-0" }}
+                <span class="kh-prop-per">/mo</span>
+              </ng-container>
+              <ng-container *ngIf="!property.showPrice">
+                Price on request
+              </ng-container>
             </div>
             <div class="kh-prop-cta">
               View
