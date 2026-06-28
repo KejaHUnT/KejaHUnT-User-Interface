@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { map, Observable, Subscription } from 'rxjs';
-import { Title, Meta } from '@angular/platform-browser';
 import { Property } from 'src/app/features/property/models/property.model';
 import { Unit } from 'src/app/features/property/models/unit.model';
 import { PropertyService } from 'src/app/features/property/services/property.service';
@@ -16,19 +15,10 @@ export class HousesComponent implements OnInit, OnDestroy {
   selectedType = '';
   private subscriptions = new Subscription();
   private allProperties: Property[] = [];
-
   constructor(
     private propertyService: PropertyService,
-    private title: Title,
-    private meta: Meta
   ) {}
-
   ngOnInit(): void {
-    this.title.setTitle('Houses for Rent in Kenya | KejaHUnT');
-    this.meta.updateTag({ name: 'description', content: 'Browse houses for rent across Kenya. Search by location and type to find your ideal home on KejaHunt.' });
-    this.meta.updateTag({ property: 'og:title', content: 'Houses for Rent in Kenya | KejaHUnT' });
-    this.meta.updateTag({ property: 'og:url', content: 'https://kejahunt.co.ke/houses' });
-
     this.properties$ = this.propertyService
       .getAllProperties()
       .pipe(
@@ -44,7 +34,6 @@ export class HousesComponent implements OnInit, OnDestroy {
     });
     this.subscriptions.add(sub);
   }
-
   get filteredProperties(): Property[] {
     const term = this.searchTerm.trim().toLowerCase();
     return this.allProperties.filter((property) => {
@@ -57,21 +46,17 @@ export class HousesComponent implements OnInit, OnDestroy {
       return matchesTerm && matchesType;
     });
   }
-
   get propertyTypes(): string[] {
     const types = this.allProperties.map((p) => p.type).filter(Boolean);
     return Array.from(new Set(types));
   }
-
   getMinPrice(units: Unit[]): number {
     if (!units?.length) return 0;
     return Math.min(...units.map((unit) => unit.price));
   }
-
   trackById(_index: number, item: { id: number }): number {
     return item.id;
   }
-
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }

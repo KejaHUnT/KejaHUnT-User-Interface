@@ -1,74 +1,55 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Title, Meta } from '@angular/platform-browser';
-import { Property } from 'src/app/features/property/models/property.model';
-import { Unit } from 'src/app/features/property/models/unit.model';
-import { PropertyService } from 'src/app/features/property/services/property.service';
+import { Property } from '../../models/property.model';
+import { PropertyService } from '../../services/property.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-properties-list',
-  templateUrl: './properties-list.component.html',
-  styleUrls: ['./properties-list.component.css']
+  selector: 'app-property-list',
+  templateUrl: './property-list.component.html',
+  styleUrls: ['./property-list.component.css']
 })
-export class PropertiesListComponent implements OnInit, OnDestroy {
+export class PropertyListComponent implements OnInit, OnDestroy {
+  id: string | null = null;
+  deletePropertySubscription?: Subscription
 
   properties$?: Observable<Property[]>;
-  propertySubscription?: Subscription;
 
-  filters = {
-    location: '',
-    type: '',
-    minPrice: 0,
-    maxPrice: 1000000
-  };
-
-  constructor(
-    private propertyService: PropertyService,
-    private title: Title,
-    private meta: Meta
+  constructor (private propertyService: PropertyService,
+    private router: Router,
   ) {}
+  
 
   ngOnInit(): void {
-    this.title.setTitle('Properties for Rent in Kenya | KejaHUnT');
-    this.meta.updateTag({ name: 'description', content: 'Browse all rental properties in Kenya. Filter by location, type and budget to find your perfect home on KejaHunt.' });
-    this.meta.updateTag({ property: 'og:title', content: 'Properties for Rent in Kenya | KejaHUnT' });
-    this.meta.updateTag({ property: 'og:url', content: 'https://kejahunt.co.ke/properties' });
-
-    // ... rest of your existing ngOnInit code unchanged
-    this.properties$ = this.propertyService.getAllProperties().pipe(
-      map(properties =>
-        properties
-          .map(p => ({
-            ...p,
-            units: p.units.filter(u => u.status !== 'Occupied')
-          }))
-          .filter(p => p.units && p.units.length > 0)
-          .filter(p => {
-            const matchesLocation =
-              !this.filters.location ||
-              p.location.toLowerCase().includes(this.filters.location.toLowerCase());
-            const matchesType =
-              !this.filters.type || p.type === this.filters.type;
-            const minPrice = this.getMinPrice(p.units);
-            const matchesPrice =
-              minPrice >= this.filters.minPrice &&
-              minPrice <= this.filters.maxPrice;
-            return matchesLocation && matchesType && matchesPrice;
-          })
-      )
-    );
+    this.properties$ = this.propertyService.getPropertiesForLoggedInUser();
   }
 
-  applyFilters() {
-    this.ngOnInit();
+  navigateToProperty(propertyId: number) {
+    this.router.navigate(['/admin/property', propertyId]);
+  }
+  
+  goToManageUnits(propertyId: number): void {
+    this.router.navigate([`/manage/${propertyId}/units`]);
   }
 
-  getMinPrice(units: Unit[]): number {
-    return Math.min(...units.map(u => u.price));
+trackByPropertyId(index: number, property: Property): number {
+  return property.id;
+}
+
+onDelete(id: string): void {
+  if (id) {
+    this.deletePropertySubscription = this.propertyService.deleteProperty(id).subscribe({
+      next: () => {
+        this.properties$ = this.propertyService.getPropertiesForLoggedInUser();
+      },
+      error: (error) => {
+        console.error('Error deleting property:', error);
+      }
+    });
   }
+}
 
   ngOnDestroy(): void {
-    this.propertySubscription?.unsubscribe();
+    this.deletePropertySubscription?.unsubscribe();
   }
 }

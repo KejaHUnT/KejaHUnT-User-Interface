@@ -5,7 +5,6 @@ import { Policy } from 'src/app/features/property/models/policy.model';
 import { Property } from 'src/app/features/property/models/property.model';
 import { UpdatePolicyDescription } from 'src/app/features/property/models/update-policy-description.model';
 import { PropertyService } from 'src/app/features/property/services/property.service';
-import { Title, Meta } from '@angular/platform-browser';
 
 interface GroupedPolicy {
   id: number;
@@ -29,8 +28,6 @@ export class PropertyDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private propertyService: PropertyService,
     private router: Router,
-    private title: Title,
-    private meta: Meta
   ) {}
 
   ngOnInit(): void {
@@ -78,10 +75,6 @@ export class PropertyDetailsComponent implements OnInit, OnDestroy {
         // Hide occupied units from public view
         this.model.units = this.model.units.filter(u => u.status !== 'Occupied');
         this.loadPolicies(this.model.policyDescriptions);
-        this.title.setTitle(`${this.model.name} in ${this.model.location} | KejaHUnT`);
-        this.meta.updateTag({ name: 'description', content: `${this.model.name} located in ${this.model.location}, Kenya. Find available units and book your rental home on KejaHunt.` });
-        this.meta.updateTag({ property: 'og:title', content: `${this.model.name} | KejaHUnT` });
-        this.meta.updateTag({ property: 'og:url', content: `https://kejahunt.co.ke/property/details/${id}` });
       },
       error: (err) => console.error('Error fetching property details', err),
     });
