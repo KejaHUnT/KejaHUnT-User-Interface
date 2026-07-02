@@ -40,4 +40,13 @@ export class GetStartedComponent {
     this.router.navigate(['/portal/manage']);
   }
 
+  onboardTenant(): void {
+    const user = this.authService.getUser();
+    if (!user) {
+      this.router.navigate(['/signin']);
+      return;
+    }
+    this.router.navigate(['/tenant/onboard']);
+  }
+
 }

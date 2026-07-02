@@ -24,6 +24,7 @@ import { GetStartedComponent } from './core/features/navbar/get-started/get-star
 import { DashboardRedirectComponent } from './core/features/dashboard-redirect/dashboard-redirect.component';
 import { PropertiesListComponent } from './features/public/properties-list/properties-list/properties-list.component';
 import { HousesComponent } from './features/public/houses/houses/houses.component';
+import { OnboardTenantComponent } from './features/tenant/onboard-tenant/onboard-tenant.component';
 
 const routes: Routes = [
   {
@@ -136,6 +137,11 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardRedirectComponent,
+  },
+  {
+    path: 'tenant/onboard',
+    component: OnboardTenantComponent,
+    canActivate: [authGuard],
   },
 ];
 

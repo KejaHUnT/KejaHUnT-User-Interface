@@ -46,6 +46,7 @@ import { DashboardRedirectComponent } from './core/features/dashboard-redirect/d
 import { PropertyPaymentModalComponent } from './features/unit/payments/payment-details/property-payment-modal/property-payment-modal.component';
 import { PropertiesListComponent } from './features/public/properties-list/properties-list/properties-list.component';
 import { HousesComponent } from './features/public/houses/houses/houses.component';
+import { OnboardTenantComponent } from './features/tenant/onboard-tenant/onboard-tenant.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { HousesComponent } from './features/public/houses/houses/houses.componen
     PropertyPaymentModalComponent,
     PropertiesListComponent,
     HousesComponent,
+    OnboardTenantComponent,
   ],
   imports: [
     BrowserModule,

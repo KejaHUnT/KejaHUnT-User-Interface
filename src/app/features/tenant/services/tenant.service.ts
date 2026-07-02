@@ -41,4 +41,12 @@ export class TenantService {
     return this.http.delete<Tenant>(`${environment.tenantApiBaseUrl}/api/tenant/${id}`);
   }
 
+  getPendingTenants(): Observable<Tenant[]> {
+    return this.http.get<Tenant[]>(`${environment.tenantApiBaseUrl}/api/tenant/pending`);
+  }
+
+  approveTenant(id: number): Observable<Tenant> {
+    return this.http.put<Tenant>(`${environment.tenantApiBaseUrl}/api/tenant/${id}/approve`, {});
+  }
+
 }

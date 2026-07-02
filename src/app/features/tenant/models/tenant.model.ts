@@ -8,4 +8,6 @@ export interface Tenant {
     email: string;
     employer: string;
     unitId: number;
+    propertyId: number;
+    status: string;
 }
